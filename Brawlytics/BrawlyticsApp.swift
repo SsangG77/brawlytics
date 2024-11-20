@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 @main
+@available(iOS 17.0, *)
 struct BrawlyticsApp: App {
    
 

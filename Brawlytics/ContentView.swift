@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+@available(iOS 17.0, *)
 struct ContentView: View {
 
     var body: some View {
@@ -19,18 +20,28 @@ struct ContentView: View {
                             
                     }
                 
+                HyperchargeView()
+                    .tabItem {
+                        Label("Hyper charge", systemImage: "number")
+                            
+                    }
+                
             }
             .toolbarBackground(Color(hexString:"283548"), for: .tabBar)
             .toolbarBackground(.visible, for: .tabBar)
             .toolbarColorScheme(.dark, for: .tabBar)
             
         }
-        
+
     }
 
   
 }
 
 #Preview {
-    ContentView()
+    if #available(iOS 17.0, *) {
+        ContentView()
+    } else {
+        // Fallback on earlier versions
+    }
 }

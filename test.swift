@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct test: View {
+    
+    @State private var isGrayScale: Bool = true
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Image("CHEAT CARTRIDGE")
+            .saturation(0) // 완전히 흑백으로
+            .colorMultiply(Color(hexString: "585858")) // 더 어둡게 조정
     }
 }
 

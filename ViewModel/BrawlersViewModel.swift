@@ -13,6 +13,8 @@ import Combine
 class BrawlersViewModel: ObservableObject {
     @Published var brawlers: [Brawler] = [] // 로딩 후 데이터
     @Published var isLoading = true          // 로딩 상태
+    
+    
 
     
     //영웅기어를 가지고있는 브롤러 배열
@@ -41,7 +43,7 @@ class BrawlersViewModel: ObservableObject {
         Brawler_standard(name: "LARRY & LAWRIE", first_gadget: "ORDER: SWAP", second_gadget: "ORDER: FALL BACK", first_starPower: "PROTOCOL: PROTECT", second_starPower: "PROTOCOL: ASSIST", hypercharge: ""),
         Brawler_standard(name: "RUFFS", first_gadget: "TAKE COVER", second_gadget: "AIR SUPPORT", first_starPower: "AIR SUPERIORITY", second_starPower: "FIELD PROMOTION", hypercharge: "THE GOODEST BOY"),
         Brawler_standard(name: "LEON", first_gadget: "CLONE PROJECTOR", second_gadget: "LOLLIPOP DROP", first_starPower: "SMOKE TRAILS", second_starPower: "INVISIHEAL", hypercharge: "LIMBO"),
-        Brawler_standard(name: "ROSA", first_gadget: "GROW LIGHT", second_gadget: "UNFRIENDLY BUSHES", first_starPower: "PLANT LIFE", second_starPower: "THORNY GLOVES", hypercharge: "GRASPING ROOTSC"),
+        Brawler_standard(name: "ROSA", first_gadget: "GROW LIGHT", second_gadget: "UNFRIENDLY BUSHES", first_starPower: "PLANT LIFE", second_starPower: "THORNY GLOVES", hypercharge: "GRASPING ROOTS"),
         Brawler_standard(name: "LOLA", first_gadget: "FREEZE FRAME", second_gadget: "STUNT DOUBLE", first_starPower: "IMPROVISE", second_starPower: "SEALED WITH A KISS", hypercharge: ""),
         Brawler_standard(name: "LOU", first_gadget: "ICE BLOCK", second_gadget: "CRYO SYRUP", first_starPower: "SUPERCOOL", second_starPower: "HYPOTHERMIA", hypercharge: "SLUSHIE STORM"),
         Brawler_standard(name: "RICO", first_gadget: "MULTIBALL LAUNCHER", second_gadget: "BOUNCY CASTLE", first_starPower: "SUPER BOUNCY", second_starPower: "ROBO RETREAT", hypercharge: "TRICK SHOT KING"),
@@ -103,7 +105,7 @@ class BrawlersViewModel: ObservableObject {
         Brawler_standard(name: "KIT", first_gadget: "CARDBOARD BOX", second_gadget: "CHEESEBURGER", first_starPower: "POWER HUNGRY", second_starPower: "OVERLY ATTACHED", hypercharge: ""),
         Brawler_standard(name: "TARA", first_gadget: "PSYCHIC ENHANCER", second_gadget: "SUPPORT FROM BEYOND", first_starPower: "BLACK PORTAL", second_starPower: "HEALING SHADE", hypercharge: "SUPERMASSIVE"),
         Brawler_standard(name: "TICK", first_gadget: "MINE MANIA", second_gadget: "LAST HURRAH", first_starPower: "WELL OILED", second_starPower: "AUTOMA-TICK RELOAD", hypercharge: "HEAD STRONG"),
-        Brawler_standard(name: "PIPER", first_gadget: "AUTO-AIMER", second_gadget: "HOMEMADE RECIPE", first_starPower: "AMBUSH", second_starPower: "SNAPPY SNIPING", hypercharge: "BOPPIN'"),
+        Brawler_standard(name: "PIPER", first_gadget: "AUTO AIMER", second_gadget: "HOMEMADE RECIPE", first_starPower: "AMBUSH", second_starPower: "SNAPPY SNIPING", hypercharge: "BOPPIN'"),
         Brawler_standard(name: "PAM", first_gadget: "PULSE MODULATOR", second_gadget: "SCRAPSUCKER", first_starPower: "MAMA'S HUG", second_starPower: "MAMA'S SQUEEZE", hypercharge: ""),
         Brawler_standard(name: "FANG", first_gadget: "CORN-FU", second_gadget: "ROUNDHOUSE KICK", first_starPower: "FRESH KICKS", second_starPower: "DIVINE SOLES", hypercharge: "DRAGON KICK"),
         Brawler_standard(name: "PEARL", first_gadget: "OVERCOOKED", second_gadget: "MADE WITH LOVE", first_starPower: "HEAT RETENTION", second_starPower: "HEAT SHIELD", hypercharge: "PYROLITIC"),
@@ -145,6 +147,41 @@ class BrawlersViewModel: ObservableObject {
         }
         return false
     }
+    
+    func judgeHypercharge(_ hypercharge: String) -> Bool {
+        let key = "hyperchargeArray"
+        let array = UserDefaults.standard.stringArray(forKey: key) ?? []
+        
+        if array.contains(hypercharge) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func addHyperchargeArray(_ hypercharge: String) {
+        let key = "hyperchargeArray"
+        
+        var array = UserDefaults.standard.stringArray(forKey: key) ?? []
+        
+        if !array.contains(hypercharge) {
+            array.append(hypercharge)
+            UserDefaults.standard.set(array, forKey: key)
+        }
+    }
+    
+    func removeHyperchargeArray(_ hypercharge: String) {
+        let key = "hyperchargeArray"
+        
+        var array = UserDefaults.standard.stringArray(forKey: key) ?? []
+        
+        if let index = array.firstIndex(of: hypercharge) {
+            array.remove(at: index)
+            UserDefaults.standard.set(array, forKey: key)
+        }
+    }
+    
+    
     
     
     
