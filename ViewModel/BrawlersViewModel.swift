@@ -11,7 +11,7 @@ import Combine
 
 // 데이터 로딩을 관리하는 ViewModel
 class BrawlersViewModel: ObservableObject {
-    @Published var brawlers: [Brawler] = [] // 로딩 후 데이터
+//    @Published var brawlers: [Brawler] = [] // 로딩 후 데이터
     @Published var isLoading = true          // 로딩 상태
     
     
@@ -185,16 +185,7 @@ class BrawlersViewModel: ObservableObject {
     
     
     
-    func findMyBrawler(brawlerName: String, brawlers : [Brawler]) -> Brawler {
-
-        for brawler in brawlers {
-            if brawler.name == brawlerName {
-                return brawler
-            }
-        }
-        return Brawler()
-        
-    }
+    
     
     
     
@@ -202,7 +193,7 @@ class BrawlersViewModel: ObservableObject {
 }
 
 
-struct Brawler_standard {
+struct Brawler_standard: Equatable {
     let id: UUID = UUID() // UUID를 자동 생성
     var name:String
     var first_gadget:String

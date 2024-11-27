@@ -12,6 +12,7 @@ import SwiftUI
 
 
 //브롤러 한개당 정보 모음
+@available(iOS 17.0, *)
 struct BrawlerView: View {
     
     //size setting
@@ -22,17 +23,17 @@ struct BrawlerView: View {
     
     //
     @State var brawler: Brawler?
+    @State var opacity:Double = 1.0
     
     //바인딩된 값
     @Binding var brawler_standard: Brawler_standard
-    @Binding var myBrawlers:[Brawler]
+    
     
     //view model
     @StateObject var brawlersViewModel = BrawlersViewModel()
+    @EnvironmentObject var calculateViewModel: CalculateViewModel
     
     var body: some View {
-        
-        
         
         ZStack {
             Rectangle()
@@ -47,11 +48,15 @@ struct BrawlerView: View {
                 VStack {
                     HStack(spacing: 10) {
                         BrawlerProfileView(parentWidth: $width, brawler_st: $brawler_standard, brawler: $brawler)
+                            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+                            
                         GearView(parentWidth: $width, brawler: $brawler)
                             .environmentObject(brawlersViewModel)
+                            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                             
                     }
                     PowerView(parentWidth: $width, brawler_standard: $brawler_standard, brawler: $brawler)
+                        .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                 }
                 .frame(width: width , height: brawlerHeight)
                 .cornerRadius(20)
@@ -73,10 +78,17 @@ struct BrawlerView: View {
             
             
         }//ZStack
-        .redacted(reason: brawler == nil ? .privacy : [])
-        .onAppear {
-          brawler = brawlersViewModel.findMyBrawler(brawlerName: brawler_standard.name, brawlers: myBrawlers)
+        .onChange(of: calculateViewModel.brawlers) {
+            withAnimation {
+                
+                brawler = calculateViewModel.findMyBrawler(brawlerName: brawler_standard.name)
+            }
         }
+        .onAppear(perform: {
+            withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
+                self.opacity = opacity == 0.4 ? 0.8 : 0.4
+            }
+        })
         
         
     }
@@ -120,7 +132,6 @@ struct BrawlerProfileView: View {
             }
             .offset(x: 1, y: 0) // 이미지의 왼쪽 상단에 고정 위치 지정
         }
-        .redacted(reason: brawler == nil ? .privacy : [])
         .frame(width: (parentWidth - 35) * 0.3, height: (parentWidth - 35) * 0.3)
         .background(Color(hexString: "4C658D", opacity: 0.53))
         .cornerRadius(15)
@@ -184,15 +195,15 @@ struct GearView: View {
                 
                 
                 //영웅 기어
-                if viewModel.reload_speed_gear_brawlers.contains(brawler?.name ?? "") {
+                if viewModel.reload_speed_gear_brawlers.contains(brawler?.name ?? " ") {
                     SingleGearView(imageName: "RELOAD SPEED", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "RELOAD SPEED"), offset: true)
                 }
                 
-                if viewModel.super_charge_gear_brawlers.contains(brawler?.name ?? "") {
+                if viewModel.super_charge_gear_brawlers.contains(brawler?.name ?? " ") {
                     SingleGearView(imageName: "SUPER CHARGE", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "SUPER CHARGE"), offset: true)
                 }
                 
-                if viewModel.pet_power_gear_brawlers.contains(brawler?.name ?? "") {
+                if viewModel.pet_power_gear_brawlers.contains(brawler?.name ?? " ") {
                     SingleGearView(imageName: "PET POWER", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "PET POWER"), offset: true)
                 }
                 
@@ -208,70 +219,70 @@ struct GearView: View {
                     SingleGearView(
                         imageName: "THICC HEAD",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "THICC HEAD"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "GENE":
                     SingleGearView(
                         imageName: "TALK TO THE HAND",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "TALK TO THE HAND"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "CROW":
                     SingleGearView(
                         imageName: "ENDURING TOXIN",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "ENDURING TOXIN"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "SANDY":
                     SingleGearView(
                         imageName: "EXHAUSTING STORM",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "EXHAUSTING STORM"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "SPIKE":
                     SingleGearView(
                         imageName: "STICKY SPIKES",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "STICKY SPIKES"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "LEON":
                     SingleGearView(
                         imageName: "LINGERING SMOKE",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "LINGERING SMOKE"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "AMBER":
                     SingleGearView(
                         imageName: "STICKY OIL",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "STICKY OIL"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "EVE":
                     SingleGearView(
                         imageName: "QUADRUPLETS",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "QUADRUPLETS"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "PAM":
                     SingleGearView(
                         imageName: "SUPER TURRET",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "SUPER TURRET"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                     
                 case "MORTIS":
                     SingleGearView(
                         imageName: "BAT STORM",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "BAT STORM"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? "")
+                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
                     )
                 
                     
@@ -304,6 +315,7 @@ struct PowerView: View {
     @Binding var parentWidth: CGFloat
     @Binding var brawler_standard: Brawler_standard
     @Binding var brawler: Brawler?
+    
     
     //viewModel
     @StateObject var viewModel: BrawlersViewModel = BrawlersViewModel()

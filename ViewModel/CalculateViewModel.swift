@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 class CalculateViewModel: ObservableObject {
@@ -14,13 +15,14 @@ class CalculateViewModel: ObservableObject {
     
     @Published var brawlers: [Brawler] = []
     
+    @Published var isLoading: Bool = false
     
     func saveSearchText(_ searchText:String) {
         
     }
     
     
-    func getBrawlers(/*completion: @escaping () -> Void*/) {
+    func getBrawlers() {
         guard let url = URL(string: "\(Constants.getBrawlersURL)?playertag=\(searchText)") else {
             print("Invalid URL")
             return
@@ -47,18 +49,26 @@ class CalculateViewModel: ObservableObject {
                     let brawlersResponse = try JSONDecoder().decode([Brawler].self, from: data)
                     
                     DispatchQueue.main.async {
-                        self.brawlers = brawlersResponse
-                        
-//                        DispatchQueue.main.async {
-//                            completion()
-//                        }
-                        
+                        withAnimation{ self.brawlers = brawlersResponse }
                     }
+                    
                 } catch {
                     print("Failed to decode JSON: \(error)")
                 }
             }.resume()
         }
+        
+    }
+    
+    
+    func findMyBrawler(brawlerName: String) -> Brawler {
+
+        for brawler in self.brawlers {
+            if brawler.name == brawlerName {
+                return brawler
+            }
+        }
+        return Brawler()
         
     }
     

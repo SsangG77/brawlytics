@@ -11,10 +11,13 @@ import SwiftUI
 struct SearchBar: View {
     @State var showHistory:Bool = false
     
+    
     @Binding var brawlers_standard: [Brawler_standard]
+    @Binding var clicked: Bool
+    @Binding var isLoading: Bool
+    
     
     @EnvironmentObject var calculateViewModel: CalculateViewModel
-    
     @StateObject var brawlersViewModel = BrawlersViewModel()
 
     var body: some View {
@@ -48,14 +51,32 @@ struct SearchBar: View {
                 HStack {
                     Spacer() // 버튼을 오른쪽으로 이동
                     Button(action: {
+                        withAnimation {
+                            clicked = true
+                        }
                         showHistory = false
-//                        calculateViewModel.getBrawlers {
-//                            brawlers_standard = brawlersViewModel.brawlers_standard
-//                        }
-                        calculateViewModel.getBrawlers()
-                        brawlers_standard = brawlersViewModel.brawlers_standard
-                        
-                    }) {
+
+                        // 로딩 시작
+                        withAnimation {
+                            isLoading = true
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            withAnimation {
+                                brawlers_standard = brawlersViewModel.brawlers_standard
+                            }
+
+                            // 로딩 종료
+                            DispatchQueue.main.async {
+                                withAnimation {
+                                    isLoading = false
+                                }
+                            }
+
+                            calculateViewModel.getBrawlers()
+                        }
+                    })
+ {
                         Image(systemName: "magnifyingglass") // 돋보기 이미지
                             .frame(width: 15, height: 15)
                             .foregroundColor(.white)

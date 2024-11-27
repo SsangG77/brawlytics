@@ -7,12 +7,34 @@
 
 import SwiftUI
 
-struct BlinkingAnimationModifier: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct BlinkingAnimationModifier: AnimatableModifier {
+    
+    var shouldShow:Bool
+    
+    
+    var opacity:Double
+    
+    var animatableData: Double {
+        get { opacity }
+        set { opacity = newValue }
+        
     }
+    
+    func body(content: Content) -> some View {
+        content.overlay(
+            ZStack {
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(Color(hexString: "576E90"))
+                    .zIndex(0)
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color(hexString: "37475F"))
+                    .opacity(self.opacity)
+                    .zIndex(1)
+                    
+            }
+            .opacity(shouldShow ? 1 : 0)
+        )
+    }
+    
 }
 
-#Preview {
-    BlinkingAnimationModifier()
-}

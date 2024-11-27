@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Brawler: Codable {
+struct Brawler: Codable, Equatable {
     let id: Int
     let name: String
     let power: Int
@@ -30,6 +30,9 @@ struct Brawler: Codable {
         gadgets = []
     }
     
+    static func == (lhs: Brawler, rhs: Brawler) -> Bool {
+            return lhs.id == rhs.id // ID가 같으면 같은 Brawler로 간주
+        }
     
 }
 
@@ -37,6 +40,9 @@ struct Gear: Codable {
     let id: Int
     let name: String
     let level: Int
+    
+    
+    
 }
 
 struct StarPower: Codable {
