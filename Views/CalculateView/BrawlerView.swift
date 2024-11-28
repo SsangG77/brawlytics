@@ -70,7 +70,7 @@ struct BrawlerView: View {
                 }
                 
                 //해당 브롤러 재화 표시 부분
-                MoneyCountView(parentWidth: $width)
+                MoneyCountView(parentWidth: $width, brawler: $brawler, brawler_standard: $brawler_standard)
                 .frame(height: totalHeight - brawlerHeight)
             }//VStack
             .frame(height: totalHeight)
@@ -294,7 +294,6 @@ struct GearView: View {
             .frame(width: (parentWidth - 35) * 0.7, height: (parentWidth - 35) * 0.3, alignment: .center)
             .background(Color(hexString: "4C658D", opacity: 0.53))
             .cornerRadius(15)
-            .redacted(reason: brawler == nil ? .privacy : [])
     }
         
 }
@@ -359,7 +358,6 @@ struct PowerView: View {
             
             
         }
-        .redacted(reason: brawler == nil ? .privacy : [])
         .frame(width: parentWidth - 25, height: 80)
         .background(Color(hexString: "4C658D", opacity: 0.53))
         .cornerRadius(15)
@@ -374,14 +372,16 @@ struct PowerView: View {
 struct MoneyCountView: View {
     
     @Binding var parentWidth: CGFloat
+    @Binding var brawler: Brawler?
+    @Binding var brawler_standard: Brawler_standard
     
-    @State var ppCount = 2341
-    @State var coinCount = 3400
-    @State var creditCount = 1900
-    
-    
+    @State var ppCount = -1
+    @State var coinCount = -1
+    @State var creditCount = -1
     
     @State var imageSize : CGFloat = 33
+    
+    @StateObject var brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
     
     var body: some View {
         HStack {
@@ -427,7 +427,15 @@ struct MoneyCountView: View {
         }
         .frame(width: parentWidth)
         .padding(.bottom, 14)
-//        .background(.red)
+        .onChange(of: brawler) { newValue in
+            if newValue != nil {
+                ppCount = brawlersViewModel.calculatePP(brawler: brawler, brawler_standard: brawler_standard)
+                creditCount = brawlersViewModel.calculateCredit(brawler: brawler, brawler_standard: brawler_standard)
+                
+            }
+        }
+        .onAppear {
+        }
     }
 }
 

@@ -22,9 +22,26 @@ class BrawlersViewModel: ObservableObject {
     @Published var super_charge_gear_brawlers = ["ASH","LOU","OTIS","BULL","NANI","BONNIE","EDGAR","SPROUT","EL PRIMO","JACKY"]
     @Published var pet_power_gear_brawlers = ["NITA","JESSIE","PENNY","TARA","MR. P"]
     
-    
     //신화기어를 가지고 있는 브롤러 배열
     @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
+    
+    
+    //희귀 브롤러
+    @Published var rare = ["NITA", "COLT", "BULL", "BROCK", "EL PRIMO", "BARLEY", "POCO", "ROSA"]
+    
+    //초희귀 브롤러
+    @Published var super_rare = ["8-BIT", "CARL", "DARRYL", "DYNAMIKE", "GUS", "JACKY", "JESSIE", "PENNY", "RICO", "TICK"]
+    
+    //영웅 브롤러
+    @Published var epic = ["ANGELO","ASH","BEA","BELLE","BERRY","BIBI","BO","BONNIE","COLETTE","EDGAR","EMZ","FRANK","GALE","GRIFF","GROM","HANK","LARRY & LAWRIE","LOLA","MAISIE","MANDY","NANI","PAM","PEARL","PIPER","SAM","SHADE","STU"]
+    
+    //신화 브롤러
+    @Published var mythic = ["BUSTER","BUZZ","BYRON","CHARLIE","CHUCK","CLANCY","DOUG","EVE","FANG","GENE","GRAY","JANET","JUJU","LILY","LOU","MAX","MELODIE","MICO","MOE","MORTIS","MR. P","OTIS","R-T","RUFFS","SPROUT","SQUEAK","TARA","WILLOW"]
+    
+    //전설 브롤러
+    @Published var legendary = ["AMBER","CHESTER","CORDELIUS","CROW","DRACO","KENJI","KIT","LEON","MEG","SANDY","SPIKE","SURGE"]
+    
+    
     
     @Published var brawlers_standard = [
         Brawler_standard(name: "8-BIT", first_gadget: "CHEAT CARTRIDGE", second_gadget: "EXTRA CREDITS", first_starPower: "BOOSTED BOOSTER", second_starPower: "PLUGGED IN", hypercharge: "AIMBOT"),
@@ -182,7 +199,49 @@ class BrawlersViewModel: ObservableObject {
     }
     
     
+    func calculatePP(brawler:Brawler?, brawler_standard: Brawler_standard) -> Int {
+        if brawler?.name == "" || brawler?.power == 1 {
+            return 1440+890+550+340+210+130+80+50+30+20
+        } else if brawler?.power == 2 {
+            return 1440+890+550+340+210+130+80+50+30
+        } else if brawler?.power == 3 {
+            return 1440+890+550+340+210+130+80+50
+        } else if brawler?.power == 4 {
+            return 1440+890+550+340+210+130+80
+        } else if brawler?.power == 5 {
+            return 1440+890+550+340+210+130
+        } else if brawler?.power == 6 {
+            return 1440+890+550+340+210
+        } else if brawler?.power == 7 {
+            return 1440+890+550+340
+        } else if brawler?.power == 8 {
+            return 1440+890+550
+        } else if brawler?.power == 9 {
+            return 1440+890
+        } else if brawler?.power == 10 {
+            return 1440
+        } else if brawler?.power == 11 {
+           return 0
+       }
+        return 0
+    }
     
+    func calculateCredit(brawler:Brawler?, brawler_standard: Brawler_standard) -> Int {
+        if brawler?.name == "" {
+            if rare.contains(brawler_standard.name) {
+                return 160
+            } else if super_rare.contains(brawler_standard.name) {
+                return 430
+            } else if epic.contains(brawler_standard.name) {
+                return 925
+            } else if mythic.contains(brawler_standard.name) {
+                return 1900
+            } else if legendary.contains(brawler_standard.name) {
+                return 3800
+            }
+        }
+        return 0
+    }
     
     
     

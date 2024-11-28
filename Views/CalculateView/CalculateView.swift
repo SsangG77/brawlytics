@@ -15,9 +15,7 @@ struct CalculateView: View {
     @StateObject var brawlersViewModel = BrawlersViewModel()
     
     @State var brawlers_standard:[Brawler_standard] = []
-    @State var default_arr = [
-        Brawler_standard(name: "8-BIT", first_gadget: "CHEAT CARTRIDGE", second_gadget: "EXTRA CREDITS", first_starPower: "BOOSTED BOOSTER", second_starPower: "PLUGGED IN", hypercharge: "AIMBOT")
-    ]
+    @State var default_arr = [1,1,1,1]
     
     @State var clicked = false
     @State private var isLoading: Bool = false
@@ -32,10 +30,8 @@ struct CalculateView: View {
             ScrollView {
                 if clicked {
                     if isLoading {
-//                        Text("Loading...") // 로딩 중인 상태 표시
-                        ForEach($default_arr, id: \.id) { brawler_st in
-                            BrawlerView(brawler_standard: brawler_st)
-                                .environmentObject(calculateViewModel)
+                        ForEach(0..<3) {_ in
+                            BrawlerEmptyView()
                                 .padding()
                         }
                     } else if brawlers_standard.isEmpty {
@@ -62,6 +58,122 @@ struct CalculateView: View {
         .ignoresSafeArea(.keyboard, edges: .all)
         .frame(width: UIScreen.main.bounds.width, height: .infinity)
         .background(Color(hexString: "37475F"))
+        
+    }
+}
+
+
+struct BrawlerEmptyView: View {
+    //size setting
+    var totalHeight: CGFloat = 260
+    var brawlerHeight: CGFloat = 210
+    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
+    
+    @State var opacity:Double = 1.0
+    @State var imageSize : CGFloat = 33
+    
+    
+    var body: some View {
+        
+        ZStack {
+            Rectangle()
+                .frame(width: width, height: totalHeight)
+                .cornerRadius(20)
+                .foregroundColor(Color(hexString: "576E90"))
+                .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+            
+            VStack {
+                
+                //브롤러 정보들
+                VStack {
+                    HStack(spacing: 10) {
+                        VStack {
+                            
+                        }
+                        .frame(width: (width - 35) * 0.3, height: (width - 35) * 0.3)
+                        .background(Color(hexString: "4C658D", opacity: 0.53))
+                        .cornerRadius(15)
+                        .modifier(BlinkingAnimationModifier(shouldShow: true, opacity: opacity))
+                            
+                        VStack {
+                            
+                        }
+                        .frame(width: (width - 35) * 0.7, height: (width - 35) * 0.3, alignment: .center)
+                        .background(Color(hexString: "4C658D", opacity: 0.53))
+                        .cornerRadius(15)
+                        .modifier(BlinkingAnimationModifier(shouldShow: true, opacity: opacity))
+                            
+                    }
+                    VStack {
+                        
+                    }
+                    .frame(width: width - 25, height: 80)
+                    .background(Color(hexString: "4C658D", opacity: 0.53))
+                    .cornerRadius(15)
+                    .modifier(BlinkingAnimationModifier(shouldShow: true, opacity: opacity))
+                }
+                .frame(width: width , height: brawlerHeight)
+                .cornerRadius(20)
+                .background(Color(hexString: "6D8CB9"))
+                .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+                
+                //해당 브롤러 재화 표시 부분
+                HStack {
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Image("pp")
+                            .resizable()
+                            .frame(width: imageSize, height: imageSize)
+                        
+                        Text(String(0))
+                            .font(.title2)
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Image("coin")
+                            .resizable()
+                            .frame(width: imageSize, height: imageSize)
+                        
+                        Text(String(0))
+                            .font(.title2)
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Image("credit")
+                            .resizable()
+                            .frame(width: imageSize, height: imageSize)
+                        
+                        Text(String(0))
+                            .font(.title2)
+                    }
+                    
+                    Spacer()
+                    
+                    
+                    
+                    
+                }
+                .frame(width: width)
+                .padding(.bottom, 14)
+                .frame(height: totalHeight - brawlerHeight)
+            }//VStack
+            .frame(height: totalHeight)
+            
+            
+            
+        }//ZStack
+        .onAppear(perform: {
+            withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: true)) {
+                self.opacity = opacity == 0.4 ? 0.8 : 0.4
+            }
+        })
+        
         
     }
 }
