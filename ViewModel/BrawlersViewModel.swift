@@ -26,6 +26,25 @@ class BrawlersViewModel: ObservableObject {
     @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
     
     
+    //초희귀 기어 이름 배열
+    @Published var gear_names = ["SPEED", "HEALTH", "DAMAGE", "VISION", "SHIELD", "GADGET CHARGE"]
+    
+    
+    //신화 기어 이름 배열
+    @Published var mythic_gear_name = [
+        "THICC HEAD", //틱
+        "TALK TO THE HAND", //진
+        "ENDURING TOXIN", //크로우
+        "EXHAUSTING STORM", //샌디
+        "STICKY SPIKES", //스파이크
+        "LINGERING SMOKE", //레온
+        "STICKY OIL", //앰버
+        "QUADRUPLETS", //이브
+        "SUPER TURRET", //팸
+        "BAT STORM" //모티스
+    ]
+    
+    
     //희귀 브롤러
     @Published var rare = ["NITA", "COLT", "BULL", "BROCK", "EL PRIMO", "BARLEY", "POCO", "ROSA"]
     
@@ -241,6 +260,71 @@ class BrawlersViewModel: ObservableObject {
             }
         }
         return 0
+    }
+    
+    func calculateCoin(brawler: Brawler?, brawler_standard: Brawler_standard) -> Int {
+        var coin = 0
+        
+        if brawler != nil {
+            
+            //하이퍼차지 계산
+            let key = "hyperchargeArray"
+            let array = UserDefaults.standard.stringArray(forKey: key) ?? []
+            
+            if brawler_standard.hypercharge != "" {
+                if !array.contains(brawler_standard.hypercharge) {
+                    coin += 5000
+                }
+            }
+            
+            //레벨 계산
+            if let power = brawler?.power, power >= 1 {
+                let powerCoins = [2800, 1875, 1250, 800, 480, 290, 140, 75, 35, 20]
+                coin += powerCoins.prefix(11 - power).reduce(0, +)
+            }
+            
+            //가젯, 스파 계산
+            coin += (2 - brawler!.gears.count) * 1000
+            coin += (2 - brawler!.starPowers.count) * 2000
+            
+            
+            //기어 계산
+            //신화 기어 계산
+            if mythic_gear_brawlers.contains(brawler!.name) { //신화 기어를 가지고 있는 브롤러
+                if !mythic_gear_name.contains(where: { gearName in
+                    brawler!.gears.contains { $0.name == gearName }
+                }) {
+                    coin += 2000
+                }
+            }
+            
+            //영웅 기어 계산
+            if reload_speed_gear_brawlers.contains(brawler!.name) {
+                if !brawler!.gears.contains(where: { $0.name == "RELOAD SPEED" }) {
+                    coin += 1500
+                }
+            }
+            if super_charge_gear_brawlers.contains(brawler!.name) {
+                if !brawler!.gears.contains(where: { $0.name == "SUPER CHARGE"}) {
+                    coin += 1500
+                }
+            }
+            if pet_power_gear_brawlers.contains(brawler!.name) {
+                if !brawler!.gears.contains(where: { $0.name == "PET POWER"}) {
+                    coin += 1500
+                }
+            }
+            
+            //초희귀 기어 계산
+            for gear in gear_names {
+                if !brawler!.gears.contains(where: { $0.name == gear}) {
+                    coin += 1000
+                }
+            }
+            
+            
+        }
+        return coin
     }
     
     

@@ -431,6 +431,7 @@ struct MoneyCountView: View {
             if newValue != nil {
                 ppCount = brawlersViewModel.calculatePP(brawler: brawler, brawler_standard: brawler_standard)
                 creditCount = brawlersViewModel.calculateCredit(brawler: brawler, brawler_standard: brawler_standard)
+                coinCount = brawlersViewModel.calculateCoin(brawler: brawler, brawler_standard: brawler_standard)
                 
             }
         }

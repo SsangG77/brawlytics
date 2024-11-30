@@ -87,15 +87,6 @@ struct SingleHyperchargeView: View {
     }
 }
 
-#Preview {
-    HyperchargeView()
-}
-
-//
-//struct CheckBoxView: View {
-//    @Binding var checked: Bool
-//
-//    var body: some View {
-//       
-//    }
+//#Preview {
+//    HyperchargeView()
 //}
