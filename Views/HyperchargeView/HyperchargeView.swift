@@ -17,7 +17,7 @@ struct HyperchargeView: View {
             ForEach($viewModel.brawlers_standard, id:\.id) { brawler_st in
                 
                 if brawler_st.hypercharge.wrappedValue != "" {
-                    SingleHyperchargeView(hyperchargeName: brawler_st.hypercharge)
+                    SingleHyperchargeView(hyperchargeName: brawler_st.hypercharge, brawlerName: brawler_st.name)
                         .padding([.top, .bottom], 7)
                 }
                 
@@ -44,18 +44,51 @@ struct SingleHyperchargeView: View {
     
     //Binding
     @Binding var hyperchargeName:String
+    @Binding var brawlerName:String
     
     var body: some View {
         ZStack {
+            
+            HStack {
+                Spacer()
+                
+                Image(brawlerName)
+                    .resizable()
+                    .scaleEffect(x: -1, y: 1) // X축을 -1로 설정하여 좌우 반전
+                    .frame(width: 130, height: 100)
+                
+            }
+            .frame(height: 64)
+            .cornerRadius(15)
+            .clipped()
+            .padding(.trailing, 20)
+            
+            
+            
             Rectangle()
+                .fill(LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: Color(hexString: "FFFFFF", opacity: 0.5), location: 0),
+                        .init(color: .clear, location: 1.0)
+                    ]),
+                    startPoint: .trailing,
+                    endPoint: .leading
+                ))
                 .frame(width: width, height: totalHeight)
                 .cornerRadius(15)
                 .foregroundColor(Color(hexString: "576E90"))
                 .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 15, corners: [.allCorners])
+                
+            
+            
+                
+            
+            
+            
+            
+            
             
             HStack {
-                
-                
                 Image(systemName: isOn ? "checkmark.square.fill" : "square")
                     .foregroundColor(isOn ? Color(UIColor.systemBlue) : Color.secondary)
                     .onTapGesture {
@@ -66,6 +99,7 @@ struct SingleHyperchargeView: View {
                         } else {
                             viewModel.removeHyperchargeArray(hyperchargeName)
                         }
+                
                     }
                 
                 Image(hyperchargeName)
@@ -79,14 +113,17 @@ struct SingleHyperchargeView: View {
                 
             }//VStack
             .padding(.leading, 30)
+            .clipped()
             
         }
+        .clipped()
+        
         .onAppear {
             isOn = viewModel.judgeHypercharge(hyperchargeName)
         }
     }
 }
 
-//#Preview {
-//    HyperchargeView()
-//}
+#Preview {
+    HyperchargeView()
+}

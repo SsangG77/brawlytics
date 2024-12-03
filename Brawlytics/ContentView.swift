@@ -22,7 +22,7 @@ struct ContentView: View {
                 
                 HyperchargeView()
                     .tabItem {
-                        Label("Hyper charge", systemImage: "number")
+                        Label("Hyper charge", systemImage: "flame")
                             
                     }
                 

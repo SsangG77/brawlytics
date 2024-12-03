@@ -278,14 +278,34 @@ class BrawlersViewModel: ObservableObject {
             }
             
             //레벨 계산
+            let powerCoins = [2800, 1875, 1250, 800, 480, 290, 140, 75, 35, 20]
             if let power = brawler?.power, power >= 1 {
-                let powerCoins = [2800, 1875, 1250, 800, 480, 290, 140, 75, 35, 20]
                 coin += powerCoins.prefix(11 - power).reduce(0, +)
+            } else if brawler?.name == "" {
+                coin += powerCoins.prefix(11).reduce(0, +)
             }
             
             //가젯, 스파 계산
-            coin += (2 - brawler!.gears.count) * 1000
-            coin += (2 - brawler!.starPowers.count) * 2000
+            if brawler != nil {
+                if !brawler!.gadgets.contains(where: { $0.name == brawler_standard.first_gadget}) {
+                    coin += 1000
+                }
+                if !brawler!.gadgets.contains(where: { $0.name == brawler_standard.second_gadget}) {
+                    coin += 1000
+                }
+                if !brawler!.starPowers.contains(where: { $0.name == brawler_standard.first_starPower}) {
+                    coin += 2000
+                }
+                if !brawler!.starPowers.contains(where: { $0.name == brawler_standard.second_starPower}) {
+                    coin += 2000
+                }
+                
+                
+                
+                
+//                coin += (2 - brawler!.gadgets.count) * 1000
+//                coin += (2 - brawler!.starPowers.count) * 2000
+            }
             
             
             //기어 계산
