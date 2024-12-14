@@ -15,6 +15,8 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct BrawlerView: View {
     
+    
+    
     //size setting
     var totalHeight: CGFloat = 260
     var brawlerHeight: CGFloat = 210
@@ -32,6 +34,8 @@ struct BrawlerView: View {
     //view model
     @StateObject var brawlersViewModel = BrawlersViewModel()
     @EnvironmentObject var calculateViewModel: CalculateViewModel
+    
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         
@@ -71,7 +75,8 @@ struct BrawlerView: View {
                 
                 //해당 브롤러 재화 표시 부분
                 MoneyCountView(parentWidth: $width, brawler: $brawler, brawler_standard: $brawler_standard)
-                .frame(height: totalHeight - brawlerHeight)
+                    .environmentObject(appState)
+                    .frame(height: totalHeight - brawlerHeight)
             }//VStack
             .frame(height: totalHeight)
             
@@ -93,9 +98,6 @@ struct BrawlerView: View {
         
     }
 }
-
-
-
 
 
 
@@ -302,10 +304,6 @@ struct GearView: View {
 
 
 
-
-
-
-
 struct PowerView: View {
     
     @State var imageSize: CGFloat = 50
@@ -378,6 +376,7 @@ struct MoneyCountView: View {
     @State var ppCount = -1
     @State var coinCount = -1
     @State var creditCount = -1
+    @EnvironmentObject var appState: AppState
     
     @State var imageSize : CGFloat = 33
     
@@ -432,6 +431,10 @@ struct MoneyCountView: View {
                 ppCount = brawlersViewModel.calculatePP(brawler: brawler, brawler_standard: brawler_standard)
                 creditCount = brawlersViewModel.calculateCredit(brawler: brawler, brawler_standard: brawler_standard)
                 coinCount = brawlersViewModel.calculateCoin(brawler: brawler, brawler_standard: brawler_standard)
+//
+                appState.totalPP += brawlersViewModel.calculatePP(brawler: brawler, brawler_standard: brawler_standard)
+                appState.totalCredit += brawlersViewModel.calculateCredit(brawler: brawler, brawler_standard: brawler_standard)
+                appState.totalCoin += brawlersViewModel.calculateCoin(brawler: brawler, brawler_standard: brawler_standard)
                 
             }
         }

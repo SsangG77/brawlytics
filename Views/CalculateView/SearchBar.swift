@@ -12,7 +12,15 @@ struct SearchBar: View {
     @State var showHistory:Bool = false
     
     
-    @Binding var brawlers_standard: [Brawler_standard]
+//    @Binding var brawlers_standard: [Brawler_standard]
+    @Binding var tanker_brawlers_standard: [Brawler_standard]
+    @Binding var assassin_brawlers_standard: [Brawler_standard]
+    @Binding var supporter_brawlers_standard: [Brawler_standard]
+    @Binding var damage_dealers_brawlers_standard: [Brawler_standard]
+    @Binding var controller_brawlers_standard: [Brawler_standard]
+    @Binding var marksmen_brawlers_standard: [Brawler_standard]
+    @Binding var throw_brawlers_standard: [Brawler_standard]
+    
     @Binding var clicked: Bool
     @Binding var isLoading: Bool
     
@@ -26,6 +34,7 @@ struct SearchBar: View {
         ZStack(alignment: .top) {
             if showHistory {
                 SearchHistoryView()
+                    .environmentObject(calculateViewModel)
                     .padding(7)
                 
             }
@@ -41,7 +50,7 @@ struct SearchBar: View {
                     .frame(height: 65)
                     .background(Color.white)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 15)
+                        RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.black, lineWidth: 10)
                     )
                     .cornerRadius(15)
@@ -51,30 +60,44 @@ struct SearchBar: View {
                 HStack {
                     Spacer() // 버튼을 오른쪽으로 이동
                     Button(action: {
-                        withAnimation {
-                            clicked = true
-                        }
-                        showHistory = false
-
-                        // 로딩 시작
-                        withAnimation {
-                            isLoading = true
-                        }
-
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        if calculateViewModel.searchText != "" {
+                            calculateViewModel.saveSearchText(calculateViewModel.searchText)
                             withAnimation {
-                                brawlers_standard = brawlersViewModel.brawlers_standard
+                                clicked = true
+                            }
+                            showHistory = false
+
+                            // 로딩 시작
+                            withAnimation {
+                                isLoading = true
                             }
 
-                            // 로딩 종료
-                            DispatchQueue.main.async {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 withAnimation {
-                                    isLoading = false
+//                                    brawlers_standard = brawlersViewModel.brawlers_standard
+                                    tanker_brawlers_standard = brawlersViewModel.tanker_brawlers_standard
+                                    assassin_brawlers_standard = brawlersViewModel.assassin_brawlers_standard
+                                    supporter_brawlers_standard = brawlersViewModel.supporter_brawlers_standard
+                                    controller_brawlers_standard = brawlersViewModel.controller_brawlers_standard
+                                    damage_dealers_brawlers_standard = brawlersViewModel.damage_dealers_brawlers_standard
+                                    marksmen_brawlers_standard = brawlersViewModel.marksmen_brawlers_standard
+                                    throw_brawlers_standard = brawlersViewModel.throw_brawlers_standard
+                                    
                                 }
-                            }
 
-                            calculateViewModel.getBrawlers()
+                                // 로딩 종료
+                                DispatchQueue.main.async {
+                                    withAnimation {
+                                        isLoading = false
+                                    }
+                                }
+
+                                calculateViewModel.getBrawlers()
+                            }
                         }
+                        
+                        
                     })
  {
                         Image(systemName: "magnifyingglass") // 돋보기 이미지
@@ -91,7 +114,7 @@ struct SearchBar: View {
             .ignoresSafeArea(.keyboard, edges: .all)
         }
         .ignoresSafeArea(.keyboard, edges: .all)
-        .padding()
+        .padding([.leading, .trailing])
         
         
         
@@ -105,30 +128,48 @@ struct SearchBar: View {
 @available(iOS 17.0, *)
 struct SearchHistoryView: View {
     
-    @State var searchHistory:[String] = ["aaaa", "bdddd", "ccccc"]
+    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    
+    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
+    
     
     var body: some View {
+        
+        let key = "searchTextArray"
+        let searchHistory = UserDefaults.standard.stringArray(forKey: key)!
+        
         VStack(spacing:0) {
             Spacer()
             HStack {
                 ForEach(searchHistory, id: \.self) { search in
-                    Spacer()
-                    Text(search)
-                    Spacer()
+                    HStack {
+                        Spacer()
+                        Text(search)
+                        Spacer()
+                        
+                    }
+                    .onTapGesture {
+                        calculateViewModel.searchText = search
+                    }
                 }
             }
         }
         .padding()
-        .frame(height: 65 + 35)
+        .frame(width : width, height: 65 + 35)
         .background(Color.white)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
                 .stroke(Color.black, lineWidth: 5)
         )
         .cornerRadius(15)
+        .onChange(of: searchHistory) {
+            Constants.myPrint(title: "searchHistory", content: searchHistory)
+        }
+        
         
         
     }
+        
 }
 
 

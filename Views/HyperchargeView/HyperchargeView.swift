@@ -14,7 +14,7 @@ struct HyperchargeView: View {
     
     var body: some View {
         ScrollView {
-            ForEach($viewModel.brawlers_standard, id:\.id) { brawler_st in
+            ForEach($viewModel.all_brawlers_standard, id:\.id) { brawler_st in
                 
                 if brawler_st.hypercharge.wrappedValue != "" {
                     SingleHyperchargeView(hyperchargeName: brawler_st.hypercharge, brawlerName: brawler_st.name)
@@ -124,6 +124,6 @@ struct SingleHyperchargeView: View {
     }
 }
 
-#Preview {
-    HyperchargeView()
-}
+//#Preview {
+//    HyperchargeView()
+//}

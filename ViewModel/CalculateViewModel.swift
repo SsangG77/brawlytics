@@ -11,15 +11,31 @@ import SwiftUI
 
 class CalculateViewModel: ObservableObject {
     
-    @Published var searchText: String = "22yjv82rp"
+    @Published var searchText: String = ""
     
     @Published var brawlers: [Brawler] = []
     
     @Published var isLoading: Bool = false
     
+    @Published var searchHistory: [String] = []
+    
     func saveSearchText(_ searchText:String) {
+        Constants.myPrint(title: "saveSearchText()", content: searchText)
+        let key = "searchTextArray"
+        var array = UserDefaults.standard.stringArray(forKey: key)!
         
+        if !array.contains(searchText) {
+            if array.count >= 3 {
+                array.remove(at: 0)
+            }
+            
+            
+            array.append(searchText)
+            UserDefaults.standard.set(array, forKey: key)
+        }
     }
+    
+    
     
     
     func getBrawlers() {

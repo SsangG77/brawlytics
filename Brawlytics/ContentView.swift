@@ -10,11 +10,15 @@ import SwiftData
 
 @available(iOS 17.0, *)
 struct ContentView: View {
+    
+    @StateObject private var appState = AppState()
 
     var body: some View {
         TabView {
             Group {
                 CalculateView()
+                    .ignoresSafeArea(.keyboard, edges: .all)
+                    .environmentObject(appState)
                     .tabItem {
                         Label("Calculator", systemImage: "number")
                             
@@ -32,16 +36,20 @@ struct ContentView: View {
             .toolbarColorScheme(.dark, for: .tabBar)
             
         }
+        .ignoresSafeArea(.keyboard, edges: .all)
+        .onAppear {
+            UserDefaults.standard.set([], forKey: "searchTextArray")
+        }
 
     }
 
   
 }
 
-#Preview {
-    if #available(iOS 17.0, *) {
-        ContentView()
-    } else {
-        // Fallback on earlier versions
-    }
-}
+//#Preview {
+//    if #available(iOS 17.0, *) {
+//        ContentView()
+//    } else {
+//        // Fallback on earlier versions
+//    }
+//}
