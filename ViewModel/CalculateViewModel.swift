@@ -88,6 +88,25 @@ class CalculateViewModel: ObservableObject {
         
     }
     
+    
+    
+    
+    @ViewBuilder
+    func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {
+        if isPad { //아이패드일때
+            HStack {
+                content()
+            }
+            .frame(height: 130)
+            
+        } else {
+            ZStack {
+                content()
+            }
+            
+        }
+    }
+    
    
     
     

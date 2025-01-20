@@ -17,7 +17,6 @@ struct ContentView: View {
         TabView {
             Group {
                 CalculateView()
-                    .ignoresSafeArea(.keyboard, edges: .all)
                     .environmentObject(appState)
                     .tabItem {
                         Label("Calculator", systemImage: "number")
@@ -36,7 +35,6 @@ struct ContentView: View {
             .toolbarColorScheme(.dark, for: .tabBar)
             
         }
-        .ignoresSafeArea(.keyboard, edges: .all)
         .onAppear {
             UserDefaults.standard.set([], forKey: "searchTextArray")
         }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct HyperchargeView: View {
     
     @StateObject var viewModel:BrawlersViewModel = BrawlersViewModel()
@@ -24,7 +25,6 @@ struct HyperchargeView: View {
             }
             
         }
-        .ignoresSafeArea(.keyboard, edges: .all)
         .frame(width: UIScreen.main.bounds.width, height: .infinity)
         .background(Color(hexString: "37475F"))
     }
@@ -33,6 +33,7 @@ struct HyperchargeView: View {
 
 
 
+@available(iOS 17.0, *)
 struct SingleHyperchargeView: View {
     
     var totalHeight: CGFloat = 60
@@ -77,7 +78,7 @@ struct SingleHyperchargeView: View {
                 .frame(width: width, height: totalHeight)
                 .cornerRadius(15)
                 .foregroundColor(Color(hexString: "576E90"))
-                .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 15, corners: [.allCorners])
+                .roundedCornerWithBorder(lineWidth: 5, borderColor: isOn ? .black : .white, radius: 15, corners: [.allCorners])
                 
             
             

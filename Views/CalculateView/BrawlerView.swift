@@ -86,7 +86,11 @@ struct BrawlerView: View {
         .onChange(of: calculateViewModel.brawlers) {
             withAnimation {
                 
-                brawler = calculateViewModel.findMyBrawler(brawlerName: brawler_standard.name)
+                if brawler_standard != nil {
+                    brawler = calculateViewModel.findMyBrawler(brawlerName: brawler_standard.name)
+                    
+                }
+                
             }
         }
         .onAppear(perform: {

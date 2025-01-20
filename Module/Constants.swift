@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants {
     
@@ -27,6 +28,14 @@ struct Constants {
         print(content)
         print("")
         
+    }
+    
+    
+    static func isPad() -> Bool {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return true
+        }
+        return false
     }
     
     

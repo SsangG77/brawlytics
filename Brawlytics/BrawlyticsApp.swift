@@ -17,5 +17,6 @@ struct BrawlyticsApp: App {
         WindowGroup {
             ContentView()
         }
+        
     }
 }
