@@ -30,9 +30,6 @@ struct CalculateView: View {
     @State var clicked = false
     @State private var isLoading: Bool = false
     
-    //size
-    @State var width: CGFloat = Constants.isPad() ? UIScreen.main.bounds.width * 0.5 : UIScreen.main.bounds.width * 0.9
-    
     //total money icon size
     let iconSize: CGFloat = 20
     let fontSize: CGFloat = 20
@@ -41,6 +38,9 @@ struct CalculateView: View {
     var body: some View {
         
         GeometryReader { geo in
+            
+            var width = Constants.isPad() ? geo.size.width * 0.3 - 10 : geo.size.width * 0.9
+            
             
             VStack(spacing : 0) {
                 
@@ -69,6 +69,7 @@ struct CalculateView: View {
                 
                 ScrollView {
                     
+                    
                     if !isLoading && clicked  {
                         ClassesTitleView(imageName: "tanker_icon", title: "탱커")
                             .padding(.top, 7)
@@ -83,7 +84,8 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($tanker_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                            .padding(5)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -97,10 +99,13 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+//                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
+                    
+                    
+                    
                     
                     if !isLoading && clicked  {
-                        
                         ClassesTitleView(imageName: "assassin_icon", title: "어쌔신")
                             .padding(.top, 7)
                     }
@@ -114,7 +119,8 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($assassin_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                            .padding(5)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -128,7 +134,9 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+//                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
+                    
                     
                     
                     
@@ -146,7 +154,7 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($supporter_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -160,7 +168,7 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
                     
                     
                     if !isLoading && clicked  {
@@ -177,7 +185,7 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($controller_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -208,7 +216,7 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($damage_dealers_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -222,7 +230,7 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
                     
                     if !isLoading && clicked  {
                         
@@ -239,7 +247,7 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($marksmen_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -253,7 +261,7 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
                     
                     if !isLoading && clicked {
                         
@@ -270,7 +278,7 @@ struct CalculateView: View {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
                                     ForEach($throw_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(brawler_standard: brawler_st)
+                                        BrawlerView(width: width, brawler_standard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -284,11 +292,12 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
+                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
                     
                     
                 }
-                .frame(height: UIScreen.main.bounds.height - 275)
+//                .frame(height: UIScreen.main.bounds.height - 275)
+                .frame(height: geo.size.height - 120)
                 
                 
                 
@@ -297,13 +306,11 @@ struct CalculateView: View {
                 
             }
             .frame(width: geo.size.width, height: geo.size.height)
-        }
+            
+        }//geo
         .ignoresSafeArea(.keyboard)
         .background(Color(hexString: "37475F"))
-        .ignoresSafeArea(.keyboard)
-        .onDisappear {
-            Constants.myPrint(title: "CalculateView disappear", content: "")
-        }
+        
         
     }
 }

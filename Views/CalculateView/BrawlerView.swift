@@ -20,7 +20,7 @@ struct BrawlerView: View {
     //size setting
     var totalHeight: CGFloat = 260
     var brawlerHeight: CGFloat = 210
-    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
+//    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
     
     
     //
@@ -28,6 +28,7 @@ struct BrawlerView: View {
     @State var opacity:Double = 1.0
     
     //바인딩된 값
+    var width: CGFloat
     @Binding var brawler_standard: Brawler_standard
     
     
@@ -39,65 +40,66 @@ struct BrawlerView: View {
     
     var body: some View {
         
-        ZStack {
-            Rectangle()
-                .frame(width: width, height: totalHeight)
-                .cornerRadius(20)
-                .foregroundColor(Color(hexString: "576E90"))
-                .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
             
-            VStack {
+            ZStack {
+                Rectangle()
+                    .frame(width: width, height: totalHeight)
+                    .cornerRadius(20)
+                    .foregroundColor(Color(hexString: "576E90"))
+                    .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
                 
-                //브롤러 정보들
                 VStack {
-                    HStack(spacing: 10) {
-                        BrawlerProfileView(parentWidth: $width, brawler_st: $brawler_standard, brawler: $brawler)
-                            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+                    
+                    //브롤러 정보들
+                    VStack {
+                        HStack(spacing: 10) {
+                            BrawlerProfileView(parentWidth: width, brawler_st: $brawler_standard, brawler: $brawler)
+                                .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                             
-                        GearView(parentWidth: $width, brawler: $brawler)
-                            .environmentObject(brawlersViewModel)
-                            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+                            GearView(parentWidth: width, brawler: $brawler)
+                                .environmentObject(brawlersViewModel)
+                                .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                             
+                        }
+                        PowerView(parentWidth: width, brawler_standard: $brawler_standard, brawler: $brawler)
+                            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                     }
-                    PowerView(parentWidth: $width, brawler_standard: $brawler_standard, brawler: $brawler)
-                        .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
-                }
-                .frame(width: width , height: brawlerHeight)
-                .cornerRadius(20)
-                .background(Color(hexString: "6D8CB9"))
-                .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
-                .overlay {
-                    if brawler?.name == "" {
-                        RoundedRectangle(cornerRadius: 20)
-                            .foregroundColor(Color(hexString: "000000", opacity: 0.7))
+                    .frame(width: width , height: brawlerHeight)
+                    .cornerRadius(20)
+                    .background(Color(hexString: "6D8CB9"))
+                    .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+                    .overlay {
+                        if brawler?.name == "" {
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundColor(Color(hexString: "000000", opacity: 0.7))
+                        }
                     }
-                }
+                    
+                    //해당 브롤러 재화 표시 부분
+                    MoneyCountView(parentWidth: width, brawler: $brawler, brawler_standard: $brawler_standard)
+                        .environmentObject(appState)
+                        .frame(height: totalHeight - brawlerHeight)
+                }//VStack
+                .frame(height: totalHeight)
                 
-                //해당 브롤러 재화 표시 부분
-                MoneyCountView(parentWidth: $width, brawler: $brawler, brawler_standard: $brawler_standard)
-                    .environmentObject(appState)
-                    .frame(height: totalHeight - brawlerHeight)
-            }//VStack
-            .frame(height: totalHeight)
-            
-            
-            
-        }//ZStack
-        .onChange(of: calculateViewModel.brawlers) {
-            withAnimation {
                 
-                if brawler_standard != nil {
-                    brawler = calculateViewModel.findMyBrawler(brawlerName: brawler_standard.name)
+                
+            }//ZStack
+            .onChange(of: calculateViewModel.brawlers) {
+                withAnimation {
+                    
+                    if brawler_standard != nil {
+                        brawler = calculateViewModel.findMyBrawler(brawlerName: brawler_standard.name)
+                        
+                    }
                     
                 }
-                
             }
-        }
-        .onAppear(perform: {
-            withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
-                self.opacity = opacity == 0.4 ? 0.8 : 0.4
-            }
-        })
+            .onAppear(perform: {
+                withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
+                    self.opacity = opacity == 0.4 ? 0.8 : 0.4
+                }
+            })
         
         
     }
@@ -112,7 +114,7 @@ struct BrawlerView: View {
 
 struct BrawlerProfileView: View {
     
-    @Binding var parentWidth: CGFloat
+    var parentWidth: CGFloat
     @Binding var brawler_st: Brawler_standard
     @Binding var brawler: Brawler?
     
@@ -176,7 +178,7 @@ struct SingleGearView: View {
 
 struct GearView: View {
     
-    @Binding var parentWidth: CGFloat
+    var parentWidth: CGFloat
     @Binding var brawler: Brawler?
     
     
@@ -313,7 +315,7 @@ struct PowerView: View {
     @State var imageSize: CGFloat = 50
     
     //Binding
-    @Binding var parentWidth: CGFloat
+    var parentWidth: CGFloat
     @Binding var brawler_standard: Brawler_standard
     @Binding var brawler: Brawler?
     
@@ -373,7 +375,7 @@ struct PowerView: View {
 
 struct MoneyCountView: View {
     
-    @Binding var parentWidth: CGFloat
+    var parentWidth: CGFloat
     @Binding var brawler: Brawler?
     @Binding var brawler_standard: Brawler_standard
     

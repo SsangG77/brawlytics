@@ -14,19 +14,100 @@ struct HyperchargeView: View {
     
     
     var body: some View {
-        ScrollView {
-            ForEach($viewModel.all_brawlers_standard, id:\.id) { brawler_st in
+        
+        
+        
+        if Constants.isPad() {
+            
+            GeometryReader { geo in
                 
-                if brawler_st.hypercharge.wrappedValue != "" {
-                    SingleHyperchargeView(hyperchargeName: brawler_st.hypercharge, brawlerName: brawler_st.name)
-                        .padding([.top, .bottom], 7)
+                var width = geo.size.width / 3.5
+                
+                
+                
+                ScrollView {
+                    HStack(alignment: .top) {
+                        
+                        
+                        VStack {
+                            ForEach(0..<$viewModel.all_brawlers_standard.count) { i in
+                                if i % 3 == 0 {
+                                    if $viewModel.all_brawlers_standard[i].hypercharge.wrappedValue != "" {
+                                        SingleHyperchargeView(width: width, hyperchargeName: $viewModel.all_brawlers_standard[i].hypercharge, brawlerName: $viewModel.all_brawlers_standard[i].name)
+                                            
+                                    }
+                                        
+                                }
+                            }
+                        }
+                        .padding(10)
+                        .frame(width: width + 30)
+                        
+                        VStack {
+                            ForEach(0..<$viewModel.all_brawlers_standard.count) { i in
+                                if i % 3 == 1 {
+                                    if $viewModel.all_brawlers_standard[i].hypercharge.wrappedValue != "" {
+                                        SingleHyperchargeView(width: width, hyperchargeName: $viewModel.all_brawlers_standard[i].hypercharge, brawlerName: $viewModel.all_brawlers_standard[i].name)
+                                            
+                                    }
+                                        
+                                }
+                            }
+                        }
+                        .padding(10)
+                        .frame(width: width + 30)
+                        
+                        VStack {
+                            ForEach(0..<$viewModel.all_brawlers_standard.count) { i in
+                                if i % 3 == 2 {
+                                    if $viewModel.all_brawlers_standard[i].hypercharge.wrappedValue != "" {
+                                        SingleHyperchargeView(width: width, hyperchargeName: $viewModel.all_brawlers_standard[i].hypercharge, brawlerName: $viewModel.all_brawlers_standard[i].name)
+                                            
+                                    }
+                                        
+                                }
+                            }
+                        }
+                        .padding(10)
+                        .frame(width: width + 30)
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    }
+                    .frame(width: geo.size.width , height: .infinity, alignment: .center)
+                }
+//                .background(Color(hexString: "37475F"))
+                
+                
+            }
+            .background(Color(hexString: "37475F"))
+            
+            
+            
+        } else {
+            
+            ScrollView {
+                ForEach($viewModel.all_brawlers_standard, id:\.id) { brawler_st in
+                    
+                    if brawler_st.hypercharge.wrappedValue != "" {
+                        SingleHyperchargeView(width: UIScreen.main.bounds.width * 0.9, hyperchargeName: brawler_st.hypercharge, brawlerName: brawler_st.name)
+                            .padding([.top, .bottom], 7)
+                    }
+                    
                 }
                 
             }
-            
+            .frame(width: UIScreen.main.bounds.width, height: .infinity)
+            .background(Color(hexString: "37475F"))
         }
-        .frame(width: UIScreen.main.bounds.width, height: .infinity)
-        .background(Color(hexString: "37475F"))
+        
+        
+        
+        
     }
 }
 
@@ -37,13 +118,14 @@ struct HyperchargeView: View {
 struct SingleHyperchargeView: View {
     
     var totalHeight: CGFloat = 60
-    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
+//    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
     
     @State private var isOn = false
     @StateObject var viewModel = BrawlersViewModel()
     
     
     //Binding
+    var width:CGFloat
     @Binding var hyperchargeName:String
     @Binding var brawlerName:String
     
@@ -59,10 +141,10 @@ struct SingleHyperchargeView: View {
                     .frame(width: 130, height: 100)
                 
             }
-            .frame(height: 64)
+            .frame(width:width, height: 64)
             .cornerRadius(15)
             .clipped()
-            .padding(.trailing, 20)
+//            .padding(.trailing, 20)
             
             
             
@@ -118,7 +200,6 @@ struct SingleHyperchargeView: View {
             
         }
         .clipped()
-        
         .onAppear {
             isOn = viewModel.judgeHypercharge(hyperchargeName)
         }
