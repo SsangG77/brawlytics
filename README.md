@@ -24,12 +24,10 @@
 
 
 ## 3. 페이지별 기능
-
-### 아이폰 화면
-
 - 캐릭터별 재화를 확인할 수 있습니다.
 - 보유하고 있는 하이퍼차지를 체크할 수 있습니다.
 
+### 아이폰 화면
 <div>
   <img width="230" src="https://github.com/user-attachments/assets/c3961830-3531-4100-8ff4-ee3df598b7d1" />
   <img width="230" src="https://github.com/user-attachments/assets/643b423a-7675-4828-801f-cd65883821dc" />
@@ -37,8 +35,14 @@
 
 
 ### 아이패드 화면
-
+<div>
+  <img width="230" src="https://github.com/user-attachments/assets/310fa835-81fc-4666-a911-7c5d865ef742" />
+  <img width="230" src="https://github.com/user-attachments/assets/665dc8cb-9b40-470d-8518-a062ea6dec4d" />
+</div> 
 
 </br>
+
+![Image]()
+![Image]()
 
 ---
