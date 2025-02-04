@@ -1,15 +1,14 @@
 
 
 
-# 이미지 공유 서비스앱 Infixel
-![Image](https://github.com/user-attachments/assets/19343a1c-47dd-4651-81f0-8880724dfa19)
-- 배포 URL : [Infixel AppStore](https://apps.apple.com/kr/app/infixel/id6711351058)
+# 브롤스타즈 재화 계산 앱 Brawlytics
+![Image](https://github.com/user-attachments/assets/1f4d539d-17e6-4127-9df7-03e2d92c9f53)
+- 배포 URL : [Brawlytics AppStore](https://apps.apple.com/kr/app/brawlytics/id6739213360)
 
 
 ## 프로젝트 소개
-- 숏폼 컨텐츠 UI를 사용하여 사용자들이 원하는 사진을 업로드하고 이미지에 Pic!을 할 수 있습니다.
-- Pic!을 가장 많이 받은 이미지와 유저들의 실시간 순위를 확인할 수 있습니다.
-- 앱 내부에 있는 앨범에 이미지를 보관할 수 있습니다.
+- “브롤스타즈”라는 게임에 필요한 재화들을 계산해주는 앱입니다.
+- 해당 유저의 플레이어 태그로 조회하면 각 캐릭터가 보유하고있는 아이템을 시각적으로 표현하도록 구현하였습니다.
 
 
 
@@ -19,8 +18,8 @@
 
 
 ## 2. 디자인
-[Figma link](https://www.figma.com/file/ZobwDJ6BYIl2ZuRray1YxR/Infixel-Swift?type=design&node-id=0-1&mode=design&t=56yeUw7CF0F9t6A5-0)
-![Image](https://github.com/user-attachments/assets/dce2ca1d-f1bc-4539-867a-379625cc9bcd)
+[Figma link](https://www.figma.com/design/jWpuBQzDTwhfb0U3eHG2eL/%EB%B8%8C%EB%A1%A4%EC%8A%A4%ED%83%80%EC%A6%88-%EC%A0%84%EC%A0%81-%EA%B2%80%EC%83%89-%EC%95%B1?node-id=0-1&p=f&t=tyCw6cV9YpUzCeee-0)
+![Image](https://github.com/user-attachments/assets/abf601d9-3659-4e47-a4d1-8d84cf0ac788)
 
 
 
