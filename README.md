@@ -5,12 +5,13 @@
 ![Image](https://github.com/user-attachments/assets/1f4d539d-17e6-4127-9df7-03e2d92c9f53)
 - 배포 URL : [Brawlytics AppStore](https://apps.apple.com/kr/app/brawlytics/id6739213360)
 
+</br>
 
 ## 프로젝트 소개
 - “브롤스타즈”라는 게임에 필요한 재화들을 계산해주는 앱입니다.
 - 해당 유저의 플레이어 태그로 조회하면 각 캐릭터가 보유하고있는 아이템을 시각적으로 표현하도록 구현하였습니다.
 
-
+</br>
 
 ## 1. 기술 스택
 
@@ -23,12 +24,13 @@
 - 네트워킹: URLSession (플레이어 데이터 조회 시 사용)
 - API : brawlstars api
 
+</br>
 
 ## 2. 디자인
 [Figma link](https://www.figma.com/design/jWpuBQzDTwhfb0U3eHG2eL/%EB%B8%8C%EB%A1%A4%EC%8A%A4%ED%83%80%EC%A6%88-%EC%A0%84%EC%A0%81-%EA%B2%80%EC%83%89-%EC%95%B1?node-id=0-1&p=f&t=tyCw6cV9YpUzCeee-0)
 ![Image](https://github.com/user-attachments/assets/abf601d9-3659-4e47-a4d1-8d84cf0ac788)
 
-
+</br>
 
 ## 3. 페이지별 기능
 
