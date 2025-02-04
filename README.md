@@ -36,8 +36,8 @@
 
 ### 아이패드 화면
 <div>
-  <img width="530" src="https://github.com/user-attachments/assets/310fa835-81fc-4666-a911-7c5d865ef742" />
-  <img width="530" src="https://github.com/user-attachments/assets/665dc8cb-9b40-470d-8518-a062ea6dec4d" />
+  <img width="630" src="https://github.com/user-attachments/assets/310fa835-81fc-4666-a911-7c5d865ef742" />
+  <img width="630" src="https://github.com/user-attachments/assets/665dc8cb-9b40-470d-8518-a062ea6dec4d" />
 </div> 
 
 </br>
