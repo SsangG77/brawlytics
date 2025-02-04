@@ -25,15 +25,18 @@
 
 ## 3. 페이지별 기능
 
-### 메인 페이지
+### 아이폰 화면
 
-
-- 'Pic!(좋아요)'를 클릭하면 클릭한 유저와 이미지id 값이 서버로 전송됩니다.
-- 
+- 캐릭터별 재화를 확인할 수 있습니다.
+- 보유하고 있는 하이퍼차지를 체크할 수 있습니다.
 
 <div>
-  <img width="230" src="https://github.com/user-attachments/assets/7e9b012d-3b59-4716-b376-51c47d49f236" />
+  <img width="230" src="https://github.com/user-attachments/assets/c3961830-3531-4100-8ff4-ee3df598b7d1" />
+  <img width="230" src="https://github.com/user-attachments/assets/643b423a-7675-4828-801f-cd65883821dc" />
 </div> 
+
+
+### 아이패드 화면
 
 
 </br>
