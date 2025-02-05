@@ -80,7 +80,7 @@ struct SearchBar: View {
                                         isLoading = true
                                     }
                                     
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         withAnimation {
                                             tanker_brawlers_standard = brawlersViewModel.tanker_brawlers_standard
                                             assassin_brawlers_standard = brawlersViewModel.assassin_brawlers_standard

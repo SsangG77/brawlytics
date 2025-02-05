@@ -63,6 +63,7 @@ class CalculateViewModel: ObservableObject {
                 
                 do {
                     let brawlersResponse = try JSONDecoder().decode([Brawler].self, from: data)
+//                    Constants.myPrint(title: "brawlers response", content: brawlersResponse)
                     
                     DispatchQueue.main.async {
                         withAnimation{ self.brawlers = brawlersResponse }
