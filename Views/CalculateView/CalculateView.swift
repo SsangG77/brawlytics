@@ -85,7 +85,6 @@ struct CalculateView: View {
                                 } else {
                                     ForEach($tanker_brawlers_standard, id: \.id) { brawler_st in
                                         BrawlerView(width: width, brawler_standard: brawler_st)
-                                            .padding(5)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -120,7 +119,6 @@ struct CalculateView: View {
                                 } else {
                                     ForEach($assassin_brawlers_standard, id: \.id) { brawler_st in
                                         BrawlerView(width: width, brawler_standard: brawler_st)
-                                            .padding(5)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }

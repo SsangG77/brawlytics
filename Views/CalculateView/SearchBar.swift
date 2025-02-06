@@ -124,10 +124,9 @@ struct SearchBar: View {
             .padding([.leading, .trailing])
         }
         .onDisappear {
-            Constants.myPrint(title: "Searchbar disappear", content: "")
             calculateViewModel.searchText = ""
             clicked = false
-            showHistory = true
+            showHistory = false
             tanker_brawlers_standard = []
             assassin_brawlers_standard = []
             supporter_brawlers_standard = []
@@ -159,14 +158,16 @@ struct SearchHistoryView: View {
     @State var iphoneWidth : CGFloat = UIScreen.main.bounds.width * 0.9
     @Binding var ipadWidth : CGFloat
     
+    
+    @AppStorage("searchString") var searchString: [String] = []
+    
     var body: some View {
-            let key = "searchTextArray"
-            let searchHistory = UserDefaults.standard.stringArray(forKey: key)!
+            
             
             VStack(spacing:0) {
                 Spacer()
                 HStack {
-                    ForEach(searchHistory, id: \.self) { search in
+                    ForEach(searchString, id: \.self) { search in
                         HStack {
                             Spacer()
                             Text(search)
@@ -187,9 +188,6 @@ struct SearchHistoryView: View {
                     .stroke(Color.black, lineWidth: 5)
             )
             .cornerRadius(15)
-            .onChange(of: searchHistory) {
-                Constants.myPrint(title: "searchHistory", content: searchHistory)
-            }
         
         
         

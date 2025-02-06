@@ -19,19 +19,17 @@ class CalculateViewModel: ObservableObject {
     
     @Published var searchHistory: [String] = []
     
+    @AppStorage("searchString") var searchString: [String] = []
+    
+    
     func saveSearchText(_ searchText:String) {
-        Constants.myPrint(title: "saveSearchText()", content: searchText)
-        let key = "searchTextArray"
-        var array = UserDefaults.standard.stringArray(forKey: key)!
-        
-        if !array.contains(searchText) {
-            if array.count >= 3 {
-                array.remove(at: 0)
+        if !searchString.contains(searchText) {
+            if searchString.count >= 3 {
+                searchString.removeFirst()
+                searchString.append(searchText)
+            } else {
+                searchString.append(searchText)
             }
-            
-            
-            array.append(searchText)
-            UserDefaults.standard.set(array, forKey: key)
         }
     }
     
@@ -63,7 +61,6 @@ class CalculateViewModel: ObservableObject {
                 
                 do {
                     let brawlersResponse = try JSONDecoder().decode([Brawler].self, from: data)
-//                    Constants.myPrint(title: "brawlers response", content: brawlersResponse)
                     
                     DispatchQueue.main.async {
                         withAnimation{ self.brawlers = brawlersResponse }
