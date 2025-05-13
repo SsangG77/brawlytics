@@ -16,7 +16,6 @@ struct CalculateView: View {
     @StateObject var calculateViewModel = CalculateViewModel()
     @StateObject var brawlersViewModel = BrawlersViewModel()
     
-//    @State var brawlers_standard:[Brawler_standard] = []
 
     @State var tanker_brawlers_standard: [Brawler_standard] = []
     @State var assassin_brawlers_standard: [Brawler_standard] = []
@@ -43,7 +42,6 @@ struct CalculateView: View {
             
             
             VStack(spacing : 0) {
-                
                 
                 calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
 
@@ -429,14 +427,4 @@ struct BrawlerEmptyView: View {
     }
 }
 
-
-
-//#Preview {
-//    if #available(iOS 17.0, *) {
-//        CalculateView()
-//            .environmentObject(AppState())
-//    } else {
-//        // Fallback on earlier versions
-//    }
-//}
 

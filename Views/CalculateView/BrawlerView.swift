@@ -199,7 +199,7 @@ struct GearView: View {
                 SingleGearView(imageName: "DAMAGE", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "DAMAGE"), offset: true)
                 SingleGearView(imageName: "VISION", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "VISION"), offset: false)
                 SingleGearView(imageName: "SHIELD", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "SHIELD"), offset: true)
-                SingleGearView(imageName: "GADGET CHARGE", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "GADGET CHARGE"), offset: false)
+                SingleGearView(imageName: "GADGET COOLDOWN", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "GADGET COOLDOWN"), offset: false)
                 
                 
                 //영웅 기어

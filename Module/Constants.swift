@@ -19,7 +19,7 @@ struct Constants {
     static let getBrawlersURL = serverURL + "brawlers"
     
     
-    
+    //https://brawlytics-server.com/brawlers?playertag=22yjv82rp
     
     
     static func myPrint<T>(title:String, content:T) {
