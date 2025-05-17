@@ -162,8 +162,6 @@ struct SearchHistoryView: View {
     @AppStorage("searchString") var searchString: [String] = []
     
     var body: some View {
-            
-            
             VStack(spacing:0) {
                 Spacer()
                 HStack {
@@ -172,7 +170,6 @@ struct SearchHistoryView: View {
                             Spacer()
                             Text(search)
                             Spacer()
-                            
                         }
                         .onTapGesture {
                             calculateViewModel.searchText = search
@@ -188,11 +185,7 @@ struct SearchHistoryView: View {
                     .stroke(Color.black, lineWidth: 5)
             )
             .cornerRadius(15)
-        
-        
-        
     }
-        
 }
 
 

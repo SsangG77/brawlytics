@@ -21,11 +21,6 @@ struct ClassesTitleView: View {
                 .resizable()
                 .frame(width: 20, height: 20)
             
-//            Text(title)
-//                .fontWeight(.semibold)
-//                .font(.system(size: 15))
-//                .foregroundStyle(Color.white)
-            
             StrokeText(text: title, width: 1.5)
                         .foregroundColor(.white)
                         .font(.system(size: 17, weight: .bold))
@@ -38,11 +33,6 @@ struct ClassesTitleView: View {
         .frame(width: width)
         .padding([.top, .bottom], 3)
     }
-}
-
-#Preview {
-    ClassesTitleView(imageName: "tanker_icon", title: "탱커")
-        .background(.gray)
 }
 
 
