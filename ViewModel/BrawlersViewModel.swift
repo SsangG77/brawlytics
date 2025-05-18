@@ -11,10 +11,7 @@ import Combine
 
 // 데이터 로딩을 관리하는 ViewModel
 class BrawlersViewModel: ObservableObject {
-//    @Published var brawlers: [Brawler] = [] // 로딩 후 데이터
     @Published var isLoading = true          // 로딩 상태
-    
-    
 
     
     //MARK: - 기어 브롤러 배열

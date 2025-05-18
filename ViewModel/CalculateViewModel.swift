@@ -9,54 +9,54 @@ import Foundation
 import SwiftUI
 
 
-protocol SearchHistoryRepository {
-    func saveSearchText(_ searchText:String)
-    func getSearchHistory() -> [String]
-}
-
-class SearchHistoryRepositoryImpl: SearchHistoryRepository {
-    @AppStorage("searchString") var searchString: [String] = []
-
-    func saveSearchText(_ searchText:String) {
-        if !searchString.contains(searchText) {
-            if searchString.count >= 3 {
-                searchString.removeFirst()
-                searchString.append(searchText)
-            } else {
-                searchString.append(searchText)
-            }
-        }
-    }
-
-    func getSearchHistory() -> [String] {
-        return searchString
-    }
-}
+//protocol SearchHistoryRepository {
+//    func saveSearchText(_ searchText:String)
+//    func getSearchHistory() -> [String]
+//}
+//
+//class SearchHistoryRepositoryImpl: SearchHistoryRepository {
+//    @AppStorage("searchString") var searchString: [String] = []
+//
+//    func saveSearchText(_ searchText:String) {
+//        if !searchString.contains(searchText) {
+//            if searchString.count >= 3 {
+//                searchString.removeFirst()
+//                searchString.append(searchText)
+//            } else {
+//                searchString.append(searchText)
+//            }
+//        }
+//    }
+//
+//    func getSearchHistory() -> [String] {
+//        return searchString
+//    }
+//}
 
 protocol CalculateUseCase {
     func getBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void)
     func findMyBrawler(brawlerName: String) -> Brawler
 
-    func saveSearchText(_ searchText:String)
-    func getSearchHistory() -> [String]
+//    func saveSearchText(_ searchText:String)
+//    func getSearchHistory() -> [String]
 }
 
 class CalculateUseCaseImpl: CalculateUseCase {
     
     var brawlers: [Brawler] = []
-    private let searchHistoryRepository: SearchHistoryRepository
+//    private let searchHistoryRepository: SearchHistoryRepository
 
-    init(searchHistoryRepository: SearchHistoryRepository) {
-        self.searchHistoryRepository = searchHistoryRepository
-    }
+//    init(searchHistoryRepository: SearchHistoryRepository) {
+//        self.searchHistoryRepository = searchHistoryRepository
+//    }
 
-    func saveSearchText(_ searchText:String) {
-        searchHistoryRepository.saveSearchText(searchText)
-    }
-
-    func getSearchHistory() -> [String] {
-        return searchHistoryRepository.getSearchHistory()
-    }
+//    func saveSearchText(_ searchText:String) {
+//        searchHistoryRepository.saveSearchText(searchText)
+//    }
+//
+//    func getSearchHistory() -> [String] {
+//        return searchHistoryRepository.getSearchHistory()
+//    }
 
     func getBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void) {
          guard let url = URL(string: "\(Constants.getBrawlersURL)?playertag=\(searchText)") else {
@@ -107,25 +107,25 @@ class CalculateUseCaseImpl: CalculateUseCase {
 
 class CalculateViewModel: ObservableObject {
     
-    @Published var searchText: String = ""
+//    @Published var searchText: String = ""
     @Published var brawlers: [Brawler] = []
     @Published var isLoading: Bool = false
-    @Published var searchHistory: [String] = []
+//    @Published var searchHistory: [String] = []
     
     private let calculateUseCase: CalculateUseCase
     
     init(calculateUseCase: CalculateUseCase) {
         self.calculateUseCase = calculateUseCase
-        self.searchHistory = calculateUseCase.getSearchHistory()
+//        self.searchHistory = calculateUseCase.getSearchHistory()
     }
 
-    func saveSearchText(_ searchText:String) {
-        calculateUseCase.saveSearchText(searchText)
-        self.searchHistory = calculateUseCase.getSearchHistory()
-    }
+//    func saveSearchText(_ searchText:String) {
+//        calculateUseCase.saveSearchText(searchText)
+//        self.searchHistory = calculateUseCase.getSearchHistory()
+//    }
     
     
-    func getBrawlers() {
+    func getBrawlers(_ searchText: String) {
         isLoading = true
         self.calculateUseCase.getBrawlers(searchText: searchText) { brawlers in
             DispatchQueue.main.async {

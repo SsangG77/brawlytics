@@ -33,26 +33,20 @@ struct BrawlerEmptyView: View {
                 //브롤러 정보들
                 VStack {
                     HStack(spacing: 10) {
-                        VStack {
-                            
-                        }
+                        VStack {}
                         .frame(width: (width - 35) * 0.3, height: (width - 35) * 0.3)
                         .background(Color(hexString: "4C658D", opacity: 0.53))
                         .cornerRadius(15)
                         .modifier(BlinkingAnimationModifier(shouldShow: true, opacity: opacity))
                             
-                        VStack {
-                            
-                        }
+                        VStack {}
                         .frame(width: (width - 35) * 0.7, height: (width - 35) * 0.3, alignment: .center)
                         .background(Color(hexString: "4C658D", opacity: 0.53))
                         .cornerRadius(15)
                         .modifier(BlinkingAnimationModifier(shouldShow: true, opacity: opacity))
                             
                     }
-                    VStack {
-                        
-                    }
+                    VStack {}
                     .frame(width: width - 25, height: 80)
                     .background(Color(hexString: "4C658D", opacity: 0.53))
                     .cornerRadius(15)

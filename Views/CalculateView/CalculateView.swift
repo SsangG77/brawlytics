@@ -13,10 +13,9 @@ struct CalculateView: View {
     
     @EnvironmentObject var appState: AppState
     
-    @StateObject var calculateViewModel /*= CalculateViewModel()*/
-    @StateObject var brawlersViewModel = BrawlersViewModel()
+    @StateObject var calculateViewModel: CalculateViewModel
+    @StateObject var brawlersViewModel:BrawlersViewModel /*= BrawlersViewModel()*/
     
-
     @State var tanker_brawlers_standard: [Brawler_standard] = []
     @State var assassin_brawlers_standard: [Brawler_standard] = []
     @State var supporter_brawlers_standard: [Brawler_standard] = []
@@ -45,6 +44,10 @@ struct CalculateView: View {
                 
                 calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
 
+                    let repository = SearchHistoryRepositoryImpl()
+                    let searchUseCase = SearchBarUseCaseImpl(historyRepository: repository)
+                    let searchBarVM = SearchBarViewModel(repository: repository)
+                    
                         SearchBar(
                             tanker_brawlers_standard: $tanker_brawlers_standard,
                             assassin_brawlers_standard: $assassin_brawlers_standard,
@@ -53,7 +56,10 @@ struct CalculateView: View {
                             controller_brawlers_standard: $controller_brawlers_standard,
                             marksmen_brawlers_standard: $marksmen_brawlers_standard,
                             throw_brawlers_standard: $throw_brawlers_standard,
-                            clicked: $clicked, isLoading: $isLoading
+                            clicked: $clicked,
+                            isLoading: $isLoading,
+                            searchBarViewModel: searchBarVM,
+                            brawlersViewModel: brawlersViewModel
                         )
                         .environmentObject(calculateViewModel)
                         .environmentObject(appState)
@@ -127,7 +133,6 @@ struct CalculateView: View {
                     }//--@ScrollView
                     .frame(height: 280)
                     .scrollTargetBehavior(.viewAligned)
-//                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
                     .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
                     
                     

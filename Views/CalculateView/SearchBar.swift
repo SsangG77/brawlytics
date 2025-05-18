@@ -7,6 +7,76 @@
 
 import SwiftUI
 
+
+protocol SearchHistoryRepository {
+    func saveSearchText(_ searchText:String)
+    func getSearchHistory() -> [String]
+}
+
+class SearchHistoryRepositoryImpl: SearchHistoryRepository {
+    @AppStorage("searchString") var searchString: [String] = []
+
+    func saveSearchText(_ searchText:String) {
+        if !searchString.contains(searchText) {
+            if searchString.count >= 3 {
+                searchString.removeFirst()
+                searchString.append(searchText)
+            } else {
+                searchString.append(searchText)
+            }
+        }
+    }
+
+    func getSearchHistory() -> [String] {
+        return searchString
+    }
+}
+
+protocol SearchBarUseCase {
+    func saveSearchText(_ searchText: String)
+    func getSearchHistory() -> [String]
+}
+
+class SearchBarUseCaseImpl: SearchBarUseCase {
+    
+    private let historyRepository : SearchHistoryRepository
+    
+    init(historyRepository: SearchHistoryRepository) {
+        self.historyRepository = historyRepository
+    }
+    
+    func saveSearchText(_ searchText: String) {
+        historyRepository.saveSearchText(searchText)
+    }
+    
+    func getSearchHistory() -> [String] {
+        return historyRepository.getSearchHistory()
+    }
+}
+
+
+class SearchBarViewModel: ObservableObject {
+    @Published var searchText: String = ""
+    @Published var searchHistory: [String] = []
+    
+    private let historyRepository: SearchHistoryRepository
+    
+    init(repository: SearchHistoryRepository) {
+        self.historyRepository = repository
+    }
+    
+    
+    func saveSearchText(_ searchText: String) {
+        historyRepository.saveSearchText(searchText)
+    }
+    
+    func getSearchHistory() -> [String] {
+        return historyRepository.getSearchHistory()
+    }
+    
+    
+}
+
 @available(iOS 17.0, *)
 struct SearchBar: View {
     @State var showHistory:Bool = false
@@ -24,10 +94,11 @@ struct SearchBar: View {
     
     
     @EnvironmentObject var calculateViewModel: CalculateViewModel
+    @ObservedObject var searchBarViewModel: SearchBarViewModel
+    
     @EnvironmentObject var appState: AppState
     
-    
-    @StateObject var brawlersViewModel = BrawlersViewModel()
+    @StateObject var brawlersViewModel: BrawlersViewModel
     
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     
@@ -41,13 +112,13 @@ struct SearchBar: View {
             ZStack(alignment: .top) {
                 if showHistory {
                     SearchHistoryView(ipadWidth: $ipadWidth)
-                        .environmentObject(calculateViewModel)
+                        .environmentObject(searchBarViewModel)
                 }
                 
                 VStack {
                     ZStack {
                         HStack {
-                            TextField("유저 태그 입력", text: $calculateViewModel.searchText, onEditingChanged: { isEdit in
+                            TextField("유저 태그 입력", text: $searchBarViewModel.searchText, onEditingChanged: { isEdit in
                                 withAnimation {
                                     showHistory = isEdit
                                 }
@@ -68,8 +139,8 @@ struct SearchBar: View {
                                 //키보드 비활성화 시키기
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 
-                                if calculateViewModel.searchText != "" {
-                                    calculateViewModel.saveSearchText(calculateViewModel.searchText)
+                                if searchBarViewModel.searchText != "" {
+                                    searchBarViewModel.saveSearchText(searchBarViewModel.searchText)
                                     withAnimation {
                                         clicked = true
                                     }
@@ -99,7 +170,7 @@ struct SearchBar: View {
                                             }
                                         }
                                         
-                                        calculateViewModel.getBrawlers()
+                                        calculateViewModel.getBrawlers(searchBarViewModel.searchText)
                                     }
                                 }
                                 
@@ -124,7 +195,7 @@ struct SearchBar: View {
             .padding([.leading, .trailing])
         }
         .onDisappear {
-            calculateViewModel.searchText = ""
+            searchBarViewModel.searchText = ""
             clicked = false
             showHistory = false
             tanker_brawlers_standard = []
@@ -140,11 +211,6 @@ struct SearchBar: View {
             appState.totalPP = 0
             appState.totalCredit = 0
         }
-        
-        
-        
-        
-        
     }
 }
 
@@ -153,7 +219,8 @@ struct SearchBar: View {
 @available(iOS 17.0, *)
 struct SearchHistoryView: View {
     
-    @EnvironmentObject var calculateViewModel: CalculateViewModel
+//    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    @EnvironmentObject var searchBarViewModel : SearchBarViewModel
     
     @State var iphoneWidth : CGFloat = UIScreen.main.bounds.width * 0.9
     @Binding var ipadWidth : CGFloat
@@ -172,7 +239,7 @@ struct SearchHistoryView: View {
                             Spacer()
                         }
                         .onTapGesture {
-                            calculateViewModel.searchText = search
+                            searchBarViewModel.searchText = search
                         }
                     }
                 }

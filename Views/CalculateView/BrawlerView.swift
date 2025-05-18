@@ -20,7 +20,6 @@ struct BrawlerView: View {
     //size setting
     var totalHeight: CGFloat = 260
     var brawlerHeight: CGFloat = 210
-//    @State var width: CGFloat = UIScreen.main.bounds.width * 0.9
     
     
     //

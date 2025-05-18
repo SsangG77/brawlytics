@@ -12,11 +12,19 @@ import SwiftData
 struct ContentView: View {
     
     @StateObject private var appState = AppState()
+    let viewModel: CalculateViewModel
+    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+    
+    init() {
 
+        let useCase = CalculateUseCaseImpl()
+        self.viewModel = CalculateViewModel(calculateUseCase: useCase)
+    }
+    
     var body: some View {
         TabView {
             Group {
-                CalculateView()
+                CalculateView(calculateViewModel: viewModel, brawlersViewModel: brawlersViewModel)
                     .environmentObject(appState)
                     .tabItem {
                         Label("Calculator", systemImage: "number")
@@ -38,16 +46,5 @@ struct ContentView: View {
         .onAppear {
             UserDefaults.standard.set([], forKey: "searchTextArray")
         }
-
     }
-
-  
 }
-
-//#Preview {
-//    if #available(iOS 17.0, *) {
-//        ContentView()
-//    } else {
-//        // Fallback on earlier versions
-//    }
-//}
