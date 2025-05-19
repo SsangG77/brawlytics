@@ -81,13 +81,15 @@ class SearchBarViewModel: ObservableObject {
 struct SearchBar: View {
     @State var showHistory:Bool = false
     
-    @Binding var tanker_brawlers_standard: [Brawler_standard]
-    @Binding var assassin_brawlers_standard: [Brawler_standard]
-    @Binding var supporter_brawlers_standard: [Brawler_standard]
-    @Binding var damage_dealers_brawlers_standard: [Brawler_standard]
-    @Binding var controller_brawlers_standard: [Brawler_standard]
-    @Binding var marksmen_brawlers_standard: [Brawler_standard]
-    @Binding var throw_brawlers_standard: [Brawler_standard]
+//    @Binding var tanker_brawlers_standard: [BrawlerStandard]
+//    @Binding var assassin_brawlers_standard: [BrawlerStandard]
+//    @Binding var supporter_brawlers_standard: [BrawlerStandard]
+//    @Binding var damage_dealers_brawlers_standard: [BrawlerStandard]
+//    @Binding var controller_brawlers_standard: [BrawlerStandard]
+//    @Binding var marksmen_brawlers_standard: [BrawlerStandard]
+//    @Binding var throw_brawlers_standard: [BrawlerStandard]
+    
+    @Binding var allBrawlersStandard: [BrawlerStandard]
     
     @Binding var clicked: Bool
     @Binding var isLoading: Bool
@@ -99,6 +101,7 @@ struct SearchBar: View {
     @EnvironmentObject var appState: AppState
     
     @StateObject var brawlersViewModel: BrawlersViewModel
+    @StateObject var service: BrawlersService
     
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     
@@ -153,14 +156,15 @@ struct SearchBar: View {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         withAnimation {
-                                            tanker_brawlers_standard = brawlersViewModel.tanker_brawlers_standard
-                                            assassin_brawlers_standard = brawlersViewModel.assassin_brawlers_standard
-                                            supporter_brawlers_standard = brawlersViewModel.supporter_brawlers_standard
-                                            controller_brawlers_standard = brawlersViewModel.controller_brawlers_standard
-                                            damage_dealers_brawlers_standard = brawlersViewModel.damage_dealers_brawlers_standard
-                                            marksmen_brawlers_standard = brawlersViewModel.marksmen_brawlers_standard
-                                            throw_brawlers_standard = brawlersViewModel.throw_brawlers_standard
+//                                            tanker_brawlers_standard = brawlersViewModel.tanker_brawlers_standard
+//                                            assassin_brawlers_standard = brawlersViewModel.assassin_brawlers_standard
+//                                            supporter_brawlers_standard = brawlersViewModel.supporter_brawlers_standard
+//                                            controller_brawlers_standard = brawlersViewModel.controller_brawlers_standard
+//                                            damage_dealers_brawlers_standard = brawlersViewModel.damage_dealers_brawlers_standard
+//                                            marksmen_brawlers_standard = brawlersViewModel.marksmen_brawlers_standard
+//                                            throw_brawlers_standard = brawlersViewModel.throw_brawlers_standard
                                             
+                                            allBrawlersStandard = service.allBrawlers
                                         }
                                         
                                         // 로딩 종료
@@ -198,13 +202,14 @@ struct SearchBar: View {
             searchBarViewModel.searchText = ""
             clicked = false
             showHistory = false
-            tanker_brawlers_standard = []
-            assassin_brawlers_standard = []
-            supporter_brawlers_standard = []
-            controller_brawlers_standard = []
-            damage_dealers_brawlers_standard = []
-            marksmen_brawlers_standard = []
-            throw_brawlers_standard = []
+//            tanker_brawlers_standard = []
+//            assassin_brawlers_standard = []
+//            supporter_brawlers_standard = []
+//            controller_brawlers_standard = []
+//            damage_dealers_brawlers_standard = []
+//            marksmen_brawlers_standard = []
+//            throw_brawlers_standard = []
+            allBrawlersStandard = []
             calculateViewModel.brawlers = []
             
             appState.totalCoin = 0

@@ -15,14 +15,17 @@ struct CalculateView: View {
     
     @StateObject var calculateViewModel: CalculateViewModel
     @StateObject var brawlersViewModel:BrawlersViewModel /*= BrawlersViewModel()*/
+    @StateObject var service: BrawlersService
     
-    @State var tanker_brawlers_standard: [Brawler_standard] = []
-    @State var assassin_brawlers_standard: [Brawler_standard] = []
-    @State var supporter_brawlers_standard: [Brawler_standard] = []
-    @State var damage_dealers_brawlers_standard: [Brawler_standard] = []
-    @State var controller_brawlers_standard: [Brawler_standard] = []
-    @State var marksmen_brawlers_standard: [Brawler_standard] = []
-    @State var throw_brawlers_standard: [Brawler_standard] = []
+//    @State var tanker_brawlers_standard: [BrawlerStandard] = []
+//    @State var assassin_brawlers_standard: [BrawlerStandard] = []
+//    @State var supporter_brawlers_standard: [BrawlerStandard] = []
+//    @State var damage_dealers_brawlers_standard: [BrawlerStandard] = []
+//    @State var controller_brawlers_standard: [BrawlerStandard] = []
+//    @State var marksmen_brawlers_standard: [BrawlerStandard] = []
+//    @State var throw_brawlers_standard: [BrawlerStandard] = []
+    
+    @State var allBrawlersStandard: [BrawlerStandard] = []
     
     
     @State var clicked = false
@@ -49,17 +52,19 @@ struct CalculateView: View {
                     let searchBarVM = SearchBarViewModel(repository: repository)
                     
                         SearchBar(
-                            tanker_brawlers_standard: $tanker_brawlers_standard,
-                            assassin_brawlers_standard: $assassin_brawlers_standard,
-                            supporter_brawlers_standard: $supporter_brawlers_standard,
-                            damage_dealers_brawlers_standard: $damage_dealers_brawlers_standard,
-                            controller_brawlers_standard: $controller_brawlers_standard,
-                            marksmen_brawlers_standard: $marksmen_brawlers_standard,
-                            throw_brawlers_standard: $throw_brawlers_standard,
+//                            tanker_brawlers_standard: $tanker_brawlers_standard,
+//                            assassin_brawlers_standard: $assassin_brawlers_standard,
+//                            supporter_brawlers_standard: $supporter_brawlers_standard,
+//                            damage_dealers_brawlers_standard: $damage_dealers_brawlers_standard,
+//                            controller_brawlers_standard: $controller_brawlers_standard,
+//                            marksmen_brawlers_standard: $marksmen_brawlers_standard,
+//                            throw_brawlers_standard: $throw_brawlers_standard,
+                            allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
                             isLoading: $isLoading,
                             searchBarViewModel: searchBarVM,
-                            brawlersViewModel: brawlersViewModel
+                            brawlersViewModel: brawlersViewModel,
+                            service: service
                         )
                         .environmentObject(calculateViewModel)
                         .environmentObject(appState)
@@ -82,11 +87,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if tanker_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($tanker_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .tanker }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -115,11 +120,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if assassin_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($assassin_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .assassin }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -148,11 +153,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if supporter_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($supporter_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .supporter }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -179,11 +184,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if controller_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($controller_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .controller }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -210,11 +215,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if damage_dealers_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($damage_dealers_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .damageDealer }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -241,11 +246,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if marksmen_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($marksmen_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .marksmen }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }
@@ -272,11 +277,11 @@ struct CalculateView: View {
                             if clicked {
                                 if isLoading {
                                     BrawlerEmptyView()
-                                } else if throw_brawlers_standard.isEmpty {
+                                } else if allBrawlersStandard.isEmpty {
                                     Text("No Data Found") // 데이터가 없는 경우 표시
                                 } else {
-                                    ForEach($throw_brawlers_standard, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, brawler_standard: brawler_st)
+                                    ForEach(allBrawlersStandard.filter{ $0.role == .thrower }, id: \.id) { brawler_st in
+                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
                                             .environmentObject(calculateViewModel)
                                             .environmentObject(appState)
                                     }

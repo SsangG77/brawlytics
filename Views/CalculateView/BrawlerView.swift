@@ -28,7 +28,7 @@ struct BrawlerView: View {
     
     //바인딩된 값
     var width: CGFloat
-    @Binding var brawler_standard: Brawler_standard
+    @Binding var brawlerStandard: BrawlerStandard
     
     
     //view model
@@ -52,7 +52,7 @@ struct BrawlerView: View {
                     //브롤러 정보들
                     VStack {
                         HStack(spacing: 10) {
-                            BrawlerProfileView(parentWidth: width, brawler_st: $brawler_standard, brawler: $brawler)
+                            BrawlerProfileView(parentWidth: width, brawler_st: $brawlerStandard, brawler: $brawler)
                                 .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                             
                             GearView(parentWidth: width, brawler: $brawler)
@@ -60,7 +60,7 @@ struct BrawlerView: View {
                                 .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                             
                         }
-                        PowerView(parentWidth: width, brawler_standard: $brawler_standard, brawler: $brawler)
+                        PowerView(parentWidth: width, BrawlerStandard: $brawlerStandard, brawler: $brawler)
                             .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
                     }
                     .frame(width: width , height: brawlerHeight)
@@ -75,7 +75,7 @@ struct BrawlerView: View {
                     }
                     
                     //해당 브롤러 재화 표시 부분
-                    MoneyCountView(parentWidth: width, brawler: $brawler, brawler_standard: $brawler_standard)
+                    MoneyCountView(parentWidth: width, brawler: $brawler, brawlerStandard: $brawlerStandard)
                         .environmentObject(appState)
                         .frame(height: totalHeight - brawlerHeight)
                 }//VStack
@@ -87,8 +87,8 @@ struct BrawlerView: View {
             .onChange(of: calculateViewModel.brawlers) {
                 withAnimation {
                     
-                    if brawler_standard != nil {
-                        brawler = calculateViewModel.findMyBrawler(brawlerName: brawler_standard.name)
+                    if brawlerStandard != nil {
+                        brawler = calculateViewModel.findMyBrawler(brawlerName: brawlerStandard.name)
                         
                     }
                     
@@ -114,7 +114,7 @@ struct BrawlerView: View {
 struct BrawlerProfileView: View {
     
     var parentWidth: CGFloat
-    @Binding var brawler_st: Brawler_standard
+    @Binding var brawler_st: BrawlerStandard
     @Binding var brawler: Brawler?
     
     var body: some View {
@@ -315,7 +315,7 @@ struct PowerView: View {
     
     //Binding
     var parentWidth: CGFloat
-    @Binding var brawler_standard: Brawler_standard
+    @Binding var BrawlerStandard: BrawlerStandard
     @Binding var brawler: Brawler?
     
     
@@ -326,37 +326,37 @@ struct PowerView: View {
         
         HStack(spacing: 15) {
             
-            Image(brawler_standard.first_gadget)
+            Image(BrawlerStandard.first_gadget)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawler_standard.first_gadget) ? 1 : 0)
-                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawler_standard.first_gadget) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.first_gadget) ? 1 : 0)
+                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.first_gadget) ? Color.white : Color(hexString: "585858"))
             
-            Image(brawler_standard.second_gadget)
+            Image(BrawlerStandard.second_gadget)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawler_standard.second_gadget) ? 1 : 0)
-                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawler_standard.second_gadget) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.second_gadget) ? 1 : 0)
+                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.second_gadget) ? Color.white : Color(hexString: "585858"))
             
             
-            Image(brawler_standard.first_starPower)
+            Image(BrawlerStandard.first_starPower)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawler_standard.first_starPower) ? 1 : 0)
-                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawler_standard.first_starPower) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.first_starPower) ? 1 : 0)
+                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.first_starPower) ? Color.white : Color(hexString: "585858"))
             
-            Image(brawler_standard.second_starPower)
+            Image(BrawlerStandard.second_starPower)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawler_standard.second_starPower) ? 1 : 0)
-                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawler_standard.second_starPower) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.second_starPower) ? 1 : 0)
+                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.second_starPower) ? Color.white : Color(hexString: "585858"))
             
             
-            Image(brawler_standard.hypercharge)
+            Image(BrawlerStandard.hypercharge)
                 .resizable()
                 .frame(width: imageSize - 10, height: imageSize)
-                .saturation(viewModel.judgeHypercharge(brawler_standard.hypercharge) ? 1 : 0)
-                .colorMultiply(viewModel.judgeHypercharge(brawler_standard.hypercharge) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeHypercharge(BrawlerStandard.hypercharge) ? 1 : 0)
+                .colorMultiply(viewModel.judgeHypercharge(BrawlerStandard.hypercharge) ? Color.white : Color(hexString: "585858"))
             
             
             
@@ -376,7 +376,7 @@ struct MoneyCountView: View {
     
     var parentWidth: CGFloat
     @Binding var brawler: Brawler?
-    @Binding var brawler_standard: Brawler_standard
+    @Binding var brawlerStandard: BrawlerStandard
     
     @State var ppCount = -1
     @State var coinCount = -1
@@ -433,13 +433,13 @@ struct MoneyCountView: View {
         .padding(.bottom, 14)
         .onChange(of: brawler) { newValue in
             if newValue != nil {
-                ppCount = brawlersViewModel.calculatePP(brawler: brawler, brawler_standard: brawler_standard)
-                creditCount = brawlersViewModel.calculateCredit(brawler: brawler, brawler_standard: brawler_standard)
-                coinCount = brawlersViewModel.calculateCoin(brawler: brawler, brawler_standard: brawler_standard)
+                ppCount = brawlersViewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
+                creditCount = brawlersViewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
+                coinCount = brawlersViewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
 //
-                appState.totalPP += brawlersViewModel.calculatePP(brawler: brawler, brawler_standard: brawler_standard)
-                appState.totalCredit += brawlersViewModel.calculateCredit(brawler: brawler, brawler_standard: brawler_standard)
-                appState.totalCoin += brawlersViewModel.calculateCoin(brawler: brawler, brawler_standard: brawler_standard)
+                appState.totalPP += brawlersViewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
+                appState.totalCredit += brawlersViewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
+                appState.totalCoin += brawlersViewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
                 
             }
         }

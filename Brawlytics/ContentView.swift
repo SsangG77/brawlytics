@@ -14,6 +14,7 @@ struct ContentView: View {
     @StateObject private var appState = AppState()
     let viewModel: CalculateViewModel
     let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+    let service = BrawlersService()
     
     init() {
 
@@ -24,7 +25,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Group {
-                CalculateView(calculateViewModel: viewModel, brawlersViewModel: brawlersViewModel)
+                CalculateView(calculateViewModel: viewModel, brawlersViewModel: brawlersViewModel, service: service)
                     .environmentObject(appState)
                     .tabItem {
                         Label("Calculator", systemImage: "number")
