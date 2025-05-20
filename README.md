@@ -16,13 +16,12 @@
 ## 1. 기술 스택
 
 - 언어: Swift
-
 - 프레임워크: SwiftUI
-
-- 데이터 저장: UserDefaults를 활용한 로컬 데이터 저장
-
-- 네트워킹: URLSession (플레이어 데이터 조회 시 사용)
-- API : brawlstars api
+- 네트워크	URLSession, Brawl Stars API
+- 상태 관리	@Published, AppStorage
+- 비동기 처리	Swift Concurrency (async/await)
+- 아키텍처	MVVM, 클린 아키텍처, UseCase 패턴
+- 화면 대응	UIDevice, GeometryReader 활용
 
 </br>
 
@@ -35,9 +34,7 @@
 ## 3. 페이지별 기능
 
 - 플레이어 태그 조회: 브롤스타즈 플레이어 태그를 입력하여 각 캐릭터의 보유 아이템 정보 조회
-
 - 아이템 시각화: 각 캐릭터가 보유한 아이템을 직관적으로 확인할 수 있는 시각적 인터페이스 제공
-
 - 아이템 체크 및 저장: 사용자가 체크한 아이템 목록을 UserDefaults에 저장하여 데이터 유지
 
 ### 아이폰 화면
