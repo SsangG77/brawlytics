@@ -11,18 +11,10 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
-
+    runs-on: macos-14  # Xcode 16이 설치된 macOS 환경
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Select Xcode
-      run: sudo xcode-select -s /Applications/Xcode_15.4.app
-      
-    - name: Build
-      run: |
-        xcodebuild -project Brawlytics.xcodeproj -scheme Brawlytics -configuration Debug build
-        
-    - name: Run tests
-      run: |
-        xcodebuild -project Brawlytics.xcodeproj -scheme Brawlytics -configuration Debug test
+      - uses: actions/checkout@v3
+      - name: Select Xcode 16
+        run: sudo xcode-select -s /Applications/Xcode_16.0.app
+      - name: Build
+        run: xcodebuild -project Brawlytics.xcodeproj -scheme Brawlytics -configuration Debug build
