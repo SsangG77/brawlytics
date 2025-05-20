@@ -19,5 +19,10 @@ jobs:
         with:
           xcode-version: '16.2'
 
-      - name: Build
-        run: xcodebuild -project Brawlytics.xcodeproj -scheme Brawlytics -configuration Debug build
+      - name: Build for Simulator
+        run: xcodebuild -project Brawlytics.xcodeproj \
+                  -scheme Brawlytics \
+                  -destination 'platform=iOS Simulator,name=iPhone 15' \
+                  -configuration Debug \
+                  build
+
