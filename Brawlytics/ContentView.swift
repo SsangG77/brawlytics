@@ -12,25 +12,29 @@ import SwiftData
 struct ContentView: View {
     
     @StateObject private var appState = AppState()
-    let viewModel: CalculateViewModel
-    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
-    let service = BrawlersService()
-    
-    init() {
-
-        let useCase = CalculateUseCaseImpl()
-        self.viewModel = CalculateViewModel(calculateUseCase: useCase)
-    }
+//    let viewModel: CalculateViewModel
+//    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+//    let service = BrawlersService()
+//    
+//    init() {
+//
+//        let useCase = CalculateUseCaseImpl()
+//        self.viewModel = CalculateViewModel(calculateUseCase: useCase)
+//    }
     
     var body: some View {
         TabView {
             Group {
-                CalculateView(calculateViewModel: viewModel, brawlersViewModel: brawlersViewModel, service: service)
-                    .environmentObject(appState)
-                    .tabItem {
-                        Label("Calculator", systemImage: "number")
-                            
-                    }
+                CalculateView(
+//                    calculateViewModel: viewModel,
+//                    brawlersViewModel: brawlersViewModel
+//                    service: service
+                )
+                .environmentObject(appState)
+                .tabItem {
+                    Label("Calculator", systemImage: "number")
+                        
+                }
                 
                 HyperchargeView()
                     .tabItem {

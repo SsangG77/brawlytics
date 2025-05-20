@@ -11,96 +11,95 @@ import SwiftUI
 
 
 
+//MARK: - BrawlerView
 //브롤러 한개당 정보 모음
 @available(iOS 17.0, *)
 struct BrawlerView: View {
     
-    
-    
-    //size setting
+    // size setting
     var totalHeight: CGFloat = 260
     var brawlerHeight: CGFloat = 210
-    
-    
-    //
+
     @State var brawler: Brawler?
-    @State var opacity:Double = 1.0
-    
-    //바인딩된 값
+    @State var opacity: Double = 1.0
+
     var width: CGFloat
-    @Binding var brawlerStandard: BrawlerStandard
-    
-    
-    //view model
-    @StateObject var brawlersViewModel = BrawlersViewModel()
+    var brawlerStandard: BrawlerStandard
+
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var calculateViewModel: CalculateViewModel
     
-    @EnvironmentObject var appState: AppState
+    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+    let service = BrawlersService()
+    
+    init(width: CGFloat, brawlerStandard: BrawlerStandard) {
+        self.width = width
+        self.brawlerStandard = brawlerStandard
+    }
     
     var body: some View {
-        
-            
-            ZStack {
-                Rectangle()
-                    .frame(width: width, height: totalHeight)
-                    .cornerRadius(20)
-                    .foregroundColor(Color(hexString: "576E90"))
-                    .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
-                
-                VStack {
-                    
-                    //브롤러 정보들
-                    VStack {
-                        HStack(spacing: 10) {
-                            BrawlerProfileView(parentWidth: width, brawler_st: $brawlerStandard, brawler: $brawler)
-                                .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
-                            
-                            GearView(parentWidth: width, brawler: $brawler)
-                                .environmentObject(brawlersViewModel)
-                                .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
-                            
-                        }
-                        PowerView(parentWidth: width, BrawlerStandard: $brawlerStandard, brawler: $brawler)
-                            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
-                    }
-                    .frame(width: width , height: brawlerHeight)
-                    .cornerRadius(20)
-                    .background(Color(hexString: "6D8CB9"))
-                    .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
-                    .overlay {
-                        if brawler?.name == "" {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundColor(Color(hexString: "000000", opacity: 0.7))
-                        }
-                    }
-                    
-                    //해당 브롤러 재화 표시 부분
-                    MoneyCountView(parentWidth: width, brawler: $brawler, brawlerStandard: $brawlerStandard)
-                        .environmentObject(appState)
-                        .frame(height: totalHeight - brawlerHeight)
-                }//VStack
-                .frame(height: totalHeight)
-                
-                
-                
-            }//ZStack
-            .onChange(of: calculateViewModel.brawlers) {
-                withAnimation {
-                    
-                    if brawlerStandard != nil {
-                        brawler = calculateViewModel.findMyBrawler(brawlerName: brawlerStandard.name)
-                        
-                    }
-                    
-                }
+        ZStack {
+            backgroundView
+            contentView
+        }
+        .onAppear {
+            withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
+                opacity = opacity == 0.4 ? 0.8 : 0.4
             }
-            .onAppear(perform: {
-                withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
-                    self.opacity = opacity == 0.4 ? 0.8 : 0.4
-                }
-            })
-        
-        
+        }
+        .onChange(of: calculateViewModel.brawlers) {
+            withAnimation {
+                brawler = calculateViewModel.findMyBrawler(brawlerName: brawlerStandard.name)
+            }
+        }
+    }
+    
+    private var backgroundView: some View {
+        Rectangle()
+            .frame(width: width, height: totalHeight)
+            .cornerRadius(20)
+            .foregroundColor(Color(hexString: "576E90"))
+            .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+    }
+
+    private var contentView: some View {
+        VStack(spacing: 0) {
+            profileBlock
+            moneyBlock
+        }
+        .frame(height: totalHeight)
+    }
+
+    private var profileBlock: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 10) {
+                BrawlerProfileView(parentWidth: width, brawler_st: brawlerStandard, brawler: $brawler)
+                    .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+
+                GearView(parentWidth: width, brawlerStandard: brawlerStandard, brawler: $brawler)
+                    .environmentObject(brawlersViewModel)
+                    .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+            }
+
+            PowerView(parentWidth: width, brawlerStandard: brawlerStandard, brawler: $brawler)
+                .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+        }
+        .frame(width: width, height: brawlerHeight)
+        .background(Color(hexString: "6D8CB9"))
+        .cornerRadius(20)
+        .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+        .overlay {
+            if brawler?.name == "" {
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundColor(Color(hexString: "000000", opacity: 0.7))
+            }
+        }
+    }
+
+    private var moneyBlock: some View {
+        MoneyCountView(parentWidth: width, brawler: $brawler, brawlerStandard: brawlerStandard)
+            .environmentObject(appState)
+            .frame(height: totalHeight - brawlerHeight)
     }
 }
 
@@ -111,10 +110,13 @@ struct BrawlerView: View {
 
 
 
+
+//MARK: - BrawlerProfileView
 struct BrawlerProfileView: View {
     
     var parentWidth: CGFloat
-    @Binding var brawler_st: BrawlerStandard
+//    @Binding var brawler_st: BrawlerStandard
+    var brawler_st: BrawlerStandard
     @Binding var brawler: Brawler?
     
     var body: some View {
@@ -142,8 +144,6 @@ struct BrawlerProfileView: View {
         .frame(width: (parentWidth - 35) * 0.3, height: (parentWidth - 35) * 0.3)
         .background(Color(hexString: "4C658D", opacity: 0.53))
         .cornerRadius(15)
-
-
     }
 }
 
@@ -157,10 +157,7 @@ struct SingleGearView: View {
     var imageName:String
     var withItem: Bool
     var offset: Bool
-    
     var imageSize: CGFloat = 42
-    
-    
     
     var body: some View {
         Image(imageName)
@@ -176,19 +173,14 @@ struct SingleGearView: View {
 
 
 struct GearView: View {
-    
     var parentWidth: CGFloat
+    var brawlerStandard: BrawlerStandard
     @Binding var brawler: Brawler?
     
     
     //view model
     @EnvironmentObject var viewModel: BrawlersViewModel
-    
-    
-    
     @State var imageSize: CGFloat = 42
-    
-    
     
     var body: some View {
             HStack(spacing: -18) {
@@ -202,22 +194,25 @@ struct GearView: View {
                 
                 
                 //영웅 기어
-                if viewModel.reload_speed_gear_brawlers.contains(brawler?.name ?? " ") {
+//                if viewModel.reload_speed_gear_brawlers.contains(brawler?.name ?? " ") {
+                if brawlerStandard.epicGear == .reloadSpeed {
                     SingleGearView(imageName: "RELOAD SPEED", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "RELOAD SPEED"), offset: true)
                 }
                 
-                if viewModel.super_charge_gear_brawlers.contains(brawler?.name ?? " ") {
+//                if viewModel.super_charge_gear_brawlers.contains(brawler?.name ?? " ") {
+                if brawlerStandard.epicGear == .superCharge {
                     SingleGearView(imageName: "SUPER CHARGE", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "SUPER CHARGE"), offset: true)
                 }
                 
-                if viewModel.pet_power_gear_brawlers.contains(brawler?.name ?? " ") {
+//                if viewModel.pet_power_gear_brawlers.contains(brawler?.name ?? " ") {
+                if brawlerStandard.epicGear == .petPower {
                     SingleGearView(imageName: "PET POWER", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "PET POWER"), offset: true)
                 }
                 
                 
-                let gearBrawlersSet = Set(viewModel.reload_speed_gear_brawlers)
-                    .union(viewModel.super_charge_gear_brawlers)
-                    .union(viewModel.pet_power_gear_brawlers)
+//                let gearBrawlersSet = Set(viewModel.reload_speed_gear_brawlers)
+//                    .union(viewModel.super_charge_gear_brawlers)
+//                    .union(viewModel.pet_power_gear_brawlers)
                 
                 
                 //신화기어 표시
@@ -226,70 +221,80 @@ struct GearView: View {
                     SingleGearView(
                         imageName: "THICC HEAD",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "THICC HEAD"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "GENE":
                     SingleGearView(
                         imageName: "TALK TO THE HAND",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "TALK TO THE HAND"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "CROW":
                     SingleGearView(
                         imageName: "ENDURING TOXIN",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "ENDURING TOXIN"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "SANDY":
                     SingleGearView(
                         imageName: "EXHAUSTING STORM",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "EXHAUSTING STORM"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "SPIKE":
                     SingleGearView(
                         imageName: "STICKY SPIKES",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "STICKY SPIKES"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "LEON":
                     SingleGearView(
                         imageName: "LINGERING SMOKE",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "LINGERING SMOKE"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "AMBER":
                     SingleGearView(
                         imageName: "STICKY OIL",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "STICKY OIL"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "EVE":
                     SingleGearView(
                         imageName: "QUADRUPLETS",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "QUADRUPLETS"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "PAM":
                     SingleGearView(
                         imageName: "SUPER TURRET",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "SUPER TURRET"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                     
                 case "MORTIS":
                     SingleGearView(
                         imageName: "BAT STORM",
                         withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "BAT STORM"),
-                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+//                        offset: !gearBrawlersSet.contains(brawler?.name ?? " ")
+                        offset: brawlerStandard.epicGear == .none
                     )
                 
                     
@@ -315,7 +320,8 @@ struct PowerView: View {
     
     //Binding
     var parentWidth: CGFloat
-    @Binding var BrawlerStandard: BrawlerStandard
+//    @Binding var BrawlerStandard: BrawlerStandard
+    var brawlerStandard: BrawlerStandard
     @Binding var brawler: Brawler?
     
     
@@ -326,37 +332,37 @@ struct PowerView: View {
         
         HStack(spacing: 15) {
             
-            Image(BrawlerStandard.first_gadget)
+            Image(brawlerStandard.first_gadget)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.first_gadget) ? 1 : 0)
-                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.first_gadget) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawlerStandard.first_gadget) ? 1 : 0)
+                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawlerStandard.first_gadget) ? Color.white : Color(hexString: "585858"))
             
-            Image(BrawlerStandard.second_gadget)
+            Image(brawlerStandard.second_gadget)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.second_gadget) ? 1 : 0)
-                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: BrawlerStandard.second_gadget) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawlerStandard.second_gadget) ? 1 : 0)
+                .colorMultiply(viewModel.judgeGadget(gadgets: brawler?.gadgets ?? [], gadget: brawlerStandard.second_gadget) ? Color.white : Color(hexString: "585858"))
             
             
-            Image(BrawlerStandard.first_starPower)
+            Image(brawlerStandard.first_starPower)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.first_starPower) ? 1 : 0)
-                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.first_starPower) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawlerStandard.first_starPower) ? 1 : 0)
+                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawlerStandard.first_starPower) ? Color.white : Color(hexString: "585858"))
             
-            Image(BrawlerStandard.second_starPower)
+            Image(brawlerStandard.second_starPower)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
-                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.second_starPower) ? 1 : 0)
-                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: BrawlerStandard.second_starPower) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawlerStandard.second_starPower) ? 1 : 0)
+                .colorMultiply(viewModel.judgeStarPower(starPowers: brawler?.starPowers ?? [], starPower: brawlerStandard.second_starPower) ? Color.white : Color(hexString: "585858"))
             
             
-            Image(BrawlerStandard.hypercharge)
+            Image(brawlerStandard.hypercharge)
                 .resizable()
                 .frame(width: imageSize - 10, height: imageSize)
-                .saturation(viewModel.judgeHypercharge(BrawlerStandard.hypercharge) ? 1 : 0)
-                .colorMultiply(viewModel.judgeHypercharge(BrawlerStandard.hypercharge) ? Color.white : Color(hexString: "585858"))
+                .saturation(viewModel.judgeHypercharge(brawlerStandard.hypercharge) ? 1 : 0)
+                .colorMultiply(viewModel.judgeHypercharge(brawlerStandard.hypercharge) ? Color.white : Color(hexString: "585858"))
             
             
             
@@ -376,7 +382,8 @@ struct MoneyCountView: View {
     
     var parentWidth: CGFloat
     @Binding var brawler: Brawler?
-    @Binding var brawlerStandard: BrawlerStandard
+//    @Binding var brawlerStandard: BrawlerStandard
+    var brawlerStandard: BrawlerStandard
     
     @State var ppCount = -1
     @State var coinCount = -1

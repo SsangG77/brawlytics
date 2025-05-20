@@ -13,27 +13,23 @@ struct CalculateView: View {
     
     @EnvironmentObject var appState: AppState
     
-    @StateObject var calculateViewModel: CalculateViewModel
-    @StateObject var brawlersViewModel:BrawlersViewModel /*= BrawlersViewModel()*/
-    @StateObject var service: BrawlersService
-    
-//    @State var tanker_brawlers_standard: [BrawlerStandard] = []
-//    @State var assassin_brawlers_standard: [BrawlerStandard] = []
-//    @State var supporter_brawlers_standard: [BrawlerStandard] = []
-//    @State var damage_dealers_brawlers_standard: [BrawlerStandard] = []
-//    @State var controller_brawlers_standard: [BrawlerStandard] = []
-//    @State var marksmen_brawlers_standard: [BrawlerStandard] = []
-//    @State var throw_brawlers_standard: [BrawlerStandard] = []
-    
     @State var allBrawlersStandard: [BrawlerStandard] = []
-    
-    
     @State var clicked = false
     @State private var isLoading: Bool = false
     
     //total money icon size
     let iconSize: CGFloat = 20
     let fontSize: CGFloat = 20
+    
+    
+    @StateObject var calculateViewModel: CalculateViewModel
+    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+    let service = BrawlersService()
+    
+    init() {
+        let useCase = CalculateUseCaseImpl()
+        _calculateViewModel = StateObject(wrappedValue: CalculateViewModel(calculateUseCase: useCase))
+    }
     
     
     var body: some View {
@@ -48,17 +44,9 @@ struct CalculateView: View {
                 calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
 
                     let repository = SearchHistoryRepositoryImpl()
-                    let searchUseCase = SearchBarUseCaseImpl(historyRepository: repository)
                     let searchBarVM = SearchBarViewModel(repository: repository)
                     
                         SearchBar(
-//                            tanker_brawlers_standard: $tanker_brawlers_standard,
-//                            assassin_brawlers_standard: $assassin_brawlers_standard,
-//                            supporter_brawlers_standard: $supporter_brawlers_standard,
-//                            damage_dealers_brawlers_standard: $damage_dealers_brawlers_standard,
-//                            controller_brawlers_standard: $controller_brawlers_standard,
-//                            marksmen_brawlers_standard: $marksmen_brawlers_standard,
-//                            throw_brawlers_standard: $throw_brawlers_standard,
                             allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
                             isLoading: $isLoading,
@@ -77,226 +65,79 @@ struct CalculateView: View {
                 
                 ScrollView {
                     
-                    if !isLoading && clicked  {
-                        ClassesTitleView(imageName: "tanker_icon", title: "탱커")
-                            .padding(.top, 7)
-                    }
+                    RoleBrawlerSection(
+                        role: .tanker,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
+
+                    RoleBrawlerSection(
+                        role: .assassin,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
+
+                    RoleBrawlerSection(
+                        role: .supporter,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
+
+                    RoleBrawlerSection(
+                        role: .tanker,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
+
+                    RoleBrawlerSection(
+                        role: .damageDealer,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
                     
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .tanker }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
+                    RoleBrawlerSection(
+                        role: .marksmen,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
+
+                    
+                    
+                    RoleBrawlerSection(
+                        role: .thrower,
+                        allBrawlers: allBrawlersStandard,
+                        width: width,
+                        clicked: clicked,
+                        isLoading: isLoading
+                    )
+                    .environmentObject(appState)
+                    .environmentObject(calculateViewModel)
                         
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
-                    
-                    
-                    
-                    
-                    if !isLoading && clicked  {
-                        ClassesTitleView(imageName: "assassin_icon", title: "어쌔신")
-                            .padding(.top, 7)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .assassin }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
-                        
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
-                    
-                    
-                    
-                    
-                    if !isLoading && clicked  {
-                        ClassesTitleView(imageName: "supporter_icon", title: "서포터")
-                            .padding(.top, 7)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .supporter }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
-                        
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
-                    
-                    
-                    if !isLoading && clicked  {
-                        ClassesTitleView(imageName: "controller_icon", title: "컨트롤러")
-                            .padding(.top, 7)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .controller }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
-                        
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
-                    
-                    if !isLoading && clicked  {
-                        
-                        ClassesTitleView(imageName: "damage_dealer_icon", title: "데미지 딜러")
-                            .padding(.top, 7)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .damageDealer }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
-                        
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
-                    
-                    if !isLoading && clicked  {
-                        
-                        ClassesTitleView(imageName: "marksmen_icon", title: "저격수")
-                            .padding(.top, 7)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .marksmen }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
-                        
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
-                    
-                    if !isLoading && clicked {
-                        
-                        ClassesTitleView(imageName: "throw_icon", title: "투척수")
-                            .padding(.top, 7)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            if clicked {
-                                if isLoading {
-                                    BrawlerEmptyView()
-                                } else if allBrawlersStandard.isEmpty {
-                                    Text("No Data Found") // 데이터가 없는 경우 표시
-                                } else {
-                                    ForEach(allBrawlersStandard.filter{ $0.role == .thrower }, id: \.id) { brawler_st in
-                                        BrawlerView(width: width, BrawlerStandard: brawler_st)
-                                            .environmentObject(calculateViewModel)
-                                            .environmentObject(appState)
-                                    }
-                                }
-                            }
-                            
-                        }//--@LazyHStack
-                        .scrollTargetLayout()
-                        .frame(height: 280)
-                        
-                    }//--@ScrollView
-                    .frame(height: 280)
-                    .scrollTargetBehavior(.viewAligned)
-                    .contentMargins(.horizontal, geo.size.width * 0.1 / 2)
-                    
+
                     
                 }
                 .frame(height: geo.size.height - 120)
@@ -311,5 +152,52 @@ struct CalculateView: View {
         .background(Color(hexString: "37475F"))
         
         
+    }
+}
+
+
+struct RoleBrawlerSection: View {
+    let role: Role
+    let allBrawlers: [BrawlerStandard]
+    let width: CGFloat
+    let clicked: Bool
+    let isLoading: Bool
+
+    @EnvironmentObject var appState: AppState
+    let vm = ClassesTitleViewModel()
+
+    var body: some View {
+        if !isLoading && clicked {
+            ClassesTitleView(
+                imageName: vm.getImageName(role: role),
+                title: vm.getClassTitle(role: role)
+            )
+            .padding(.top, 7)
+        }
+
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                if clicked {
+                    if isLoading {
+                        BrawlerEmptyView()
+                    } else {
+                        let filtered = allBrawlers.filter { $0.role == role }
+                        if filtered.isEmpty {
+                            Text("No Data Found")
+                        } else {
+                            ForEach(filtered, id: \.id) { brawler in
+                                BrawlerView(width: width, brawlerStandard: brawler)
+                                    .environmentObject(appState)
+                            }
+                        }
+                    }
+                }
+            }
+            .scrollTargetLayout()
+            .frame(height: 280)
+        }
+        .frame(height: 280)
+        .scrollTargetBehavior(.viewAligned)
+        .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
     }
 }

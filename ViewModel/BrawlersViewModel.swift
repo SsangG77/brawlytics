@@ -9,19 +9,42 @@ import Foundation
 import SwiftUI
 import Combine
 
+
+protocol BrawlersRepository {
+    
+}
+
+
+
+protocol BrawlersUseCase {
+    func judgeGear(gears: [Gear], gadget: String) -> Bool
+    func judgeGadget(gadgets: [Gadget], gadget: String) -> Bool
+    func judgeStarPower(starPowers: [StarPower], starPower: String) -> Bool
+    
+    func judgeHypercharge(_ hypercharge: String) -> Bool
+    func addHyperchargeArray(_ hypercharge: String)
+    func removeHyperchargeArray(_ hypercharge: String)
+    
+    func calculatePP(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
+    func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
+    func calculateCoin(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int
+    
+}
+
+
 // 데이터 로딩을 관리하는 ViewModel
 class BrawlersViewModel: ObservableObject {
-    @Published var isLoading = true          // 로딩 상태
 
     
     //MARK: - 기어 브롤러 배열
-    //영웅기어를 가지고있는 브롤러 배열
-    @Published var reload_speed_gear_brawlers = ["BELLE", "EVE","LOLA","BO","BROCK","COLT","8-BIT","AMBER","RICO","GRIFF"]
-    @Published var super_charge_gear_brawlers = ["ASH","LOU","OTIS","BULL","NANI","BONNIE","EDGAR","SPROUT","EL PRIMO","JACKY"]
-    @Published var pet_power_gear_brawlers = ["NITA","JESSIE","PENNY","TARA","MR. P"]
+//    //영웅기어를 가지고있는 브롤러 배열
+//    @Published var reload_speed_gear_brawlers = ["BELLE", "EVE","LOLA","BO","BROCK","COLT","8-BIT","AMBER","RICO","GRIFF"]
+//    @Published var super_charge_gear_brawlers = ["ASH","LOU","OTIS","BULL","NANI","BONNIE","EDGAR","SPROUT","EL PRIMO","JACKY"]
+//    @Published var pet_power_gear_brawlers = ["NITA","JESSIE","PENNY","TARA","MR. P"]
     
-    //신화기어를 가지고 있는 브롤러 배열
-    @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
+    
+//    신화기어를 가지고 있는 브롤러 배열
+//    @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
     
     
     //MARK: - 기어 배열
@@ -42,25 +65,6 @@ class BrawlersViewModel: ObservableObject {
         "SUPER TURRET", //팸
         "BAT STORM" //모티스
     ]
-    
-    
-//    //희귀 브롤러
-//    @Published var rare = ["NITA", "COLT", "BULL", "BROCK", "EL PRIMO", "BARLEY", "POCO", "ROSA"]
-//    
-//    //초희귀 브롤러
-//    @Published var super_rare = ["8-BIT", "CARL", "DARRYL", "DYNAMIKE", "GUS", "JACKY", "JESSIE", "PENNY", "RICO", "TICK"]
-//    
-//    //영웅 브롤러
-//    @Published var epic = ["ANGELO","ASH","BEA","BELLE","BERRY","BIBI","BO","BONNIE","COLETTE","EDGAR","EMZ","FRANK","GALE","GRIFF","GROM","HANK","LARRY & LAWRIE","LOLA","MAISIE","MANDY","NANI","PAM","PEARL","PIPER","SAM","SHADE","STU", "MEEPLE"]
-//    
-//    //신화 브롤러
-//    @Published var mythic = ["BUSTER","BUZZ","BYRON","CHARLIE","CHUCK","CLANCY","DOUG","EVE","FANG","GENE","GRAY","JANET","JUJU","LILY","LOU","MAX","MELODIE","MICO","MOE","MORTIS","MR. P","OTIS","R-T","RUFFS","SPROUT","SQUEAK","TARA","WILLOW", "OLLIE", "FINX", "LUMI", "JAE-YONG"]
-//    
-//    //전설 브롤러
-//    @Published var legendary = ["AMBER","CHESTER","CORDELIUS","CROW","DRACO","KENJI","KIT","LEON","MEG","SANDY","SPIKE","SURGE"]
-//    
-//    @Published var ultra_legendary = ["KAZE"]
-    
     
     @Published var all_brawlers_standard: [BrawlerStandard] = []
 
@@ -164,19 +168,6 @@ class BrawlersViewModel: ObservableObject {
     
     func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int {
         if brawler?.name == "" {
-//            if rare.contains(brawlerStandard.name) {
-//                return 160
-//            } else if super_rare.contains(brawlerStandard.name) {
-//                return 430
-//            } else if epic.contains(brawlerStandard.name) {
-//                return 925
-//            } else if mythic.contains(brawlerStandard.name) {
-//                return 1900
-//            } else if legendary.contains(brawlerStandard.name) {
-//                return 3800
-//            } else if ultra_legendary.contains(brawlerStandard.name) {
-//                return 5500
-//            }
             switch brawlerStandard.rarity {
             case .basic:
                 return 0
@@ -248,17 +239,17 @@ class BrawlersViewModel: ObservableObject {
             }
             
             //영웅 기어 계산
-            if reload_speed_gear_brawlers.contains(brawler!.name) {
+            if /*reload_speed_gear_brawlers.contains(brawler!.name)*/ brawlerStandard.epicGear == .reloadSpeed {
                 if !brawler!.gears.contains(where: { $0.name == "RELOAD SPEED" }) {
                     coin += 1500
                 }
             }
-            if super_charge_gear_brawlers.contains(brawler!.name) {
+            if /*super_charge_gear_brawlers.contains(brawler!.name)*/ brawlerStandard.epicGear == .superCharge {
                 if !brawler!.gears.contains(where: { $0.name == "SUPER CHARGE"}) {
                     coin += 1500
                 }
             }
-            if pet_power_gear_brawlers.contains(brawler!.name) {
+            if /*pet_power_gear_brawlers.contains(brawler!.name)*/ brawlerStandard.epicGear == .petPower {
                 if !brawler!.gears.contains(where: { $0.name == "PET POWER"}) {
                     coin += 1500
                 }
@@ -270,6 +261,7 @@ class BrawlersViewModel: ObservableObject {
                     coin += 1000
                 }
             }
+//            coin += 1000*(6 - brawler!.gears.count)
         }
         return coin
     }

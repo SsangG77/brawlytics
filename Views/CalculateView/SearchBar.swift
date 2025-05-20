@@ -80,15 +80,6 @@ class SearchBarViewModel: ObservableObject {
 @available(iOS 17.0, *)
 struct SearchBar: View {
     @State var showHistory:Bool = false
-    
-//    @Binding var tanker_brawlers_standard: [BrawlerStandard]
-//    @Binding var assassin_brawlers_standard: [BrawlerStandard]
-//    @Binding var supporter_brawlers_standard: [BrawlerStandard]
-//    @Binding var damage_dealers_brawlers_standard: [BrawlerStandard]
-//    @Binding var controller_brawlers_standard: [BrawlerStandard]
-//    @Binding var marksmen_brawlers_standard: [BrawlerStandard]
-//    @Binding var throw_brawlers_standard: [BrawlerStandard]
-    
     @Binding var allBrawlersStandard: [BrawlerStandard]
     
     @Binding var clicked: Bool
@@ -156,13 +147,6 @@ struct SearchBar: View {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         withAnimation {
-//                                            tanker_brawlers_standard = brawlersViewModel.tanker_brawlers_standard
-//                                            assassin_brawlers_standard = brawlersViewModel.assassin_brawlers_standard
-//                                            supporter_brawlers_standard = brawlersViewModel.supporter_brawlers_standard
-//                                            controller_brawlers_standard = brawlersViewModel.controller_brawlers_standard
-//                                            damage_dealers_brawlers_standard = brawlersViewModel.damage_dealers_brawlers_standard
-//                                            marksmen_brawlers_standard = brawlersViewModel.marksmen_brawlers_standard
-//                                            throw_brawlers_standard = brawlersViewModel.throw_brawlers_standard
                                             
                                             allBrawlersStandard = service.allBrawlers
                                         }
@@ -202,13 +186,6 @@ struct SearchBar: View {
             searchBarViewModel.searchText = ""
             clicked = false
             showHistory = false
-//            tanker_brawlers_standard = []
-//            assassin_brawlers_standard = []
-//            supporter_brawlers_standard = []
-//            controller_brawlers_standard = []
-//            damage_dealers_brawlers_standard = []
-//            marksmen_brawlers_standard = []
-//            throw_brawlers_standard = []
             allBrawlersStandard = []
             calculateViewModel.brawlers = []
             
