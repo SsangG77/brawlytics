@@ -12,16 +12,29 @@ import SwiftData
 struct ContentView: View {
     
     @StateObject private var appState = AppState()
-
+//    let viewModel: CalculateViewModel
+//    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+//    let service = BrawlersService()
+//    
+//    init() {
+//
+//        let useCase = CalculateUseCaseImpl()
+//        self.viewModel = CalculateViewModel(calculateUseCase: useCase)
+//    }
+    
     var body: some View {
         TabView {
             Group {
-                CalculateView()
-                    .environmentObject(appState)
-                    .tabItem {
-                        Label("Calculator", systemImage: "number")
-                            
-                    }
+                CalculateView(
+//                    calculateViewModel: viewModel,
+//                    brawlersViewModel: brawlersViewModel
+//                    service: service
+                )
+                .environmentObject(appState)
+                .tabItem {
+                    Label("Calculator", systemImage: "number")
+                        
+                }
                 
                 HyperchargeView()
                     .tabItem {
@@ -38,16 +51,5 @@ struct ContentView: View {
         .onAppear {
             UserDefaults.standard.set([], forKey: "searchTextArray")
         }
-
     }
-
-  
 }
-
-//#Preview {
-//    if #available(iOS 17.0, *) {
-//        ContentView()
-//    } else {
-//        // Fallback on earlier versions
-//    }
-//}
