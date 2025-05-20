@@ -44,7 +44,7 @@ class BrawlersViewModel: ObservableObject {
     
     
 //    신화기어를 가지고 있는 브롤러 배열
-//    @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
+   @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
     
     
     //MARK: - 기어 배열
