@@ -17,11 +17,11 @@
 
 - 언어: Swift
 - 프레임워크: SwiftUI
-- 네트워크	URLSession, Brawl Stars API
-- 상태 관리	@Published, AppStorage
-- 비동기 처리	Swift Concurrency (async/await)
-- 아키텍처	MVVM, 클린 아키텍처, UseCase 패턴
-- 화면 대응	UIDevice, GeometryReader 활용
+- 네트워크:	URLSession, Brawl Stars API
+- 상태 관리:	@Published, AppStorage
+- 비동기 처리:	Swift Concurrency (async/await)
+- 아키텍처:	MVVM, 클린 아키텍처, UseCase 패턴
+- 화면 대응:	UIDevice, GeometryReader 활용
 
 </br>
 
