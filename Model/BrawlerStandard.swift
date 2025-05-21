@@ -43,20 +43,23 @@ enum Role {
     case thrower
 }
 
-enum EpicGear {
-    case reloadSpeed
-    case superCharge
-    case petPower
+enum EpicGear:String {
+    case reloadSpeed = "RELOAD SPEED"
+    case superCharge = "SUPER CHANGE"
+    case petPower = "PET POWER"
     case none
 }
 
-enum MythicGear {
-    case thiccHead
-    case talkToTheHead
-    case enduringToxin
-    case stickySpikes
-    case lingeringSmoke
-    
+enum MythicGear:String {
+    case thiccHead = "THICC HEAD"
+    case talkToTheHead = "TALK TO THE HAND"
+    case enduringToxin = "ENDURING TOXIN"
+    case stickySpikes = "STICKY SPIKES"
+    case lingeringSmoke = "LINGERING SMOKE"
+    case stickyOil = "STICKY OIL"
+    case quadruplets = "QUADRUPLETS"
+    case superTurret = "SUPER TURRET"
+    case batStrom = "BAT STORM"
     case none
 }
 

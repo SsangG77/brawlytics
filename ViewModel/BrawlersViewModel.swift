@@ -9,104 +9,17 @@ import Foundation
 import SwiftUI
 import Combine
 
-
-protocol BrawlersRepository {
-    
-}
-
-
-
-protocol BrawlersUseCase {
-    func judgeGear(gears: [Gear], gadget: String) -> Bool
-    func judgeGadget(gadgets: [Gadget], gadget: String) -> Bool
-    func judgeStarPower(starPowers: [StarPower], starPower: String) -> Bool
-    
+//MARK: - DataSource
+protocol HyperchargeDataSource {
     func judgeHypercharge(_ hypercharge: String) -> Bool
     func addHyperchargeArray(_ hypercharge: String)
     func removeHyperchargeArray(_ hypercharge: String)
-    
-    func calculatePP(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
-    func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
-    func calculateCoin(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int
-    
 }
 
-
-// 데이터 로딩을 관리하는 ViewModel
-class BrawlersViewModel: ObservableObject {
-
-    
-    //MARK: - 기어 브롤러 배열
-//    //영웅기어를 가지고있는 브롤러 배열
-//    @Published var reload_speed_gear_brawlers = ["BELLE", "EVE","LOLA","BO","BROCK","COLT","8-BIT","AMBER","RICO","GRIFF"]
-//    @Published var super_charge_gear_brawlers = ["ASH","LOU","OTIS","BULL","NANI","BONNIE","EDGAR","SPROUT","EL PRIMO","JACKY"]
-//    @Published var pet_power_gear_brawlers = ["NITA","JESSIE","PENNY","TARA","MR. P"]
-    
-    
-//    신화기어를 가지고 있는 브롤러 배열
-   @Published var mythic_gear_brawlers = ["TICK","GENE","CROW","SANDY","SPIKE","LEON","AMBER","EVE","PAM","MORTIS"]
-    
-    
-    //MARK: - 기어 배열
-    //초희귀 기어 이름 배열
-    @Published var gear_names = ["SPEED", "HEALTH", "DAMAGE", "VISION", "SHIELD", "GADGET COOLDOWN"]
-    
-    
-    //신화 기어 이름 배열
-    @Published var mythic_gear_name = [
-        "THICC HEAD", //틱
-        "TALK TO THE HAND", //진
-        "ENDURING TOXIN", //크로우
-        "EXHAUSTING STORM", //샌디
-        "STICKY SPIKES", //스파이크
-        "LINGERING SMOKE", //레온
-        "STICKY OIL", //앰버
-        "QUADRUPLETS", //이브
-        "SUPER TURRET", //팸
-        "BAT STORM" //모티스
-    ]
-    
-    @Published var all_brawlers_standard: [BrawlerStandard] = []
-
-    let service = BrawlersService()
-    
-    init() {
-        all_brawlers_standard = service.allBrawlers
-    }
-    
-    func judgeGear(gears: [Gear], gear: String) -> Bool {
-        
-        for g in gears {
-            if g.name == gear {
-                return true
-            }
-        }
-        return false
-        
-    }
-    
-    func judgeGadget(gadgets: [Gadget], gadget: String) -> Bool {
-        
-        for g in gadgets {
-            if g.name == gadget {
-                return true
-            }
-        }
-        return false
-    }
-    
-    func judgeStarPower(starPowers: [StarPower], starPower: String) -> Bool {
-        
-        for s in starPowers {
-            if s.name == starPower {
-                return true
-            }
-        }
-        return false
-    }
+class HyperchargeDataSourceImpl: HyperchargeDataSource {
+    let key = "hyperchargeArray"
     
     func judgeHypercharge(_ hypercharge: String) -> Bool {
-        let key = "hyperchargeArray"
         let array = UserDefaults.standard.stringArray(forKey: key) ?? []
         
         if array.contains(hypercharge) {
@@ -117,8 +30,6 @@ class BrawlersViewModel: ObservableObject {
     }
     
     func addHyperchargeArray(_ hypercharge: String) {
-        let key = "hyperchargeArray"
-        
         var array = UserDefaults.standard.stringArray(forKey: key) ?? []
         
         if !array.contains(hypercharge) {
@@ -128,8 +39,6 @@ class BrawlersViewModel: ObservableObject {
     }
     
     func removeHyperchargeArray(_ hypercharge: String) {
-        let key = "hyperchargeArray"
-        
         var array = UserDefaults.standard.stringArray(forKey: key) ?? []
         
         if let index = array.firstIndex(of: hypercharge) {
@@ -137,9 +46,57 @@ class BrawlersViewModel: ObservableObject {
             UserDefaults.standard.set(array, forKey: key)
         }
     }
+}
+
+//MARK: - Repository
+protocol BrawlersRepository {
+    func getBrawlers() -> [BrawlerStandard]
+    func judgeHypercharge(_ hypercharge: String) -> Bool
+    func addHyperchargeArray(_ hypercharge: String)
+    func removeHyperchargeArray(_ hypercharge: String)
+}
+
+class BrawlersRepositoryImpl: BrawlersRepository {
+    private let service: BrawlersService
+    private let dataSource: HyperchargeDataSource
     
+    init(service: BrawlersService, dataSource: HyperchargeDataSource) {
+        self.service = service
+        self.dataSource = dataSource
+        
+    }
+   
+    func getBrawlers() -> [BrawlerStandard] {
+       return service.allBrawlers
+    }
     
-    func calculatePP(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int {
+    func judgeHypercharge(_ hypercharge: String) -> Bool {
+        return dataSource.judgeHypercharge(hypercharge)
+    }
+    
+    func addHyperchargeArray(_ hypercharge: String) {
+        dataSource.addHyperchargeArray(hypercharge)
+    }
+    
+    func removeHyperchargeArray(_ hypercharge: String) {
+        dataSource.removeHyperchargeArray(hypercharge)
+    }
+}
+
+//MARK: - UseCase
+protocol BrawlersUseCase {
+    func judgeGear(gears: [Gear], gear: String) -> Bool
+    func judgeGadget(gadgets: [Gadget], gadget: String) -> Bool
+    func judgeStarPower(starPowers: [StarPower], starPower: String) -> Bool
+    
+    func calculatePP(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
+    func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
+    func calculateCoin(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int
+    
+}
+
+class BrawlersUseCaseImpl: BrawlersUseCase {
+    func calculatePP(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int {
         if brawler?.name == "" || brawler?.power == 1 {
             return 1440+890+550+340+210+130+80+50+30+20
         } else if brawler?.power == 2 {
@@ -166,7 +123,7 @@ class BrawlersViewModel: ObservableObject {
         return 0
     }
     
-    func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int {
+    func calculateCredit(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int {
         if brawler?.name == "" {
             switch brawlerStandard.rarity {
             case .basic:
@@ -230,47 +187,108 @@ class BrawlersViewModel: ObservableObject {
             
             //기어 계산
             //신화 기어 계산
-            if mythic_gear_brawlers.contains(brawler!.name) { //신화 기어를 가지고 있는 브롤러
-                if !mythic_gear_name.contains(where: { gearName in
-                    brawler!.gears.contains { $0.name == gearName }
-                }) {
+            if brawlerStandard.mythicGear != .none { //신화 기어를 가지고 있는 브롤러
+                if !brawler!.gears.contains(where: { $0.name == brawlerStandard.mythicGear.rawValue }) {
                     coin += 2000
                 }
             }
             
             //영웅 기어 계산
-            if /*reload_speed_gear_brawlers.contains(brawler!.name)*/ brawlerStandard.epicGear == .reloadSpeed {
-                if !brawler!.gears.contains(where: { $0.name == "RELOAD SPEED" }) {
-                    coin += 1500
-                }
-            }
-            if /*super_charge_gear_brawlers.contains(brawler!.name)*/ brawlerStandard.epicGear == .superCharge {
-                if !brawler!.gears.contains(where: { $0.name == "SUPER CHARGE"}) {
-                    coin += 1500
-                }
-            }
-            if /*pet_power_gear_brawlers.contains(brawler!.name)*/ brawlerStandard.epicGear == .petPower {
-                if !brawler!.gears.contains(where: { $0.name == "PET POWER"}) {
+            if brawlerStandard.epicGear != .none {
+                if !brawler!.gears.contains(where: { $0.name == brawlerStandard.epicGear.rawValue }) {
                     coin += 1500
                 }
             }
             
             //초희귀 기어 계산
-            for gear in gear_names {
-                if !brawler!.gears.contains(where: { $0.name == gear}) {
+            for gear in RareGear.allCases {
+                if !brawler!.gears.contains(where: { $0.name == gear.rawValue }) {
                     coin += 1000
                 }
             }
-//            coin += 1000*(6 - brawler!.gears.count)
         }
         return coin
     }
     
+    func judgeGear(gears: [Gear], gear: String) -> Bool {
+        for g in gears {
+            if g.name == gear {
+                return true
+            }
+        }
+        return false
+    }
     
+    func judgeGadget(gadgets: [Gadget], gadget: String) -> Bool {
+        for g in gadgets {
+            if g.name == gadget {
+                return true
+            }
+        }
+        return false
+    }
     
-    
-    
-    
-    
+    func judgeStarPower(starPowers: [StarPower], starPower: String) -> Bool {
+        for s in starPowers {
+            if s.name == starPower {
+                return true
+            }
+        }
+        return false
+    }
 }
+
+
+
+
+// 데이터 로딩을 관리하는 ViewModel
+class BrawlersViewModel: ObservableObject {
+
+    @Published var all_brawlers_standard: [BrawlerStandard] = []
+    private let repository: BrawlersRepository
+    private let useCase: BrawlersUseCase
+    
+    init(repository: BrawlersRepository, useCase: BrawlersUseCase) {
+        self.repository = repository
+        self.useCase = useCase
+        all_brawlers_standard = repository.getBrawlers()
+    }
+    
+    func judgeGear(gears: [Gear], gear: String) -> Bool {
+        return useCase.judgeGear(gears: gears, gear: gear)
+    }
+    
+    func judgeGadget(gadgets: [Gadget], gadget: String) -> Bool {
+        return useCase.judgeGadget(gadgets: gadgets, gadget: gadget)
+    }
+    
+    func judgeStarPower(starPowers: [StarPower], starPower: String) -> Bool {
+        return useCase.judgeStarPower(starPowers: starPowers, starPower: starPower)
+    }
+    
+    func judgeHypercharge(_ hypercharge: String) -> Bool {
+        return repository.judgeHypercharge(hypercharge)
+    }
+    
+    func addHyperchargeArray(_ hypercharge: String) {
+        repository.addHyperchargeArray(hypercharge)
+    }
+    
+    func removeHyperchargeArray(_ hypercharge: String) {
+        repository.removeHyperchargeArray(hypercharge)
+    }
+    
+    func calculatePP(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int {
+        return useCase.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
+    }
+    
+    func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int {
+        return useCase.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
+    }
+    
+    func calculateCoin(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int {
+        return useCase.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
+    }
+}
+
 
