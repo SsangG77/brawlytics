@@ -21,16 +21,7 @@ struct CalculateView: View {
     let iconSize: CGFloat = 20
     let fontSize: CGFloat = 20
     
-    
-    @StateObject var calculateViewModel: CalculateViewModel
-    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
-    let service = BrawlersService()
-    
-    init() {
-        let useCase = CalculateUseCaseImpl()
-        _calculateViewModel = StateObject(wrappedValue: CalculateViewModel(calculateUseCase: useCase))
-    }
-    
+    @EnvironmentObject var calculateViewModel: CalculateViewModel
     
     var body: some View {
         
@@ -50,9 +41,9 @@ struct CalculateView: View {
                             allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
                             isLoading: $isLoading,
-                            searchBarViewModel: searchBarVM,
-                            brawlersViewModel: brawlersViewModel,
-                            service: service
+                            searchBarViewModel: searchBarVM
+//                            brawlersViewModel: brawlersViewModel
+//                            service: service
                         )
                         .environmentObject(calculateViewModel)
                         .environmentObject(appState)
@@ -96,7 +87,7 @@ struct CalculateView: View {
                     .environmentObject(calculateViewModel)
 
                     RoleBrawlerSection(
-                        role: .tanker,
+                        role: .controller,
                         allBrawlers: allBrawlersStandard,
                         width: width,
                         clicked: clicked,

@@ -29,12 +29,22 @@ struct BrawlerView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var calculateViewModel: CalculateViewModel
     
-    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+    let brawlersViewModel: BrawlersViewModel
     let service = BrawlersService()
     
     init(width: CGFloat, brawlerStandard: BrawlerStandard) {
         self.width = width
         self.brawlerStandard = brawlerStandard
+        let service = BrawlersService()
+        let dataSource = HyperchargeDataSourceImpl()
+        let repository = BrawlersRepositoryImpl(service: service, dataSource: dataSource)
+        let judge = BrawlerJudgeImpl()
+        let useCase = BrawlersUseCaseImpl(repository: repository)
+        self.brawlersViewModel = BrawlersViewModel(
+            repository: repository,
+            useCase: useCase,
+            judge: judge
+        )
     }
     
     var body: some View {
@@ -97,7 +107,7 @@ struct BrawlerView: View {
     }
 
     private var moneyBlock: some View {
-        MoneyCountView(parentWidth: width, brawler: $brawler, brawlerStandard: brawlerStandard)
+        MoneyCountView(parentWidth: width, brawlerStandard: brawlerStandard, brawler: $brawler, viewModel: brawlersViewModel)
             .environmentObject(appState)
             .frame(height: totalHeight - brawlerHeight)
     }
@@ -194,26 +204,19 @@ struct GearView: View {
                 
                 
                 //영웅 기어
-//                if viewModel.reload_speed_gear_brawlers.contains(brawler?.name ?? " ") {
                 if brawlerStandard.epicGear == .reloadSpeed {
                     SingleGearView(imageName: "RELOAD SPEED", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "RELOAD SPEED"), offset: true)
                 }
                 
-//                if viewModel.super_charge_gear_brawlers.contains(brawler?.name ?? " ") {
+
                 if brawlerStandard.epicGear == .superCharge {
                     SingleGearView(imageName: "SUPER CHARGE", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "SUPER CHARGE"), offset: true)
                 }
                 
-//                if viewModel.pet_power_gear_brawlers.contains(brawler?.name ?? " ") {
+
                 if brawlerStandard.epicGear == .petPower {
                     SingleGearView(imageName: "PET POWER", withItem: viewModel.judgeGear(gears: brawler?.gears ?? [], gear: "PET POWER"), offset: true)
                 }
-                
-                
-//                let gearBrawlersSet = Set(viewModel.reload_speed_gear_brawlers)
-//                    .union(viewModel.super_charge_gear_brawlers)
-//                    .union(viewModel.pet_power_gear_brawlers)
-                
                 
                 //신화기어 표시
                 switch brawler?.name ?? "" {
@@ -320,13 +323,25 @@ struct PowerView: View {
     
     //Binding
     var parentWidth: CGFloat
-//    @Binding var BrawlerStandard: BrawlerStandard
     var brawlerStandard: BrawlerStandard
     @Binding var brawler: Brawler?
     
     
     //viewModel
-    @StateObject var viewModel: BrawlersViewModel = BrawlersViewModel()
+    @StateObject var viewModel:BrawlersViewModel
+        
+    init(parentWidth: CGFloat, brawlerStandard: BrawlerStandard, brawler: Binding<Brawler?>) {
+        self.parentWidth = parentWidth
+        self.brawlerStandard = brawlerStandard
+        self._brawler = brawler
+        
+        let service = BrawlersService()
+        let dataSource = HyperchargeDataSourceImpl()
+        let repository = BrawlersRepositoryImpl(service: service, dataSource: dataSource)
+        let useCase = BrawlersUseCaseImpl(repository: repository)
+        let judge = BrawlerJudgeImpl()
+        _viewModel = StateObject(wrappedValue: BrawlersViewModel(repository: repository, useCase: useCase, judge: judge))
+        }
     
     var body: some View {
         
@@ -380,11 +395,6 @@ struct PowerView: View {
 
 struct MoneyCountView: View {
     
-    var parentWidth: CGFloat
-    @Binding var brawler: Brawler?
-//    @Binding var brawlerStandard: BrawlerStandard
-    var brawlerStandard: BrawlerStandard
-    
     @State var ppCount = -1
     @State var coinCount = -1
     @State var creditCount = -1
@@ -392,7 +402,26 @@ struct MoneyCountView: View {
     
     @State var imageSize : CGFloat = 33
     
-    @StateObject var brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
+    //Binding
+    var parentWidth: CGFloat
+    var brawlerStandard: BrawlerStandard
+    @Binding var brawler: Brawler?
+    
+    //viewModel
+    @ObservedObject var viewModel:BrawlersViewModel
+        
+    init(
+        parentWidth: CGFloat,
+        brawlerStandard: BrawlerStandard,
+        brawler: Binding<Brawler?>,
+        viewModel: BrawlersViewModel
+    ) {
+        self.parentWidth = parentWidth
+        self.brawlerStandard = brawlerStandard
+        self._brawler = brawler
+        
+        self.viewModel = viewModel
+        }
     
     var body: some View {
         HStack {
@@ -440,30 +469,24 @@ struct MoneyCountView: View {
         .padding(.bottom, 14)
         .onChange(of: brawler) { newValue in
             if newValue != nil {
-                ppCount = brawlersViewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
-                creditCount = brawlersViewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
-                coinCount = brawlersViewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
+                ppCount = viewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
+                creditCount = viewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
+                coinCount = viewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
 //
-                appState.totalPP += brawlersViewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
-                appState.totalCredit += brawlersViewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
-                appState.totalCoin += brawlersViewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
+                appState.totalPP += viewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
+                appState.totalCredit += viewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
+                appState.totalCoin += viewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
                 
             }
+            
+            
+            print("=========================================")
+            print("브롤러 : \(brawler?.name)")
+            print("브롤러 코인 : \(coinCount)")
+            print("총합 코인: \(appState.totalCoin)")
+            print("")
         }
-        .onAppear {
-        }
+       
     }
 }
 
-
-
-
-
-
-
-
-
-
-//#Preview {
-//    BrawlerProfileView()
-//}

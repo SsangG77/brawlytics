@@ -8,91 +8,19 @@
 import SwiftUI
 
 
-protocol SearchHistoryRepository {
-    func saveSearchText(_ searchText:String)
-    func getSearchHistory() -> [String]
-}
-
-class SearchHistoryRepositoryImpl: SearchHistoryRepository {
-    @AppStorage("searchString") var searchString: [String] = []
-
-    func saveSearchText(_ searchText:String) {
-        if !searchString.contains(searchText) {
-            if searchString.count >= 3 {
-                searchString.removeFirst()
-                searchString.append(searchText)
-            } else {
-                searchString.append(searchText)
-            }
-        }
-    }
-
-    func getSearchHistory() -> [String] {
-        return searchString
-    }
-}
-
-protocol SearchBarUseCase {
-    func saveSearchText(_ searchText: String)
-    func getSearchHistory() -> [String]
-}
-
-class SearchBarUseCaseImpl: SearchBarUseCase {
-    
-    private let historyRepository : SearchHistoryRepository
-    
-    init(historyRepository: SearchHistoryRepository) {
-        self.historyRepository = historyRepository
-    }
-    
-    func saveSearchText(_ searchText: String) {
-        historyRepository.saveSearchText(searchText)
-    }
-    
-    func getSearchHistory() -> [String] {
-        return historyRepository.getSearchHistory()
-    }
-}
-
-
-class SearchBarViewModel: ObservableObject {
-    @Published var searchText: String = ""
-    @Published var searchHistory: [String] = []
-    
-    private let historyRepository: SearchHistoryRepository
-    
-    init(repository: SearchHistoryRepository) {
-        self.historyRepository = repository
-    }
-    
-    
-    func saveSearchText(_ searchText: String) {
-        historyRepository.saveSearchText(searchText)
-    }
-    
-    func getSearchHistory() -> [String] {
-        return historyRepository.getSearchHistory()
-    }
-    
-    
-}
-
 @available(iOS 17.0, *)
 struct SearchBar: View {
     @State var showHistory:Bool = false
     @Binding var allBrawlersStandard: [BrawlerStandard]
-    
     @Binding var clicked: Bool
     @Binding var isLoading: Bool
     
-    
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var calculateViewModel: CalculateViewModel
     @ObservedObject var searchBarViewModel: SearchBarViewModel
+    @StateObject var service: BrawlersService = BrawlersService()
     
-    @EnvironmentObject var appState: AppState
     
-    @StateObject var brawlersViewModel: BrawlersViewModel
-    @StateObject var service: BrawlersService
     
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     
@@ -195,47 +123,3 @@ struct SearchBar: View {
         }
     }
 }
-
-
-
-@available(iOS 17.0, *)
-struct SearchHistoryView: View {
-    
-//    @EnvironmentObject var calculateViewModel: CalculateViewModel
-    @EnvironmentObject var searchBarViewModel : SearchBarViewModel
-    
-    @State var iphoneWidth : CGFloat = UIScreen.main.bounds.width * 0.9
-    @Binding var ipadWidth : CGFloat
-    
-    
-    @AppStorage("searchString") var searchString: [String] = []
-    
-    var body: some View {
-            VStack(spacing:0) {
-                Spacer()
-                HStack {
-                    ForEach(searchString, id: \.self) { search in
-                        HStack {
-                            Spacer()
-                            Text(search)
-                            Spacer()
-                        }
-                        .onTapGesture {
-                            searchBarViewModel.searchText = search
-                        }
-                    }
-                }
-            }
-            .padding()
-            .frame(width : Constants.isPad() ? ipadWidth : iphoneWidth, height: 75 + 35)
-            .background(Color.white)
-            .overlay(
-                RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color.black, lineWidth: 5)
-            )
-            .cornerRadius(15)
-    }
-}
-
-
-

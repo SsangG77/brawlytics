@@ -1,13 +1,11 @@
 //
-//  CalculateViewModel.swift
+//  CalculateUseCase.swift
 //  Brawlytics
 //
-//  Created by 차상진 on 11/7/24.
+//  Created by 차상진 on 5/22/25.
 //
 
 import Foundation
-import SwiftUI
-
 
 protocol CalculateUseCase {
     func getBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void)
@@ -63,49 +61,4 @@ class CalculateUseCaseImpl: CalculateUseCase {
     func findMyBrawler(brawlerName: String) -> Brawler {
         return brawlers.first(where: { $0.name == brawlerName }) ?? Brawler()
     }
-}
-
-
-class CalculateViewModel: ObservableObject {
-    
-    @Published var brawlers: [Brawler] = []
-    @Published var isLoading: Bool = false
-    private let calculateUseCase: CalculateUseCase
-    
-    init(calculateUseCase: CalculateUseCase) {
-        self.calculateUseCase = calculateUseCase
-    }
-
-    
-    
-    func getBrawlers(_ searchText: String) {
-        isLoading = true
-        self.calculateUseCase.getBrawlers(searchText: searchText) { brawlers in
-            DispatchQueue.main.async {
-                self.brawlers = brawlers
-                self.isLoading = false
-            }
-        }
-    }
-    
-    func findMyBrawler(brawlerName: String) -> Brawler {
-        return calculateUseCase.findMyBrawler(brawlerName: brawlerName)
-    }
-    
-    @ViewBuilder
-    func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {
-        if isPad { //아이패드일때
-            HStack {
-                content()
-            }
-            .frame(height: 130)
-            
-        } else {
-            ZStack {
-                content()
-            }
-            
-        }
-    }
-    
 }

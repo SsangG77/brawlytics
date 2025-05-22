@@ -40,24 +40,14 @@
 			path = Brawlytics;
 			sourceTree = "<group>";
 		};
-		9128115A2CD79CBB004D9554 /* Views */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Views;
-			sourceTree = "<group>";
-		};
 		9128115D2CD7A4C5004D9554 /* Module */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Module;
 			sourceTree = "<group>";
 		};
-		912811672CDA6FCA004D9554 /* Model */ = {
+		915F8B3C2DDE42F300172B39 /* Project */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Model;
-			sourceTree = "<group>";
-		};
-		9128116A2CDA7985004D9554 /* ViewModel */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ViewModel;
+			path = Project;
 			sourceTree = "<group>";
 		};
 		915FBD562CFF5FEB00F0C0D1 /* Class */ = {
@@ -95,14 +85,12 @@
 		912811222CD799FB004D9554 = {
 			isa = PBXGroup;
 			children = (
+				915F8B3C2DDE42F300172B39 /* Project */,
 				915FBD562CFF5FEB00F0C0D1 /* Class */,
 				9121363B2CE8BC0600BDD0B1 /* test.swift */,
 				9128112C2CD799FB004D9554 /* Products */,
 				9128112D2CD799FB004D9554 /* Brawlytics */,
-				9128116A2CDA7985004D9554 /* ViewModel */,
-				912811672CDA6FCA004D9554 /* Model */,
 				9128115D2CD7A4C5004D9554 /* Module */,
-				9128115A2CD79CBB004D9554 /* Views */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,10 +121,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				9128112D2CD799FB004D9554 /* Brawlytics */,
-				9128115A2CD79CBB004D9554 /* Views */,
 				9128115D2CD7A4C5004D9554 /* Module */,
-				912811672CDA6FCA004D9554 /* Model */,
-				9128116A2CDA7985004D9554 /* ViewModel */,
+				915F8B3C2DDE42F300172B39 /* Project */,
 				915FBD562CFF5FEB00F0C0D1 /* Class */,
 			);
 			name = Brawlytics;

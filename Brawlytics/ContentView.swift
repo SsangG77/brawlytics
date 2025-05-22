@@ -12,31 +12,39 @@ import SwiftData
 struct ContentView: View {
     
     @StateObject private var appState = AppState()
-//    let viewModel: CalculateViewModel
-//    let brawlersViewModel: BrawlersViewModel = BrawlersViewModel()
-//    let service = BrawlersService()
-//    
-//    init() {
-//
-//        let useCase = CalculateUseCaseImpl()
-//        self.viewModel = CalculateViewModel(calculateUseCase: useCase)
-//    }
+    @StateObject var viewModel: CalculateViewModel
+    @StateObject var brawlersViewModel: BrawlersViewModel
+    init() {
+        let useCase = CalculateUseCaseImpl()
+        _viewModel = StateObject(wrappedValue: CalculateViewModel(calculateUseCase: useCase))
+        
+        let service = BrawlersService()
+        let dataSource = HyperchargeDataSourceImpl()
+        let repository = BrawlersRepositoryImpl(service: service, dataSource: dataSource)
+        let brawlersUseCase = BrawlersUseCaseImpl(repository: repository)
+        _brawlersViewModel = StateObject(
+            wrappedValue: BrawlersViewModel(
+                repository: repository,
+                useCase: brawlersUseCase,
+                judge: BrawlerJudgeImpl()
+            )
+        )
+        
+    }
     
     var body: some View {
         TabView {
             Group {
-                CalculateView(
-//                    calculateViewModel: viewModel,
-//                    brawlersViewModel: brawlersViewModel
-//                    service: service
-                )
+                CalculateView()
                 .environmentObject(appState)
+                .environmentObject(viewModel)
                 .tabItem {
                     Label("Calculator", systemImage: "number")
                         
                 }
                 
-                HyperchargeView()
+                HyperchargeView(viewModel: brawlersViewModel)
+                    .environmentObject(appState)
                     .tabItem {
                         Label("Hyper charge", systemImage: "flame")
                             

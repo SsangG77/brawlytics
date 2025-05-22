@@ -41,8 +41,6 @@ struct Gear: Codable {
     let name: String
     let level: Int
     
-    
-    
 }
 
 struct StarPower: Codable {
