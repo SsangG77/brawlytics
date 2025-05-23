@@ -22,7 +22,7 @@ class CalculateViewModel: ObservableObject {
     
     func getBrawlers(_ searchText: String) {
         isLoading = true
-        self.calculateUseCase.getBrawlers(searchText: searchText) { brawlers in
+        self.calculateUseCase.getUserBrawlers(searchText: searchText) { brawlers in
             DispatchQueue.main.async {
                 self.brawlers = brawlers
                 self.isLoading = false

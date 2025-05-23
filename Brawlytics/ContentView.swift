@@ -12,24 +12,15 @@ import SwiftData
 struct ContentView: View {
     
     @StateObject private var appState = AppState()
-    @StateObject var viewModel: CalculateViewModel
-    @StateObject var brawlersViewModel: BrawlersViewModel
-    init() {
-        let useCase = CalculateUseCaseImpl()
-        _viewModel = StateObject(wrappedValue: CalculateViewModel(calculateUseCase: useCase))
-        
-        let service = BrawlersService()
-        let dataSource = HyperchargeDataSourceImpl()
-        let repository = BrawlersRepositoryImpl(service: service, dataSource: dataSource)
-        let brawlersUseCase = BrawlersUseCaseImpl(repository: repository)
-        _brawlersViewModel = StateObject(
-            wrappedValue: BrawlersViewModel(
-                repository: repository,
-                useCase: brawlersUseCase,
-                judge: BrawlerJudgeImpl()
-            )
-        )
-        
+    @StateObject var calculateVM: CalculateViewModel
+    @StateObject var brawlersVM: BrawlersViewModel
+    
+    init(
+        calculateVM: CalculateViewModel,
+        brawlersVM: BrawlersViewModel
+    ) {
+        _calculateVM = StateObject(wrappedValue: calculateVM)
+        _brawlersVM = StateObject(wrappedValue: brawlersVM)
     }
     
     var body: some View {
@@ -37,13 +28,13 @@ struct ContentView: View {
             Group {
                 CalculateView()
                 .environmentObject(appState)
-                .environmentObject(viewModel)
+                .environmentObject(calculateVM)
                 .tabItem {
                     Label("Calculator", systemImage: "number")
                         
                 }
                 
-                HyperchargeView(viewModel: brawlersViewModel)
+                HyperchargeView(viewModel: brawlersVM)
                     .environmentObject(appState)
                     .tabItem {
                         Label("Hyper charge", systemImage: "flame")

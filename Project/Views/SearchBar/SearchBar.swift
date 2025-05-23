@@ -18,18 +18,19 @@ struct SearchBar: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var calculateViewModel: CalculateViewModel
     @ObservedObject var searchBarViewModel: SearchBarViewModel
-    @StateObject var service: BrawlersService = BrawlersService()
+    @StateObject var brawlersDataSource: BrawlersDataSource = BrawlersDataSource()
     
     
     
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
+    @State var ipadWidth: CGFloat = 0  // GeometryReader에서 사용할 값을 저장할 변수 추가
     
 
     var body: some View {
         
         GeometryReader { geo in
             
-            @State var ipadWidth = geo.size.width * 0.7
+            let ipadWidth = geo.size.width * 0.7  // @State 대신 일반 변수로 선언
             
             ZStack(alignment: .top) {
                 if showHistory {
@@ -76,7 +77,7 @@ struct SearchBar: View {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         withAnimation {
                                             
-                                            allBrawlersStandard = service.allBrawlers
+                                            allBrawlersStandard = brawlersDataSource.allBrawlers
                                         }
                                         
                                         // 로딩 종료

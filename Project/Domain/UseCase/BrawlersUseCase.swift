@@ -102,7 +102,7 @@ class BrawlersUseCaseImpl: BrawlersUseCase {
         
         if brawler != nil {
             //하이퍼차지 계산
-            if repository.judgeHypercharge(brawlerStandard.hypercharge) {
+            if !repository.judgeHypercharge(brawlerStandard.hypercharge) {
                 coin += 5000
             }
             

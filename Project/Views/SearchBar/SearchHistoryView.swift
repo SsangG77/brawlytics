@@ -13,9 +13,8 @@ struct SearchHistoryView: View {
     
     @EnvironmentObject var searchBarViewModel : SearchBarViewModel
     
-    @State var iphoneWidth : CGFloat = UIScreen.main.bounds.width * 0.9
-    @Binding var ipadWidth : CGFloat
-    
+    @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
+    @Binding var ipadWidth: CGFloat
     
     @AppStorage("searchString") var searchString: [String] = []
     

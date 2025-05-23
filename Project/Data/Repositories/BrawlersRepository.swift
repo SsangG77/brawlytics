@@ -16,17 +16,20 @@ protocol BrawlersRepository {
 }
 
 class BrawlersRepositoryImpl: BrawlersRepository {
-    private let service: BrawlersService
+    private let brawlersDataSource: BrawlersDataSource
     private let dataSource: HyperchargeDataSource
     
-    init(service: BrawlersService, dataSource: HyperchargeDataSource) {
-        self.service = service
+    init(
+        brawlersDataSource: BrawlersDataSource,
+        dataSource: HyperchargeDataSource
+    ) {
+        self.brawlersDataSource = brawlersDataSource
         self.dataSource = dataSource
         
     }
    
     func getBrawlers() -> [BrawlerStandard] {
-       return service.allBrawlers
+       return brawlersDataSource.allBrawlers
     }
     
     func judgeHypercharge(_ hypercharge: String) -> Bool {

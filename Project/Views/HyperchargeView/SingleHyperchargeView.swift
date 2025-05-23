@@ -30,9 +30,12 @@ struct SingleHyperchargeView: View {
         self.hyperchargeName = hyperchargeName
         self.brawlerName = brawlerName
            
-        let service = BrawlersService()
+           let brawlersDataSource = BrawlersDataSource()
         let dataSource = HyperchargeDataSourceImpl()
-        let repository = BrawlersRepositoryImpl(service: service, dataSource: dataSource)
+        let repository = BrawlersRepositoryImpl(
+            brawlersDataSource: brawlersDataSource,
+            dataSource: dataSource
+        )
         let useCase = BrawlersUseCaseImpl(repository: repository)
         _viewModel = StateObject(wrappedValue: BrawlersViewModel(repository: repository, useCase: useCase, judge: BrawlerJudgeImpl()))
     }

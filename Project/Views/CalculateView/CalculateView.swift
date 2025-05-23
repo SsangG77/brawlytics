@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-
+import Foundation
+// DIContainer 임포트 (실제 경로에 맞게 수정 필요)
+// import DIContainer
 
 @available(iOS 17.0, *)
 struct CalculateView: View {
@@ -22,6 +24,7 @@ struct CalculateView: View {
     let fontSize: CGFloat = 20
     
     @EnvironmentObject var calculateViewModel: CalculateViewModel
+    let diContainer = DIContainer.shared
     
     var body: some View {
         
@@ -31,19 +34,13 @@ struct CalculateView: View {
             
             
             VStack(spacing : 0) {
-                
                 calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
 
-                    let repository = SearchHistoryRepositoryImpl()
-                    let searchBarVM = SearchBarViewModel(repository: repository)
-                    
                         SearchBar(
                             allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
                             isLoading: $isLoading,
-                            searchBarViewModel: searchBarVM
-//                            brawlersViewModel: brawlersViewModel
-//                            service: service
+                            searchBarViewModel: diContainer.makeSearchBarViewModel()
                         )
                         .environmentObject(calculateViewModel)
                         .environmentObject(appState)
@@ -156,6 +153,7 @@ struct RoleBrawlerSection: View {
 
     @EnvironmentObject var appState: AppState
     let vm = ClassesTitleViewModel()
+    let diContainer = DIContainer.shared
 
     var body: some View {
         if !isLoading && clicked {
@@ -176,9 +174,13 @@ struct RoleBrawlerSection: View {
                         if filtered.isEmpty {
                             Text("No Data Found")
                         } else {
-                            ForEach(filtered, id: \.id) { brawler in
-                                BrawlerView(width: width, brawlerStandard: brawler)
-                                    .environmentObject(appState)
+                            ForEach(filtered, id: \ .id) { brawler in
+                                BrawlerView(
+                                    width: width,
+                                    brawlerStandard: brawler,
+                                    viewModel: diContainer.makeBrawlersViewModel()
+                                )
+                                .environmentObject(appState)
                             }
                         }
                     }

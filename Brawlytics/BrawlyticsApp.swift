@@ -12,10 +12,14 @@ import SwiftData
 @available(iOS 17.0, *)
 struct BrawlyticsApp: App {
    
+    let diContainer = DIContainer.shared
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+                calculateVM: diContainer.makeCalculateViewModel(),
+                brawlersVM: diContainer.makeBrawlersViewModel()
+            )
         }
         
     }

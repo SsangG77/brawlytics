@@ -1,12 +1,11 @@
 //
-//  BrawlersService.swift
+//  BrawlersDataSource.swift
 //  Brawlytics
 //
-//  Created by 차상진 on 5/22/25.
+//  Created by 차상진 on 5/23/25.
 //
 
 import Foundation
-
 enum Rarity {
     case basic
     case rare
@@ -27,9 +26,7 @@ enum Role {
     case thrower
 }
 
-
-
-class BrawlersService: ObservableObject {
+class BrawlersDataSource: ObservableObject {
     @Published var allBrawlers = [
         BrawlerStandard(name: "BULL", first_gadget: "T-BONE INJECTOR", second_gadget: "STOMPER", first_starPower: "BERSERKER", second_starPower: "TOUGH GUY", hypercharge: "JAWS OF STEEL", rarity: .rare, role: .tanker, epicGear: .superCharge, mythicGear: .none),
         BrawlerStandard(name: "EL PRIMO", first_gadget: "SUPLEX SUPPLEMENT", second_gadget: "ASTEROID BELT", first_starPower: "EL FUEGO", second_starPower: "METEOR RUSH", hypercharge: "GRAVITY LEAP", rarity: .rare, role: .tanker, epicGear: .superCharge, mythicGear: .none),
@@ -130,10 +127,6 @@ class BrawlersService: ObservableObject {
         BrawlerStandard(name: "SPROUT", first_gadget: "GARDEN MULCHER", second_gadget: "TRANSPLANT", first_starPower: "OVERGROWTH", second_starPower: "PHOTOSYNTHESIS", hypercharge: "THORNS", rarity: .mythic, role: .thrower, epicGear: .superCharge, mythicGear: .none),
         BrawlerStandard(name: "JUJU", first_gadget: "VOODOO CHILE", second_gadget: "ELEMENTALIST", first_starPower: "GUARDED GRIS-GRIS", second_starPower: "NUMBING NEEDLES", hypercharge: "", rarity: .mythic, role: .thrower, epicGear: .none, mythicGear: .none)
     ]
-    
-    
-    
-    
     
     
     
