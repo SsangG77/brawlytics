@@ -13,11 +13,13 @@ import SwiftData
 struct BrawlyticsApp: App {
    
     let diContainer = DIContainer.shared
+    let rxDiContainer = RxDIContainer.shared
 
     var body: some Scene {
         WindowGroup {
             ContentView(
-                calculateVM: diContainer.makeCalculateViewModel(),
+//                calculateVM: diContainer.makeCalculateViewModel(),
+                calculateVM: rxDiContainer.makeCalculateViewModel(),
                 brawlersVM: diContainer.makeBrawlersViewModel()
             )
         }

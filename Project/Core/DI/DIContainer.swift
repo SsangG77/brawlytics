@@ -68,3 +68,30 @@ class DIContainer {
         return SearchBarViewModel(repository: searchHistoryRepository)
     }
 }
+
+
+
+
+
+//MARK: - rx
+class RxDIContainer {
+    static let shared = RxDIContainer()
+    
+    private init() {}
+    
+    private lazy var dataSource: RxRemoteDataSource = {
+        return RxRemoteDataSourceImpl()
+    }()
+    
+    private lazy var remoteRepository: RxRemoteRepository = {
+       return RxRemoteRepositoryImpl(rxRemoteDataSource: dataSource)
+    }()
+    
+    private lazy var calculateUseCase: RxCalculateUseCase = {
+        return RxCalculateUseCaseImpl(repository: remoteRepository)
+    }()
+    
+    func makeCalculateViewModel() -> RxCalculateViewModel {
+        return RxCalculateViewModel(useCase: calculateUseCase)
+    }
+}

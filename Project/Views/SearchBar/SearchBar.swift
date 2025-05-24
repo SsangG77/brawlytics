@@ -16,7 +16,11 @@ struct SearchBar: View {
     @Binding var isLoading: Bool
     
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    
+#warning("RX 방식 변경을 위한 테스트")
+//    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    @EnvironmentObject var calculateViewModel: RxCalculateViewModel
+
     @ObservedObject var searchBarViewModel: SearchBarViewModel
     @StateObject var brawlersDataSource: BrawlersDataSource = BrawlersDataSource()
     

@@ -16,7 +16,7 @@ enum Rarity {
     case ultraLegendary
 }
 
-enum Role {
+enum Role: CaseIterable {
     case tanker
     case assassin
     case supporter
@@ -28,9 +28,42 @@ enum Role {
 
 class BrawlersDataSource: ObservableObject {
     @Published var allBrawlers = [
-        BrawlerStandard(name: "BULL", first_gadget: "T-BONE INJECTOR", second_gadget: "STOMPER", first_starPower: "BERSERKER", second_starPower: "TOUGH GUY", hypercharge: "JAWS OF STEEL", rarity: .rare, role: .tanker, epicGear: .superCharge, mythicGear: .none),
-        BrawlerStandard(name: "EL PRIMO", first_gadget: "SUPLEX SUPPLEMENT", second_gadget: "ASTEROID BELT", first_starPower: "EL FUEGO", second_starPower: "METEOR RUSH", hypercharge: "GRAVITY LEAP", rarity: .rare, role: .tanker, epicGear: .superCharge, mythicGear: .none),
-        BrawlerStandard(name: "ROSA", first_gadget: "GROW LIGHT", second_gadget: "UNFRIENDLY BUSHES", first_starPower: "PLANT LIFE", second_starPower: "THORNY GLOVES", hypercharge: "GRASPING ROOTS", rarity: .rare, role: .tanker, epicGear: .none, mythicGear: .none),
+        BrawlerStandard(
+            name: "BULL",
+            first_gadget: "T-BONE INJECTOR",
+            second_gadget: "STOMPER",
+            first_starPower: "BERSERKER",
+            second_starPower: "TOUGH GUY",
+            hypercharge: "JAWS OF STEEL",
+            rarity: .rare,
+            role: .tanker,
+            epicGear: .superCharge,
+            mythicGear: .none
+        ),
+        BrawlerStandard(
+            name: "EL PRIMO",
+            first_gadget: "SUPLEX SUPPLEMENT",
+            second_gadget: "ASTEROID BELT",
+            first_starPower: "EL FUEGO",
+            second_starPower: "METEOR RUSH",
+            hypercharge: "GRAVITY LEAP",
+            rarity: .rare, 
+            role: .tanker,
+            epicGear: .superCharge,
+            mythicGear: .none
+        ),
+        BrawlerStandard(
+            name: "ROSA",
+            first_gadget: "GROW LIGHT",
+            second_gadget: "UNFRIENDLY BUSHES",
+            first_starPower: "PLANT LIFE",
+            second_starPower: "THORNY GLOVES",
+            hypercharge: "GRASPING ROOTS",
+            rarity: .rare,
+            role: .tanker,
+            epicGear: .none,
+            mythicGear: .none
+        ),
         BrawlerStandard(name: "DARRYL", first_gadget: "RECOILING ROTATOR", second_gadget: "TAR BARREL", first_starPower: "STEEL HOOPS", second_starPower: "ROLLING RELOAD", hypercharge: "BARREL O' BULLETS", rarity: .superRare, role: .tanker, epicGear: .none, mythicGear: .none),
         BrawlerStandard(name: "JACKY", first_gadget: "PNEUMATIC BOOSTER", second_gadget: "REBUILD", first_starPower: "COUNTER CRUSH", second_starPower: "HARDY HARD HAT", hypercharge: "SEISMIC EVENT", rarity: .superRare, role: .tanker, epicGear: .superCharge, mythicGear: .none),
         BrawlerStandard(name: "FRANK", first_gadget: "ACTIVE NOISE CANCELING", second_gadget: "IRRESISTIBLE ATTRACTION", first_starPower: "POWER GRAB", second_starPower: "SPONGE", hypercharge: "SEISMIC SMASH", rarity: .epic, role: .tanker, epicGear: .none, mythicGear: .none),

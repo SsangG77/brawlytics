@@ -7,8 +7,6 @@
 
 import SwiftUI
 import Foundation
-// DIContainer 임포트 (실제 경로에 맞게 수정 필요)
-// import DIContainer
 
 @available(iOS 17.0, *)
 struct CalculateView: View {
@@ -23,8 +21,11 @@ struct CalculateView: View {
     let iconSize: CGFloat = 20
     let fontSize: CGFloat = 20
     
-    @EnvironmentObject var calculateViewModel: CalculateViewModel
+#warning("RX 방식 변경을 위한 테스트")
+//    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    @EnvironmentObject var calculateViewModel: RxCalculateViewModel
     let diContainer = DIContainer.shared
+    
     
     var body: some View {
         
@@ -32,114 +33,44 @@ struct CalculateView: View {
             
             let width = Constants.isPad() ? geo.size.width * 0.3 - 10 : geo.size.width * 0.9
             
-            
+
             VStack(spacing : 0) {
                 calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
-
-                        SearchBar(
-                            allBrawlersStandard: $allBrawlersStandard,
-                            clicked: $clicked,
-                            isLoading: $isLoading,
-                            searchBarViewModel: diContainer.makeSearchBarViewModel()
-                        )
-                        .environmentObject(calculateViewModel)
+                    
+                    SearchBar(
+                        allBrawlersStandard: $allBrawlersStandard,
+                        clicked: $clicked,
+                        isLoading: $isLoading,
+                        searchBarViewModel: diContainer.makeSearchBarViewModel()
+                    )
+                    .environmentObject(calculateViewModel)
+                    .environmentObject(appState)
+                    .zIndex(1)
+                    
+                    
+                    MoneyBoxView()
                         .environmentObject(appState)
-                        .zIndex(1)
-                        
-                        
-                        MoneyBoxView()
-                            .environmentObject(appState)
                 }
                 
                 ScrollView {
-                    
-                    RoleBrawlerSection(
-                        role: .tanker,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-
-                    RoleBrawlerSection(
-                        role: .assassin,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-
-                    RoleBrawlerSection(
-                        role: .supporter,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-
-                    RoleBrawlerSection(
-                        role: .controller,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-
-                    RoleBrawlerSection(
-                        role: .damageDealer,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-                    
-                    RoleBrawlerSection(
-                        role: .marksmen,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-
-                    
-                    
-                    RoleBrawlerSection(
-                        role: .thrower,
-                        allBrawlers: allBrawlersStandard,
-                        width: width,
-                        clicked: clicked,
-                        isLoading: isLoading
-                    )
-                    .environmentObject(appState)
-                    .environmentObject(calculateViewModel)
-                        
-
-                    
+                        ForEach(Role.allCases, id: \.self) { role in
+                            RoleBrawlerSection(
+                                role: role,
+                                allBrawlers: allBrawlersStandard,
+                                width: width,
+                                clicked: clicked,
+                                isLoading: isLoading
+                            )
+                            .environmentObject(appState)
+                            .environmentObject(calculateViewModel)
+                        }
                 }
                 .frame(height: geo.size.height - 120)
-                
-                
-                
             }
             .frame(width: geo.size.width, height: geo.size.height)
-            
         }//geo
         .ignoresSafeArea(.keyboard)
         .background(Color(hexString: "37475F"))
-        
-        
     }
 }
 
@@ -168,7 +99,7 @@ struct RoleBrawlerSection: View {
             HStack {
                 if clicked {
                     if isLoading {
-                        BrawlerEmptyView()
+                        BrawlerEmptyView(width: width)
                     } else {
                         let filtered = allBrawlers.filter { $0.role == role }
                         if filtered.isEmpty {
@@ -187,7 +118,7 @@ struct RoleBrawlerSection: View {
                 }
             }
             .scrollTargetLayout()
-            .frame(height: 280)
+            .frame(height: 270)
         }
         .frame(height: 280)
         .scrollTargetBehavior(.viewAligned)

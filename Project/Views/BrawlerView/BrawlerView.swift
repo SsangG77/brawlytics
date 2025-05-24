@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RxSwift
 
 //MARK: - BrawlerView
 //브롤러 한개당 정보 모음
@@ -23,7 +24,11 @@ struct BrawlerView: View {
     var brawlerStandard: BrawlerStandard
 
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    
+#warning("RX 방식 변경을 위한 테스트")
+//    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    @EnvironmentObject var calculateViewModel: RxCalculateViewModel
+    let disposeBag = DisposeBag()
     
     @StateObject var brawlersViewModel: BrawlersViewModel
     
@@ -38,17 +43,39 @@ struct BrawlerView: View {
             backgroundView
             contentView
         }
-        .onAppear {
-            withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
-                opacity = opacity == 0.4 ? 0.8 : 0.4
-            }
-        }
-        .onChange(of: calculateViewModel.brawlers) {
-            withAnimation {
-                brawler = calculateViewModel.findMyBrawler(brawlerName: brawlerStandard.name)
-            }
+         .onAppear {
+            setupAnimation()
+             subscribeToBrawlers()
+         }
+//         .onChange(of: calculateViewModel.brawlers) { _, _ in
+//            updateBrawler()
+//         }
+    }
+
+    // MARK: - Private Methods
+    private func setupAnimation() {
+        withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: true)) {
+            opacity = opacity == 0.4 ? 0.8 : 0.4
         }
     }
+    
+#warning("RX 방식 변경을 위한 테스트")
+    private func subscribeToBrawlers() {
+         calculateViewModel.brawlersSubject
+             .observe(on: MainScheduler.instance)
+             .subscribe(onNext: { _ in
+                 updateBrawler()
+             })
+             .disposed(by: disposeBag)
+     }
+
+    private func updateBrawler() {
+        withAnimation {
+            brawler = calculateViewModel.findMyBrawler(brawlerName: brawlerStandard.name)
+        }
+    }
+
+
     
     private var backgroundView: some View {
         Rectangle()
@@ -63,18 +90,14 @@ struct BrawlerView: View {
             profileBlock
             moneyBlock
         }
-        .frame(height: totalHeight)
+        .frame(height: totalHeight - 20)
     }
 
     private var profileBlock: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 10) {
             HStack(spacing: 10) {
-                BrawlerProfileView(parentWidth: width, brawler_st: brawlerStandard, brawler: $brawler)
-                    .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
-
-                GearView(parentWidth: width, brawlerStandard: brawlerStandard, brawler: $brawler)
-                    .environmentObject(brawlersViewModel)
-                    .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+                profileSection
+                gearSection
             }
 
             PowerView(
@@ -83,7 +106,7 @@ struct BrawlerView: View {
                 brawler: $brawler,
                 viewModel: brawlersViewModel
             )
-                .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
         }
         .frame(width: width, height: brawlerHeight)
         .background(Color(hexString: "6D8CB9"))
@@ -95,6 +118,31 @@ struct BrawlerView: View {
                     .foregroundColor(Color(hexString: "000000", opacity: 0.7))
             }
         }
+    }
+
+    private var profileSection: some View {
+        BrawlerProfileView(
+            parentWidth: width,
+            brawler_st: brawlerStandard,
+            brawler: $brawler
+        )
+        .modifier(BlinkingAnimationModifier(
+            shouldShow: brawler == nil,
+            opacity: opacity
+        ))
+    }
+
+     private var gearSection: some View {
+        GearView(
+            parentWidth: width,
+            brawlerStandard: brawlerStandard,
+            brawler: $brawler
+        )
+        .environmentObject(brawlersViewModel)
+        .modifier(BlinkingAnimationModifier(
+            shouldShow: brawler == nil,
+            opacity: opacity
+        ))
     }
 
     private var moneyBlock: some View {

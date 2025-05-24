@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9121363C2CE8BC0600BDD0B1 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9121363B2CE8BC0600BDD0B1 /* test.swift */; };
+		915F8B9B2DE1FA7A00172B39 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 915F8B9A2DE1FA7A00172B39 /* RxCocoa */; };
+		915F8B9D2DE1FA7A00172B39 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 915F8B9C2DE1FA7A00172B39 /* RxRelay */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				915F8B9D2DE1FA7A00172B39 /* RxRelay in Frameworks */,
+				915F8B9B2DE1FA7A00172B39 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +131,8 @@
 			);
 			name = Brawlytics;
 			packageProductDependencies = (
+				915F8B9A2DE1FA7A00172B39 /* RxCocoa */,
+				915F8B9C2DE1FA7A00172B39 /* RxRelay */,
 			);
 			productName = Brawlytics;
 			productReference = 9128112B2CD799FB004D9554 /* Brawlytics.app */;
@@ -204,6 +210,9 @@
 			);
 			mainGroup = 912811222CD799FB004D9554;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				915F8B992DE1FA7A00172B39 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9128112C2CD799FB004D9554 /* Products */;
 			projectDirPath = "";
@@ -580,6 +589,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		915F8B992DE1FA7A00172B39 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		915F8B9A2DE1FA7A00172B39 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 915F8B992DE1FA7A00172B39 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		915F8B9C2DE1FA7A00172B39 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 915F8B992DE1FA7A00172B39 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 912811232CD799FB004D9554 /* Project object */;
 }

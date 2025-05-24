@@ -80,7 +80,7 @@ struct MoneyCountView: View {
             
         }
         .frame(width: parentWidth)
-        .padding(.bottom, 14)
+        .padding(.bottom, 4)
         .onChange(of: brawler) { newValue in
             if newValue != nil {
                 ppCount = viewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)

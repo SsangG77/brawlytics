@@ -12,13 +12,20 @@ import SwiftData
 struct ContentView: View {
     
     @StateObject private var appState = AppState()
-    @StateObject var calculateVM: CalculateViewModel
+    
+#warning("RX 방식 변경을 위한 테스트")
+//    @StateObject var calculateVM: CalculateViewModel
+    @StateObject var calculateVM: RxCalculateViewModel
+    
     @StateObject var brawlersVM: BrawlersViewModel
     
     init(
-        calculateVM: CalculateViewModel,
+//        calculateVM: CalculateViewModel,
+        calculateVM: RxCalculateViewModel,
         brawlersVM: BrawlersViewModel
     ) {
+
+//        _calculateVM = StateObject(wrappedValue: calculateVM)
         _calculateVM = StateObject(wrappedValue: calculateVM)
         _brawlersVM = StateObject(wrappedValue: brawlersVM)
     }

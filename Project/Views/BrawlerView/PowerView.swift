@@ -78,7 +78,7 @@ struct PowerView: View {
             }
             
         }
-        .frame(width: parentWidth - 25, height: 80)
+        .frame(width: parentWidth - 25, height: 70)
         .background(Color(hexString: "4C658D", opacity: 0.53))
         .cornerRadius(15)
         
