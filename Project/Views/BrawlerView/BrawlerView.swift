@@ -44,7 +44,7 @@ struct BrawlerView: View {
             contentView
         }
          .onAppear {
-            setupAnimation()
+             setupAnimation()
              subscribeToBrawlers()
          }
 //         .onChange(of: calculateViewModel.brawlers) { _, _ in

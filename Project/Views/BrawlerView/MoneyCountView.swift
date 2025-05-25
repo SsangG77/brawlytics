@@ -13,8 +13,8 @@ struct MoneyCountView: View {
     @State var ppCount = -1
     @State var coinCount = -1
     @State var creditCount = -1
-    @EnvironmentObject var appState: AppState
     
+    @EnvironmentObject var appState: AppState
     @State var imageSize : CGFloat = 33
     
     //Binding
@@ -39,7 +39,6 @@ struct MoneyCountView: View {
     
     var body: some View {
         HStack {
-            
             Spacer()
             
             HStack {
@@ -50,7 +49,6 @@ struct MoneyCountView: View {
                 Text(String(ppCount))
                     .font(.title2)
             }
-            
             Spacer()
             
             HStack {
@@ -61,7 +59,6 @@ struct MoneyCountView: View {
                 Text(String(coinCount))
                     .font(.title2)
             }
-            
             Spacer()
             
             HStack {
@@ -72,11 +69,7 @@ struct MoneyCountView: View {
                 Text(String(creditCount))
                     .font(.title2)
             }
-            
             Spacer()
-            
-            
-            
             
         }
         .frame(width: parentWidth)
@@ -92,9 +85,7 @@ struct MoneyCountView: View {
                 appState.totalCoin += viewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
                 
             }
-            
         }
-       
     }
 }
 
