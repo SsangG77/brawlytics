@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-import RxSwift
-import RxCocoa
+
 
 @available(iOS 17.0, *)
 struct SearchBar: View {
@@ -27,9 +26,9 @@ struct SearchBar: View {
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     @State var ipadWidth: CGFloat = 0  // GeometryReader에서 사용할 값을 저장할 변수 추가
     
-    private let disposeBag = DisposeBag()
-    
+
     var body: some View {
+        
         GeometryReader { geo in
             
             let ipadWidth = geo.size.width * 0.7  // @State 대신 일반 변수로 선언
@@ -43,6 +42,11 @@ struct SearchBar: View {
                 VStack {
                     ZStack {
                         HStack {
+                            // TextField("유저 태그 입력", text: $searchBarViewModel.searchText, onEditingChanged: { isEdit in
+                            //     withAnimation {
+                            //         showHistory = isEdit
+                            //     }
+                            // })
                             TextField("유저 태그 입력", text: Binding(
                                 get: { searchBarViewModel.searchText },
                                 set: { searchBarViewModel.updateSearchText($0) }
@@ -68,7 +72,15 @@ struct SearchBar: View {
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 
                                 if searchBarViewModel.searchText != "" {
-                                    searchBarViewModel.saveSearchText(searchBarViewModel.searchText)
+                                    // AppState 값 초기화
+                                    appState.totalCoin = 0
+                                    appState.totalPP = 0
+                                    appState.totalCredit = 0
+                                    
+                                    // 검색 기록 저장
+                                    // searchBarViewModel.saveSearchText(searchBarViewModel.searchText)
+                                    searchBarViewModel.triggerSearch()
+                                    
                                     withAnimation {
                                         clicked = true
                                     }
@@ -81,7 +93,6 @@ struct SearchBar: View {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         withAnimation {
-                                            
                                             allBrawlersStandard = brawlersDataSource.allBrawlers
                                         }
                                         
@@ -116,9 +127,6 @@ struct SearchBar: View {
             }
             .padding([.leading, .trailing])
         }
-        .onAppear {
-            setupRxBindings()
-        }
         .onDisappear {
             searchBarViewModel.searchText = ""
             clicked = false
@@ -130,39 +138,5 @@ struct SearchBar: View {
             appState.totalPP = 0
             appState.totalCredit = 0
         }
-    }
-    
-    private func setupRxBindings() {
-        // 검색어 변경 시 자동 검색
-        searchBarViewModel.searchTextSubject
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { text in
-//                guard let self = self, !text.isEmpty else { return }
-                
-                withAnimation {
-                    self.clicked = true
-                }
-                self.showHistory = false
-                
-                withAnimation {
-                    self.isLoading = true
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    withAnimation {
-                        self.allBrawlersStandard = self.brawlersDataSource.allBrawlers
-                    }
-                    
-                    DispatchQueue.main.async {
-                        withAnimation {
-                            self.isLoading = false
-                        }
-                    }
-                    
-                    self.calculateViewModel.getBrawlers(text)
-                }
-            })
-            .disposed(by: disposeBag)
     }
 }

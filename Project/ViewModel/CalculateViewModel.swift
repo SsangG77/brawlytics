@@ -99,6 +99,8 @@ class RxCalculateViewModel: ObservableObject {
             ZStack {
                 content()
             }
+            .frame(height: 110)
+            
         }
     }
     

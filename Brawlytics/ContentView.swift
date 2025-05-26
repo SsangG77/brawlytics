@@ -44,8 +44,7 @@ struct ContentView: View {
                 HyperchargeView(viewModel: brawlersVM)
                     .environmentObject(appState)
                     .tabItem {
-                        Label("Hyper charge", systemImage: "flame")
-                            
+                        Label("Hyper charge", systemImage: "flame")  
                     }
                 
             }

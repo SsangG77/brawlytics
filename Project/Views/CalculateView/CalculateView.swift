@@ -28,49 +28,62 @@ struct CalculateView: View {
     
     
     var body: some View {
-        
-        GeometryReader { geo in
-            
-            let width = Constants.isPad() ? geo.size.width * 0.3 - 10 : geo.size.width * 0.9
-            
-
-            VStack(spacing : 0) {
-                calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
-                    
-                    SearchBar(
-                        allBrawlersStandard: $allBrawlersStandard,
-                        clicked: $clicked,
-                        isLoading: $isLoading,
-                        searchBarViewModel: diContainer.makeSearchBarViewModel()
-                    )
-                    .environmentObject(calculateViewModel)
-                    .environmentObject(appState)
-                    .zIndex(1)
-                    
-                    
-                    MoneyBoxView()
-                        .environmentObject(appState)
-                }
+        NavigationStack {
+            GeometryReader { geo in
                 
-                ScrollView {
-                        ForEach(Role.allCases, id: \.self) { role in
-                            RoleBrawlerSection(
-                                role: role,
-                                allBrawlers: allBrawlersStandard,
-                                width: width,
-                                clicked: clicked,
-                                isLoading: isLoading
-                            )
+                let width = Constants.isPad() ? geo.size.width * 0.3 - 10 : geo.size.width * 0.9
+                
+
+//                VStack(spacing : 0) {
+                VStack(spacing : 20) {
+                    calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
+                        
+                        SearchBar(
+                            allBrawlersStandard: $allBrawlersStandard,
+                            clicked: $clicked,
+                            isLoading: $isLoading,
+                            searchBarViewModel: diContainer.makeSearchBarViewModel()
+                        )
+                        .environmentObject(calculateViewModel)
+                        .environmentObject(appState)
+                        .zIndex(1)
+                        
+                        MoneyBoxView()
                             .environmentObject(appState)
-                            .environmentObject(calculateViewModel)
-                        }
+                    }
+                    .frame(height: 110)
+            
+//                    NavigationLink(destination:
+//                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
+//                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
+//                    ) {
+//                        Label(NSLocalizedString("hypercharge_select", comment: ""), systemImage: "flame")
+//                            .foregroundColor(.black)
+//                            .font(.system(size: 17, weight: .bold))
+//                            .padding(.vertical, 10)
+//                    }
+                    
+                    
+                    ScrollView {
+                            ForEach(Role.allCases, id: \.self) { role in
+                                RoleBrawlerSection(
+                                    role: role,
+                                    allBrawlers: allBrawlersStandard,
+                                    width: width,
+                                    clicked: clicked,
+                                    isLoading: isLoading
+                                )
+                                .environmentObject(appState)
+                                .environmentObject(calculateViewModel)
+                            }
+                    }
+                    .frame(height: geo.size.height - 170)
                 }
-                .frame(height: geo.size.height - 120)
-            }
-            .frame(width: geo.size.width, height: geo.size.height)
-        }//geo
-        .ignoresSafeArea(.keyboard)
-        .background(Color(hexString: "37475F"))
+                .frame(width: geo.size.width, height: geo.size.height)
+            }//geo
+            .ignoresSafeArea(.keyboard)
+            .background(Color(hexString: "37475F"))
+        }
     }
 }
 
