@@ -3,41 +3,16 @@
 //  Brawlytics
 //
 //  Created by 차상진 on 5/22/25.
-//
-
-//import Foundation
-//
-//
-//class SearchBarViewModel: ObservableObject {
-//    @Published var searchText: String = ""
-//    @Published var searchHistory: [String] = []
-//    
-//    private let historyRepository: SearchHistoryRepository
-//    
-//    init(repository: SearchHistoryRepository) {
-//        self.historyRepository = repository
-//    }
-//    
-//    
-//    func saveSearchText(_ searchText: String) {
-//        historyRepository.saveSearchText(searchText)
-//    }
-//    
-//    func getSearchHistory() -> [String] {
-//        return historyRepository.getSearchHistory()
-//    }
-//}
-
 
 import Foundation
 import RxSwift
 import RxCocoa
 
 class SearchBarViewModel: ObservableObject {
-    @Published var searchText: String = ""
+//    @Published var searchText: String = ""
     @Published var searchHistory: [String] = []
     
-    private let historyRepository: SearchHistoryRepository
+//    private let historyRepository: SearchHistoryRepository
     private let disposeBag = DisposeBag()
     
     // Rx Subjects
@@ -45,8 +20,15 @@ class SearchBarViewModel: ObservableObject {
     let searchButtonTapped = PublishSubject<Void>()
     // let isLoading = BehaviorSubject<Bool>(value: false)
     
-    init(repository: SearchHistoryRepository) {
-        self.historyRepository = repository
+//    init(repository: SearchHistoryRepository) {
+//        self.historyRepository = repository
+//        setupBindings()
+//    }
+    
+    let useCase: SearchBarUseCase
+    
+    init(useCase: SearchBarUseCase) {
+        self.useCase = useCase
         setupBindings()
     }
     
@@ -57,7 +39,8 @@ class SearchBarViewModel: ObservableObject {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] text in
-                self?.searchText = text
+//                self?.searchText = text
+                self?.objectWillChange.send()
             })
             .disposed(by: disposeBag)
             
@@ -71,13 +54,16 @@ class SearchBarViewModel: ObservableObject {
             .disposed(by: disposeBag)
     }
     
+    
     func saveSearchText(_ searchText: String) {
-        historyRepository.saveSearchText(searchText)
-        searchHistory = historyRepository.getSearchHistory()
+//        historyRepository.saveSearchText(searchText)
+        useCase.saveSearchText(searchText)
+        searchHistory = self.getSearchHistory()
     }
     
     func getSearchHistory() -> [String] {
-        return historyRepository.getSearchHistory()
+//        return historyRepository.getSearchHistory()
+        return useCase.getSearchHistory()
     }
     
     func updateSearchText(_ text: String) {

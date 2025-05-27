@@ -42,13 +42,8 @@ struct SearchBar: View {
                 VStack {
                     ZStack {
                         HStack {
-                            // TextField("유저 태그 입력", text: $searchBarViewModel.searchText, onEditingChanged: { isEdit in
-                            //     withAnimation {
-                            //         showHistory = isEdit
-                            //     }
-                            // })
                             TextField("유저 태그 입력", text: Binding(
-                                get: { searchBarViewModel.searchText },
+                                get: { (try? searchBarViewModel.searchTextSubject.value()) ?? "" },
                                 set: { searchBarViewModel.updateSearchText($0) }
                             ), onEditingChanged: { isEdit in
                                 withAnimation {
@@ -71,7 +66,9 @@ struct SearchBar: View {
                                 //키보드 비활성화 시키기
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 
-                                if searchBarViewModel.searchText != "" {
+//                                if searchBarViewModel.searchText != "" {
+                                let text = (try? searchBarViewModel.searchTextSubject.value()) ?? ""
+                                  if !text.isEmpty {
                                     // AppState 값 초기화
                                     appState.totalCoin = 0
                                     appState.totalPP = 0
@@ -103,7 +100,9 @@ struct SearchBar: View {
                                             }
                                         }
                                         
-                                        calculateViewModel.getBrawlers(searchBarViewModel.searchText)
+//                                        calculateViewModel.getBrawlers(searchBarViewModel.searchText)
+                                        let text = (try? searchBarViewModel.searchTextSubject.value()) ?? ""
+                                         calculateViewModel.getBrawlers(text)
                                     }
                                 }
                                 
@@ -128,7 +127,7 @@ struct SearchBar: View {
             .padding([.leading, .trailing])
         }
         .onDisappear {
-            searchBarViewModel.searchText = ""
+//            searchBarViewModel.searchText = ""
             clicked = false
             showHistory = false
             allBrawlersStandard = []

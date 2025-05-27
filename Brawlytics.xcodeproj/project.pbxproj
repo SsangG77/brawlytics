@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9121363C2CE8BC0600BDD0B1 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9121363B2CE8BC0600BDD0B1 /* test.swift */; };
 		915F8B9B2DE1FA7A00172B39 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 915F8B9A2DE1FA7A00172B39 /* RxCocoa */; };
 		915F8B9D2DE1FA7A00172B39 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 915F8B9C2DE1FA7A00172B39 /* RxRelay */; };
 		915F8BAB2DE4B24000172B39 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 915F8BAA2DE4B24000172B39 /* Localizable.strings */; };
+		915F8BBF2DE61DCB00172B39 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915F8BBE2DE61DCA00172B39 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,13 +31,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9121363B2CE8BC0600BDD0B1 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		9128112B2CD799FB004D9554 /* Brawlytics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brawlytics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9128113D2CD799FC004D9554 /* BrawlyticsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrawlyticsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		912811472CD799FC004D9554 /* BrawlyticsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrawlyticsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		915F8BA92DE4B24000172B39 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		915F8BAC2DE4B33500172B39 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		915F8BBE2DE61DCA00172B39 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		915F8BB82DE6166800172B39 /* Exceptions for "Tests" folder in "BrawlyticsTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/MockSearchHistoryRepository.swift,
+				SearchBarViewModelTests.swift,
+			);
+			target = 9128113C2CD799FC004D9554 /* BrawlyticsTests */;
+		};
+		915F8BC32DE622E900172B39 /* Exceptions for "Tests" folder in "Brawlytics" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/MockSearchHistoryRepository.swift,
+				SearchBarViewModelTests.swift,
+			);
+			target = 9128112A2CD799FB004D9554 /* Brawlytics */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9128112D2CD799FB004D9554 /* Brawlytics */ = {
@@ -53,6 +72,15 @@
 		915F8B3C2DDE42F300172B39 /* Project */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Project;
+			sourceTree = "<group>";
+		};
+		915F8BB72DE6166100172B39 /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				915F8BC32DE622E900172B39 /* Exceptions for "Tests" folder in "Brawlytics" target */,
+				915F8BB82DE6166800172B39 /* Exceptions for "Tests" folder in "BrawlyticsTests" target */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		915FBD562CFF5FEB00F0C0D1 /* Class */ = {
@@ -76,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				915F8BBF2DE61DCB00172B39 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,13 +121,14 @@
 		912811222CD799FB004D9554 = {
 			isa = PBXGroup;
 			children = (
+				915F8BB72DE6166100172B39 /* Tests */,
 				915F8BAA2DE4B24000172B39 /* Localizable.strings */,
 				915F8B3C2DDE42F300172B39 /* Project */,
 				915FBD562CFF5FEB00F0C0D1 /* Class */,
-				9121363B2CE8BC0600BDD0B1 /* test.swift */,
 				9128112C2CD799FB004D9554 /* Products */,
 				9128112D2CD799FB004D9554 /* Brawlytics */,
 				9128115D2CD7A4C5004D9554 /* Module */,
+				915F8BBD2DE61DCA00172B39 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,6 +140,14 @@
 				912811472CD799FC004D9554 /* BrawlyticsUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		915F8BBD2DE61DCA00172B39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				915F8BBE2DE61DCA00172B39 /* XCTest.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +169,7 @@
 				9128112D2CD799FB004D9554 /* Brawlytics */,
 				9128115D2CD7A4C5004D9554 /* Module */,
 				915F8B3C2DDE42F300172B39 /* Project */,
+				915F8BB72DE6166100172B39 /* Tests */,
 				915FBD562CFF5FEB00F0C0D1 /* Class */,
 			);
 			name = Brawlytics;
@@ -197,6 +236,7 @@
 					};
 					9128113C2CD799FC004D9554 = {
 						CreatedOnToolsVersion = 16.1;
+						LastSwiftMigration = 1630;
 						TestTargetID = 9128112A2CD799FB004D9554;
 					};
 					912811462CD799FC004D9554 = {
@@ -260,7 +300,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9121363C2CE8BC0600BDD0B1 /* test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +540,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
@@ -509,7 +549,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.BrawlyticsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Brawlytics.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Brawlytics";
@@ -520,6 +566,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
@@ -528,7 +575,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.BrawlyticsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Brawlytics.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Brawlytics";

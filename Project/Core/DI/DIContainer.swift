@@ -51,6 +51,10 @@ class DIContainer {
         return BrawlersUseCaseImpl(repository: brawlersRepository)
     }()
     
+    private lazy var searchBarUseCase: SearchBarUseCase = {
+        return SearchBarUseCaseImpl(historyRepository: searchHistoryRepository)
+    }()
+    
     // MARK: - ViewModels
     func makeBrawlersViewModel() -> BrawlersViewModel {
         return BrawlersViewModel(
@@ -65,7 +69,8 @@ class DIContainer {
     }
     
     func makeSearchBarViewModel() -> SearchBarViewModel {
-        return SearchBarViewModel(repository: searchHistoryRepository)
+//        return SearchBarViewModel(repository: searchHistoryRepository)
+        return SearchBarViewModel(useCase: searchBarUseCase)
     }
 }
 

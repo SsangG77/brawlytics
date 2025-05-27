@@ -29,7 +29,8 @@ struct SearchHistoryView: View {
                             Spacer()
                         }
                         .onTapGesture {
-                            searchBarViewModel.searchText = search
+                            // searchBarViewModel.searchText = search
+                            searchBarViewModel.searchTextSubject.onNext(search)
                         }
                     }
                 }
