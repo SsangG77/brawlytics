@@ -13,7 +13,7 @@ struct SearchBar: View {
     @State var showHistory:Bool = false
     @Binding var allBrawlersStandard: [BrawlerStandard]
     @Binding var clicked: Bool
-    @Binding var isLoading: Bool
+//    @Binding var isLoading: Bool
     
 #warning("RX 방식 변경을 위한 테스트")
 //    @EnvironmentObject var calculateViewModel: CalculateViewModel
@@ -85,7 +85,8 @@ struct SearchBar: View {
                                     
                                     // 로딩 시작
                                     withAnimation {
-                                        isLoading = true
+//                                        isLoading = true
+                                        calculateViewModel.isLoadingSubject.onNext(true)
                                     }
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -96,7 +97,8 @@ struct SearchBar: View {
                                         // 로딩 종료
                                         DispatchQueue.main.async {
                                             withAnimation {
-                                                isLoading = false
+//                                                isLoading = false
+                                                calculateViewModel.isLoadingSubject.onNext(false)
                                             }
                                         }
                                         

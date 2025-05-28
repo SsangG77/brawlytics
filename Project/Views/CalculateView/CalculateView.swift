@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import RxSwift
 
 @available(iOS 17.0, *)
 struct CalculateView: View {
@@ -26,6 +27,7 @@ struct CalculateView: View {
     @EnvironmentObject var calculateViewModel: RxCalculateViewModel
     let diContainer = DIContainer.shared
     
+    let disposeBag = DisposeBag()
     
     var body: some View {
         NavigationStack {
@@ -41,7 +43,7 @@ struct CalculateView: View {
                         SearchBar(
                             allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
-                            isLoading: $isLoading,
+//                            isLoading: $isLoading,
                             searchBarViewModel: diContainer.makeSearchBarViewModel()
                         )
                         .environmentObject(calculateViewModel)
@@ -74,7 +76,7 @@ struct CalculateView: View {
                                     isLoading: isLoading
                                 )
                                 .environmentObject(appState)
-                                .environmentObject(calculateViewModel)
+                                
                             }
                     }
                     .frame(height: geo.size.height - 170)
@@ -83,6 +85,14 @@ struct CalculateView: View {
             }//geo
             .ignoresSafeArea(.keyboard)
             .background(Color(hexString: "37475F"))
+            .onAppear {
+                calculateViewModel.isLoadingSubject
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onNext: { value in
+                        self.isLoading = value
+                    })
+                    .disposed(by: disposeBag)
+            }
         }
     }
 }

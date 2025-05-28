@@ -20,10 +20,6 @@ class SearchBarViewModel: ObservableObject {
     let searchButtonTapped = PublishSubject<Void>()
     // let isLoading = BehaviorSubject<Bool>(value: false)
     
-//    init(repository: SearchHistoryRepository) {
-//        self.historyRepository = repository
-//        setupBindings()
-//    }
     
     let useCase: SearchBarUseCase
     
@@ -56,13 +52,11 @@ class SearchBarViewModel: ObservableObject {
     
     
     func saveSearchText(_ searchText: String) {
-//        historyRepository.saveSearchText(searchText)
         useCase.saveSearchText(searchText)
         searchHistory = self.getSearchHistory()
     }
     
     func getSearchHistory() -> [String] {
-//        return historyRepository.getSearchHistory()
         return useCase.getSearchHistory()
     }
     

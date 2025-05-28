@@ -12,21 +12,16 @@ import RxSwift
 class CalculateViewModel: ObservableObject {
     
     @Published var brawlers: [Brawler] = []
-    @Published var isLoading: Bool = false
     private let calculateUseCase: CalculateUseCase
     
     init(calculateUseCase: CalculateUseCase) {
         self.calculateUseCase = calculateUseCase
     }
 
-    
-    
     func getBrawlers(_ searchText: String) {
-        isLoading = true
         self.calculateUseCase.getUserBrawlers(searchText: searchText) { brawlers in
             DispatchQueue.main.async {
                 self.brawlers = brawlers
-                self.isLoading = false
             }
         }
     }
@@ -55,9 +50,10 @@ class CalculateViewModel: ObservableObject {
 //MARK: - rx
 class RxCalculateViewModel: ObservableObject {
     @Published var brawlers: [Brawler] = []
-    @Published var isLoading: Bool = false
     
     let brawlersSubject = PublishSubject<[Brawler]>()
+    let isLoadingSubject = BehaviorSubject<Bool>(value: false)
+    
     private let useCase: RxCalculateUseCase
     private let disposeBag = DisposeBag()
     
@@ -66,18 +62,15 @@ class RxCalculateViewModel: ObservableObject {
     }
     
     func getBrawlers(_ searchText: String) {
-        isLoading = true
         self.useCase.getUserBrawlers(searchText: searchText)
             .observe(on: MainScheduler.instance)
             .subscribe(
                 onNext: { [weak self] brawlers in
                     self?.brawlers = brawlers
                     self?.brawlersSubject.onNext(brawlers)
-                    self?.isLoading = false
                 },
                 onError: { [weak self] error in
                     print("Error: \(error)")
-                    self?.isLoading = false
                 }
             )
             .disposed(by: disposeBag)
