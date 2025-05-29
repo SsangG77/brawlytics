@@ -34,18 +34,18 @@ class DIContainer {
         return SearchHistoryRepositoryImpl()
     }()
     
-    private lazy var remoteDataSource: BrawlerRemoteDataSource = {
-        return BrawlerRemoteDataSourceImpl()
-    }()
+//    private lazy var remoteDataSource: BrawlerRemoteDataSource = {
+//        return BrawlerRemoteDataSourceImpl()
+//    }()
     
-    private lazy var remoteRepository: RemoteRepository = {
-        return RemoteRepositoryImpl(remoteDataSource: remoteDataSource)
-    }()
+//    private lazy var remoteRepository: RemoteRepository = {
+//        return RemoteRepositoryImpl(remoteDataSource: remoteDataSource)
+//    }()
     
     // MARK: - UseCases
-    private lazy var calculateUseCase: CalculateUseCase = {
-        return CalculateUseCaseImpl(repository: remoteRepository)
-    }()
+//    private lazy var calculateUseCase: CalculateUseCase = {
+//        return CalculateUseCaseImpl(repository: remoteRepository)
+//    }()
     
     private lazy var brawlersUseCase: BrawlersUseCase = {
         return BrawlersUseCaseImpl(repository: brawlersRepository)
@@ -64,12 +64,11 @@ class DIContainer {
         )
     }
     
-    func makeCalculateViewModel() -> CalculateViewModel {
-        return CalculateViewModel(calculateUseCase: calculateUseCase)
-    }
+//    func makeCalculateViewModel() -> CalculateViewModel {
+//        return CalculateViewModel(calculateUseCase: calculateUseCase)
+//    }
     
     func makeSearchBarViewModel() -> SearchBarViewModel {
-//        return SearchBarViewModel(repository: searchHistoryRepository)
         return SearchBarViewModel(useCase: searchBarUseCase)
     }
 }

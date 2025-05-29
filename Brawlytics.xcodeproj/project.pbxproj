@@ -11,6 +11,7 @@
 		915F8B9D2DE1FA7A00172B39 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 915F8B9C2DE1FA7A00172B39 /* RxRelay */; };
 		915F8BAB2DE4B24000172B39 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 915F8BAA2DE4B24000172B39 /* Localizable.strings */; };
 		915F8BBF2DE61DCB00172B39 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915F8BBE2DE61DCA00172B39 /* XCTest.framework */; };
+		91A8D4712DE8D05100F7371E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 91A8D4702DE8D05100F7371E /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,11 +57,21 @@
 			);
 			target = 9128112A2CD799FB004D9554 /* Brawlytics */;
 		};
+		91A8D4732DE8D4CA00F7371E /* Exceptions for "Brawlytics" folder in "Brawlytics" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9128112A2CD799FB004D9554 /* Brawlytics */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9128112D2CD799FB004D9554 /* Brawlytics */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				91A8D4732DE8D4CA00F7371E /* Exceptions for "Brawlytics" folder in "Brawlytics" target */,
+			);
 			path = Brawlytics;
 			sourceTree = "<group>";
 		};
@@ -95,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91A8D4712DE8D05100F7371E /* GoogleMobileAds in Frameworks */,
 				915F8B9D2DE1FA7A00172B39 /* RxRelay in Frameworks */,
 				915F8B9B2DE1FA7A00172B39 /* RxCocoa in Frameworks */,
 			);
@@ -176,6 +188,7 @@
 			packageProductDependencies = (
 				915F8B9A2DE1FA7A00172B39 /* RxCocoa */,
 				915F8B9C2DE1FA7A00172B39 /* RxRelay */,
+				91A8D4702DE8D05100F7371E /* GoogleMobileAds */,
 			);
 			productName = Brawlytics;
 			productReference = 9128112B2CD799FB004D9554 /* Brawlytics.app */;
@@ -257,6 +270,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				915F8B992DE1FA7A00172B39 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				91A8D46F2DE8D05100F7371E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9128112C2CD799FB004D9554 /* Products */;
@@ -477,6 +491,7 @@
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Brawlytics/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -512,6 +527,7 @@
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Brawlytics/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -671,6 +687,14 @@
 				minimumVersion = 6.9.0;
 			};
 		};
+		91A8D46F2DE8D05100F7371E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -683,6 +707,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 915F8B992DE1FA7A00172B39 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
+		};
+		91A8D4702DE8D05100F7371E /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91A8D46F2DE8D05100F7371E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

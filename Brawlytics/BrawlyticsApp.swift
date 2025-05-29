@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import GoogleMobileAds
 
 @main
 @available(iOS 17.0, *)
@@ -14,11 +15,14 @@ struct BrawlyticsApp: App {
    
     let diContainer = DIContainer.shared
     let rxDiContainer = RxDIContainer.shared
+    
+    init() {
+        MobileAds.shared.start(completionHandler: nil)
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView(
-//                calculateVM: diContainer.makeCalculateViewModel(),
                 calculateVM: rxDiContainer.makeCalculateViewModel(),
                 brawlersVM: diContainer.makeBrawlersViewModel()
             )
