@@ -16,10 +16,12 @@ struct BrawlyticsApp: App {
     let diContainer = DIContainer.shared
     let rxDiContainer = RxDIContainer.shared
     
-    init() {
-        MobileAds.shared.start(completionHandler: nil)
-    }
+//    init() {
+//        MobileAds.shared.start(completionHandler: nil)
+//    }
 
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             ContentView(
@@ -29,4 +31,16 @@ struct BrawlyticsApp: App {
         }
         
     }
+}
+
+
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  func application(_ application: UIApplication,
+      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    MobileAds.shared.start(completionHandler: nil)
+
+    return true
+  }
 }

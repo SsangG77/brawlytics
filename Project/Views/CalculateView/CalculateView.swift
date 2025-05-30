@@ -43,7 +43,6 @@ struct CalculateView: View {
                         SearchBar(
                             allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
-//                            isLoading: $isLoading,
                             searchBarViewModel: diContainer.makeSearchBarViewModel()
                         )
                         .environmentObject(calculateViewModel)

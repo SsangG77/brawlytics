@@ -26,6 +26,9 @@ struct SearchBar: View {
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     @State var ipadWidth: CGFloat = 0  // GeometryReader에서 사용할 값을 저장할 변수 추가
     
+    
+    // Ad
+    @State private var adManager = InterstitialAdManager()
 
     var body: some View {
         
@@ -63,6 +66,14 @@ struct SearchBar: View {
                         HStack {
                             Spacer() // 버튼을 오른쪽으로 이동
                             Button(action: {
+                                
+                                if let rootVC = UIApplication.shared.connectedScenes
+                                    .compactMap({ ($0 as? UIWindowScene)?.keyWindow})
+                                    .first?.rootViewController {
+                                    adManager.showAd(from: rootVC)
+                                }
+                                
+                                
                                 //키보드 비활성화 시키기
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 
@@ -75,7 +86,6 @@ struct SearchBar: View {
                                     appState.totalCredit = 0
                                     
                                     // 검색 기록 저장
-                                    // searchBarViewModel.saveSearchText(searchBarViewModel.searchText)
                                     searchBarViewModel.triggerSearch()
                                     
                                     withAnimation {
@@ -127,6 +137,11 @@ struct SearchBar: View {
                 .frame(width : Constants.isPad() ? ipadWidth : iphoneWidth, height: 120)
             }
             .padding([.leading, .trailing])
+        }
+        .onAppear {
+            Task {
+                await adManager.loadAd()
+            }
         }
         .onDisappear {
 //            searchBarViewModel.searchText = ""
