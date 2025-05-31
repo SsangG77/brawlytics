@@ -14,6 +14,8 @@ struct CalculateView: View {
     
     @EnvironmentObject var appState: AppState
     
+    
+    
     @State var allBrawlersStandard: [BrawlerStandard] = []
     @State var clicked = false
     @State private var isLoading: Bool = false
@@ -24,10 +26,13 @@ struct CalculateView: View {
     
 #warning("RX 방식 변경을 위한 테스트")
 //    @EnvironmentObject var calculateViewModel: CalculateViewModel
+    
+//    @StateObject var calculateViewModel: RxCalculateViewModel
     @EnvironmentObject var calculateViewModel: RxCalculateViewModel
     let diContainer = DIContainer.shared
     
     let disposeBag = DisposeBag()
+    
     
     var body: some View {
         NavigationStack {
@@ -54,6 +59,7 @@ struct CalculateView: View {
                     }
                     .frame(height: 110)
             
+//MARK: - 하이퍼차지뷰를 계산뷰로 통합 후 전적검색뷰를 탭뷰에 추가 예정
 //                    NavigationLink(destination:
 //                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
 //                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
@@ -69,7 +75,7 @@ struct CalculateView: View {
                             ForEach(Role.allCases, id: \.self) { role in
                                 RoleBrawlerSection(
                                     role: role,
-                                    allBrawlers: allBrawlersStandard,
+                                    allBrawlers: $allBrawlersStandard,
                                     width: width,
                                     clicked: clicked,
                                     isLoading: isLoading
@@ -88,18 +94,32 @@ struct CalculateView: View {
                 calculateViewModel.isLoadingSubject
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { value in
+                        print("isLoadingSubject: ", value)
                         self.isLoading = value
                     })
                     .disposed(by: disposeBag)
             }
-        }
+        }// NavigationStack
+//        .onChange(of: allBrawlersStandard) { b in
+//            print("Change allBrawlersStandard:", b[0] )
+//        }
+//        .onChange(of: clicked) { c in
+//           print("clicked: ",c)
+//        }
+//        .onChange(of: isLoading) { l in
+//            print("isLoading: \(l)")
+//        }
+//        .onAppear {
+//            allBrawlersStandard = calculateViewModel.getBrawlersStandard()
+//        }
+        
     }
 }
 
 
 struct RoleBrawlerSection: View {
     let role: Role
-    let allBrawlers: [BrawlerStandard]
+    @Binding var allBrawlers: [BrawlerStandard]
     let width: CGFloat
     let clicked: Bool
     let isLoading: Bool

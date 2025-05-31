@@ -11,9 +11,10 @@ import GoogleMobileAds
 class InterstitialAdManager: NSObject, FullScreenContentDelegate {
     private var interstitialAd: InterstitialAd?
     
+    var onAdDismiss: (() -> Void)?
     
     func loadAd() async {
-        print("광고 로드")
+        
         do {
             interstitialAd = try await InterstitialAd.load(
                 with: AdManager.testId.rawValue, request: Request())
@@ -26,6 +27,7 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
     func showAd(from root: UIViewController) {
            guard let ad = interstitialAd else {
                print("광고 준비 안됨")
+               onAdDismiss?()
                return
            }
             ad.present(from: root)
@@ -39,22 +41,23 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
            Task {
                await loadAd()
            }
+           onAdDismiss?()
        }
 
        func adDidRecordImpression(_ ad: FullScreenPresentingAd) {
-           print("광고 노출 기록")
+//           print("광고 노출 기록")
        }
 
        func adDidRecordClick(_ ad: FullScreenPresentingAd) {
-           print("광고 클릭 기록")
+//           print("광고 클릭 기록")
        }
 
        func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
-           print("광고 곧 표시됨")
+//           print("광고 곧 표시됨")
        }
 
        func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-           print("광고 곧 닫힘")
+//           print("광고 곧 닫힘")
        }
 
        func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
@@ -64,5 +67,5 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
 
 enum AdManager: String {
     case testId = "ca-app-pub-3940256099942544/4411468910"
-    case adId = "ca-app-pub-3545555975398754~5711492641"
+    case adUnitId = "ca-app-pub-3545555975398754/6624535900"
 }

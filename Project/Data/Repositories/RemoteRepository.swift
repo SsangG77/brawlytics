@@ -29,16 +29,26 @@ class RemoteRepositoryImpl: RemoteRepository {
 //MARK: - Rx
 protocol RxRemoteRepository {
     func getUserBrawlers(searchText: String) -> Observable<[Brawler]>
+    func getBrawlerStandard() -> [BrawlerStandard]
 }
 
 class RxRemoteRepositoryImpl: RxRemoteRepository {
     private let rxRemoteDataSource: RxRemoteDataSource
+    private let brawlersDataSource: BrawlersDataSource
     
-    init(rxRemoteDataSource: RxRemoteDataSource) {
+    init(
+        rxRemoteDataSource: RxRemoteDataSource,
+        brawlersDataSource: BrawlersDataSource
+    ) {
         self.rxRemoteDataSource = rxRemoteDataSource
+        self.brawlersDataSource = brawlersDataSource
     }
     
     func getUserBrawlers(searchText: String) -> Observable<[Brawler]> {
         return rxRemoteDataSource.getUserBrawlers(searchText: searchText)
+    }
+    
+    func getBrawlerStandard() -> [BrawlerStandard] {
+        return brawlersDataSource.allBrawlers
     }
 }

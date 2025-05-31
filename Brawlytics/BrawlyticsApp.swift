@@ -20,14 +20,18 @@ struct BrawlyticsApp: App {
 //        MobileAds.shared.start(completionHandler: nil)
 //    }
 
+    // Delegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    @StateObject private var appState = AppState()
     
     var body: some Scene {
         WindowGroup {
             ContentView(
-                calculateVM: rxDiContainer.makeCalculateViewModel(),
                 brawlersVM: diContainer.makeBrawlersViewModel()
             )
+            .environmentObject(rxDiContainer.makeCalculateViewModel())
+            .environmentObject(appState)
         }
         
     }

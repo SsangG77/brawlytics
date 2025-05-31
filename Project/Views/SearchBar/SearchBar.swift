@@ -21,7 +21,6 @@ struct SearchBar: View {
 
     @EnvironmentObject var appState: AppState
     @ObservedObject var searchBarViewModel: SearchBarViewModel
-    @StateObject var brawlersDataSource: BrawlersDataSource = BrawlersDataSource()
     
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     @State var ipadWidth: CGFloat = 0  // GeometryReader에서 사용할 값을 저장할 변수 추가
@@ -67,19 +66,20 @@ struct SearchBar: View {
                             Spacer() // 버튼을 오른쪽으로 이동
                             Button(action: {
                                 
-                                if let rootVC = UIApplication.shared.connectedScenes
-                                    .compactMap({ ($0 as? UIWindowScene)?.keyWindow})
-                                    .first?.rootViewController {
-                                    adManager.showAd(from: rootVC)
+                                // 키보드 활성화 유무 체크
+                                if UIApplication.shared.sendAction(
+                                    #selector(UIResponder.resignFirstResponder),
+                                    to: nil, from: nil, for: nil
+                                ) {
+                                    //키보드 비활성화 시키기
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 }
-                                
-                                
-                                //키보드 비활성화 시키기
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                
-//                                if searchBarViewModel.searchText != "" {
+
                                 let text = (try? searchBarViewModel.searchTextSubject.value()) ?? ""
-                                  if !text.isEmpty {
+                                guard let text = try? searchBarViewModel.searchTextSubject.value(), !text.isEmpty else {
+                                    return
+                                }
+//                                  if !text.isEmpty {
                                     // AppState 값 초기화
                                     appState.totalCoin = 0
                                     appState.totalPP = 0
@@ -87,36 +87,42 @@ struct SearchBar: View {
                                     
                                     // 검색 기록 저장
                                     searchBarViewModel.triggerSearch()
-                                    
-                                    withAnimation {
-                                        clicked = true
-                                    }
                                     showHistory = false
-                                    
-                                    // 로딩 시작
-                                    withAnimation {
-//                                        isLoading = true
-                                        calculateViewModel.isLoadingSubject.onNext(true)
-                                    }
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                        withAnimation {
-                                            allBrawlersStandard = brawlersDataSource.allBrawlers
-                                        }
-                                        
-                                        // 로딩 종료
-                                        DispatchQueue.main.async {
-                                            withAnimation {
-//                                                isLoading = false
-                                                calculateViewModel.isLoadingSubject.onNext(false)
-                                            }
-                                        }
-                                        
-//                                        calculateViewModel.getBrawlers(searchBarViewModel.searchText)
-                                        let text = (try? searchBarViewModel.searchTextSubject.value()) ?? ""
-                                         calculateViewModel.getBrawlers(text)
-                                    }
-                                }
+                                      
+                                      adManager.onAdDismiss = {
+                                          withAnimation {
+                                              clicked = true
+                                          }
+                                          DispatchQueue.main.async {
+                                              // 로딩 시작
+                                              withAnimation {
+                                                  calculateViewModel.isLoadingSubject.onNext(true)
+                                              }
+                                              
+                                              DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                                  withAnimation {
+                                                      allBrawlersStandard = calculateViewModel.getBrawlersStandard()
+                                                  }
+                                                  
+                                                  // 로딩 종료
+                                                  DispatchQueue.main.async {
+                                                      withAnimation {
+                                                          calculateViewModel.isLoadingSubject.onNext(false)
+                                                      }
+                                                  }
+                                                  
+                                                  let text = (try? searchBarViewModel.searchTextSubject.value()) ?? ""
+                                                  calculateViewModel.getBrawlers(text)
+                                              }
+                                          }
+                                      }
+                                      
+                                      if let rootVC = UIApplication.shared.connectedScenes
+                                          .compactMap({ ($0 as? UIWindowScene)?.keyWindow})
+                                          .first?.rootViewController {
+                                          adManager.showAd(from: rootVC)
+                                      }
+//                                }
                                 
                                 
                             }) {

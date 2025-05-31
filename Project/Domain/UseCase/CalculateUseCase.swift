@@ -38,6 +38,7 @@ class CalculateUseCaseImpl: CalculateUseCase {
 protocol RxCalculateUseCase {
     func getUserBrawlers(searchText: String) -> Observable<[Brawler]>
     func findMyBrawler(brawlerName: String) -> Brawler
+    func getBrawlersStandard() -> [BrawlerStandard]
 }
 
 class RxCalculateUseCaseImpl: RxCalculateUseCase {
@@ -58,5 +59,9 @@ class RxCalculateUseCaseImpl: RxCalculateUseCase {
     
     func findMyBrawler(brawlerName: String) -> Brawler {
         return brawlers.first(where: { $0.name == brawlerName }) ?? Brawler()
+    }
+    
+    func getBrawlersStandard() -> [BrawlerStandard] {
+        return repository.getBrawlerStandard()
     }
 }

@@ -87,8 +87,15 @@ class RxDIContainer {
         return RxRemoteDataSourceImpl()
     }()
     
+    private lazy var brawlersDataSource: BrawlersDataSource = {
+        return BrawlersDataSource()
+    }()
+    
     private lazy var remoteRepository: RxRemoteRepository = {
-       return RxRemoteRepositoryImpl(rxRemoteDataSource: dataSource)
+        return RxRemoteRepositoryImpl(
+            rxRemoteDataSource: dataSource,
+            brawlersDataSource: brawlersDataSource
+        )
     }()
     
     private lazy var calculateUseCase: RxCalculateUseCase = {

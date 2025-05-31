@@ -11,22 +11,18 @@ import SwiftData
 @available(iOS 17.0, *)
 struct ContentView: View {
     
-    @StateObject private var appState = AppState()
+//    @StateObject private var appState = AppState()
     
 #warning("RX 방식 변경을 위한 테스트")
-//    @StateObject var calculateVM: CalculateViewModel
-    @StateObject var calculateVM: RxCalculateViewModel
-    
+//    @StateObject var calculateVM: RxCalculateViewModel
     @StateObject var brawlersVM: BrawlersViewModel
     
     init(
-//        calculateVM: CalculateViewModel,
-        calculateVM: RxCalculateViewModel,
+//        calculateVM: RxCalculateViewModel,
         brawlersVM: BrawlersViewModel
     ) {
 
 //        _calculateVM = StateObject(wrappedValue: calculateVM)
-        _calculateVM = StateObject(wrappedValue: calculateVM)
         _brawlersVM = StateObject(wrappedValue: brawlersVM)
     }
     
@@ -34,15 +30,15 @@ struct ContentView: View {
         TabView {
             Group {
                 CalculateView()
-                .environmentObject(appState)
-                .environmentObject(calculateVM)
+//                .environmentObject(appState)
+//                .environmentObject(calculateVM)
                 .tabItem {
                     Label("Calculator", systemImage: "number")
                         
                 }
                 
                 HyperchargeView(viewModel: brawlersVM)
-                    .environmentObject(appState)
+//                    .environmentObject(appState)
                     .tabItem {
                         Label("Hyper charge", systemImage: "flame")  
                     }
