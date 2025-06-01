@@ -57,7 +57,7 @@
 			);
 			target = 9128112A2CD799FB004D9554 /* Brawlytics */;
 		};
-		91A8D4732DE8D4CA00F7371E /* Exceptions for "Brawlytics" folder in "Brawlytics" target */ = {
+		91A8D5522DECC63800F7371E /* Exceptions for "Brawlytics" folder in "Brawlytics" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -70,7 +70,7 @@
 		9128112D2CD799FB004D9554 /* Brawlytics */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				91A8D4732DE8D4CA00F7371E /* Exceptions for "Brawlytics" folder in "Brawlytics" target */,
+				91A8D5522DECC63800F7371E /* Exceptions for "Brawlytics" folder in "Brawlytics" target */,
 			);
 			path = Brawlytics;
 			sourceTree = "<group>";
@@ -412,6 +412,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Brawlytics/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -470,6 +471,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Brawlytics/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -490,7 +492,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Brawlytics/Preview Content\"";
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Brawlytics/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -526,7 +528,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Brawlytics/Preview Content\"";
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Brawlytics/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -561,6 +563,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.BrawlyticsTests;
@@ -587,6 +590,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.BrawlyticsTests;
@@ -610,6 +614,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.BrawlyticsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -627,6 +632,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.BrawlyticsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

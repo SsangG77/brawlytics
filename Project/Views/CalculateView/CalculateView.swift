@@ -12,27 +12,20 @@ import RxSwift
 @available(iOS 17.0, *)
 struct CalculateView: View {
     
-    @EnvironmentObject var appState: AppState
-    
-    
     
     @State var allBrawlersStandard: [BrawlerStandard] = []
     @State var clicked = false
-    @State private var isLoading: Bool = false
+    @State var isLoading: Bool = false
     
     //total money icon size
     let iconSize: CGFloat = 20
     let fontSize: CGFloat = 20
     
-#warning("RX 방식 변경을 위한 테스트")
-//    @EnvironmentObject var calculateViewModel: CalculateViewModel
-    
-//    @StateObject var calculateViewModel: RxCalculateViewModel
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var calculateViewModel: RxCalculateViewModel
+    
     let diContainer = DIContainer.shared
-    
     let disposeBag = DisposeBag()
-    
     
     var body: some View {
         NavigationStack {
@@ -46,7 +39,6 @@ struct CalculateView: View {
                     calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
                         
                         SearchBar(
-                            allBrawlersStandard: $allBrawlersStandard,
                             clicked: $clicked,
                             searchBarViewModel: diContainer.makeSearchBarViewModel()
                         )
@@ -59,7 +51,6 @@ struct CalculateView: View {
                     }
                     .frame(height: 110)
             
-//MARK: - 하이퍼차지뷰를 계산뷰로 통합 후 전적검색뷰를 탭뷰에 추가 예정
 //                    NavigationLink(destination:
 //                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
 //                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
@@ -73,12 +64,13 @@ struct CalculateView: View {
                     
                     ScrollView {
                             ForEach(Role.allCases, id: \.self) { role in
+                                let filtered = allBrawlersStandard.filter { $0.role == role }
                                 RoleBrawlerSection(
                                     role: role,
-                                    allBrawlers: $allBrawlersStandard,
+                                    filtered: filtered,
                                     width: width,
                                     clicked: clicked,
-                                    isLoading: isLoading
+                                    isLoading: $isLoading
                                 )
                                 .environmentObject(appState)
                                 
@@ -90,39 +82,30 @@ struct CalculateView: View {
             }//geo
             .ignoresSafeArea(.keyboard)
             .background(Color(hexString: "37475F"))
+            .onChange(of: clicked) { c in print("clicked: \(c)---------------print")}
             .onAppear {
                 calculateViewModel.isLoadingSubject
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { value in
-                        print("isLoadingSubject: ", value)
                         self.isLoading = value
+                        print("isLoading: \(self.isLoading)---------print")
                     })
                     .disposed(by: disposeBag)
+                
+                allBrawlersStandard = calculateViewModel.getBrawlersStandard()
             }
-        }// NavigationStack
-//        .onChange(of: allBrawlersStandard) { b in
-//            print("Change allBrawlersStandard:", b[0] )
-//        }
-//        .onChange(of: clicked) { c in
-//           print("clicked: ",c)
-//        }
-//        .onChange(of: isLoading) { l in
-//            print("isLoading: \(l)")
-//        }
-//        .onAppear {
-//            allBrawlersStandard = calculateViewModel.getBrawlersStandard()
-//        }
-        
+        }
     }
 }
 
 
 struct RoleBrawlerSection: View {
     let role: Role
-    @Binding var allBrawlers: [BrawlerStandard]
+//    let allBrawlers: [BrawlerStandard]
+    let filtered: [BrawlerStandard]
     let width: CGFloat
     let clicked: Bool
-    let isLoading: Bool
+    @Binding var isLoading: Bool
 
     @EnvironmentObject var appState: AppState
     let vm = ClassesTitleViewModel()
@@ -143,18 +126,13 @@ struct RoleBrawlerSection: View {
                     if isLoading {
                         BrawlerEmptyView(width: width)
                     } else {
-                        let filtered = allBrawlers.filter { $0.role == role }
-                        if filtered.isEmpty {
-                            Text("No Data Found")
-                        } else {
-                            ForEach(filtered, id: \ .id) { brawler in
-                                BrawlerView(
-                                    width: width,
-                                    brawlerStandard: brawler,
-                                    viewModel: diContainer.makeBrawlersViewModel()
-                                )
-                                .environmentObject(appState)
-                            }
+                        ForEach(filtered, id: \ .id) { brawler in
+                            BrawlerView(
+                                width: width,
+                                brawlerStandard: brawler,
+                                viewModel: diContainer.makeBrawlersViewModel()
+                            )
+                            .environmentObject(appState)
                         }
                     }
                 }

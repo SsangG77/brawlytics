@@ -28,6 +28,7 @@ struct BrawlyticsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(
+                calculateVM: rxDiContainer.makeCalculateViewModel(),
                 brawlersVM: diContainer.makeBrawlersViewModel()
             )
             .environmentObject(rxDiContainer.makeCalculateViewModel())

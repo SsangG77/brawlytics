@@ -11,12 +11,10 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct SearchBar: View {
     @State var showHistory:Bool = false
-    @Binding var allBrawlersStandard: [BrawlerStandard]
+//    @Binding var allBrawlersStandard: [BrawlerStandard]
     @Binding var clicked: Bool
-//    @Binding var isLoading: Bool
     
 #warning("RX 방식 변경을 위한 테스트")
-//    @EnvironmentObject var calculateViewModel: CalculateViewModel
     @EnvironmentObject var calculateViewModel: RxCalculateViewModel
 
     @EnvironmentObject var appState: AppState
@@ -79,50 +77,42 @@ struct SearchBar: View {
                                 guard let text = try? searchBarViewModel.searchTextSubject.value(), !text.isEmpty else {
                                     return
                                 }
-//                                  if !text.isEmpty {
-                                    // AppState 값 초기화
-                                    appState.totalCoin = 0
-                                    appState.totalPP = 0
-                                    appState.totalCredit = 0
-                                    
-                                    // 검색 기록 저장
-                                    searchBarViewModel.triggerSearch()
-                                    showHistory = false
+                                
+                                // AppState 값 초기화
+                                appState.totalCoin = 0
+                                appState.totalPP = 0
+                                appState.totalCredit = 0
+                                clicked = false
+                                
+                                
+                                // 검색 기록 저장
+                                searchBarViewModel.triggerSearch()
+                                showHistory = false
+                                
+                                adManager.onAdStart = {
+                                    withAnimation {
+                                        clicked = true
+                                        calculateViewModel.isLoadingSubject.onNext(true)
+                                    }
+                                }
+                               
+                                adManager.onAdDismiss = {
+                                    DispatchQueue.main.async {
+                                        withAnimation {
+//                                            clicked = true
+//                                            calculateViewModel.isLoadingSubject.onNext(true)
+                                            calculateViewModel.isLoadingSubject.onNext(false)
+                                            calculateViewModel.getBrawlers(text)
+                                        }
+                                    }
+                                }
+
                                       
-                                      adManager.onAdDismiss = {
-                                          withAnimation {
-                                              clicked = true
-                                          }
-                                          DispatchQueue.main.async {
-                                              // 로딩 시작
-                                              withAnimation {
-                                                  calculateViewModel.isLoadingSubject.onNext(true)
-                                              }
-                                              
-                                              DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                                  withAnimation {
-                                                      allBrawlersStandard = calculateViewModel.getBrawlersStandard()
-                                                  }
-                                                  
-                                                  // 로딩 종료
-                                                  DispatchQueue.main.async {
-                                                      withAnimation {
-                                                          calculateViewModel.isLoadingSubject.onNext(false)
-                                                      }
-                                                  }
-                                                  
-                                                  let text = (try? searchBarViewModel.searchTextSubject.value()) ?? ""
-                                                  calculateViewModel.getBrawlers(text)
-                                              }
-                                          }
-                                      }
-                                      
-                                      if let rootVC = UIApplication.shared.connectedScenes
-                                          .compactMap({ ($0 as? UIWindowScene)?.keyWindow})
-                                          .first?.rootViewController {
-                                          adManager.showAd(from: rootVC)
-                                      }
-//                                }
+                              if let rootVC = UIApplication.shared.connectedScenes
+                                  .compactMap({ ($0 as? UIWindowScene)?.keyWindow})
+                                  .first?.rootViewController {
+                                  adManager.showAd(from: rootVC)
+                              }
                                 
                                 
                             }) {
@@ -150,15 +140,13 @@ struct SearchBar: View {
             }
         }
         .onDisappear {
-//            searchBarViewModel.searchText = ""
-            clicked = false
+//            clicked = false
             showHistory = false
-            allBrawlersStandard = []
-            calculateViewModel.brawlers = []
+//            calculateViewModel.brawlers = []
             
-            appState.totalCoin = 0
-            appState.totalPP = 0
-            appState.totalCredit = 0
+//            appState.totalCoin = 0
+//            appState.totalPP = 0
+//            appState.totalCredit = 0
         }
     }
 }

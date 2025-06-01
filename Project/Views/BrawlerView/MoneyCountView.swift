@@ -10,9 +10,9 @@ import SwiftUI
 
 struct MoneyCountView: View {
     
-    @State var ppCount = -1
-    @State var coinCount = -1
-    @State var creditCount = -1
+    @State var ppCount = 0
+    @State var coinCount = 0
+    @State var creditCount = 0
     
     @EnvironmentObject var appState: AppState
     @State var imageSize : CGFloat = 33

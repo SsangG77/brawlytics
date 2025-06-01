@@ -23,8 +23,7 @@ struct Constants {
     
     
     static func myPrint<T>(title:String, content:T) {
-        print("")
-        print("======================= \(title) =======================")
+        print("======================= \(title) =======================print")
         print(content)
         print("")
         

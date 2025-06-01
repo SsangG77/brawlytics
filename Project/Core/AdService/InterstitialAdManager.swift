@@ -11,13 +11,15 @@ import GoogleMobileAds
 class InterstitialAdManager: NSObject, FullScreenContentDelegate {
     private var interstitialAd: InterstitialAd?
     
-    var onAdDismiss: (() -> Void)?
+    
+    var onAdStart: (() -> Void)? // 시작 클로저
+    var onAdDismiss: (() -> Void)? //종료 클로저
     
     func loadAd() async {
         
         do {
             interstitialAd = try await InterstitialAd.load(
-                with: AdManager.testId.rawValue, request: Request())
+                with: AdManager.shared.getId(.test), request: Request())
             interstitialAd?.fullScreenContentDelegate = self
         } catch {
             print("광고 로드 실패 : \(error.localizedDescription)")
@@ -30,6 +32,8 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
                onAdDismiss?()
                return
            }
+        print("showAd---------print")
+            onAdStart?()
             ad.present(from: root)
        }
 
@@ -41,6 +45,7 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
            Task {
                await loadAd()
            }
+           print("adDidDismissFullScreenContent---------print")
            onAdDismiss?()
        }
 
@@ -65,7 +70,28 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
        }
 }
 
-enum AdManager: String {
-    case testId = "ca-app-pub-3940256099942544/4411468910"
-    case adUnitId = "ca-app-pub-3545555975398754/6624535900"
+//enum AdManager: String {
+//    case testId = "ca-app-pub-3940256099942544/4411468910"
+//    case adUnitId = "ca-app-pub-3545555975398754/6624535900"
+//}
+
+class AdManager {
+    
+    enum IdType {
+        case test
+        case unit
+    }
+    
+    static let shared = AdManager()
+    
+    func getId(_ type: IdType) -> String {
+        guard let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) else {
+            return "ca-app-pub-3940256099942544/4411468910"
+        }
+        
+        let key = (type == .test) ? "testId" : "adUnitId"
+        
+        return dict[key] as? String ?? ""
+    }
 }

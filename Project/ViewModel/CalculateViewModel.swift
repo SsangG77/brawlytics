@@ -49,7 +49,7 @@ class CalculateViewModel: ObservableObject {
 
 //MARK: - rx
 class RxCalculateViewModel: ObservableObject {
-    @Published var brawlers: [Brawler] = []
+//    @Published var brawlers: [Brawler] = []
     
     let brawlersSubject = PublishSubject<[Brawler]>()
     let isLoadingSubject = BehaviorSubject<Bool>(value: false)
@@ -66,7 +66,7 @@ class RxCalculateViewModel: ObservableObject {
             .observe(on: MainScheduler.instance)
             .subscribe(
                 onNext: { [weak self] brawlers in
-                    self?.brawlers = brawlers
+//                    self?.brawlers = brawlers
                     self?.brawlersSubject.onNext(brawlers)
                 },
                 onError: { [weak self] error in

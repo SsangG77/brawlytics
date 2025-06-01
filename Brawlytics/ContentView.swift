@@ -14,15 +14,15 @@ struct ContentView: View {
 //    @StateObject private var appState = AppState()
     
 #warning("RX 방식 변경을 위한 테스트")
-//    @StateObject var calculateVM: RxCalculateViewModel
+    @StateObject var calculateVM: RxCalculateViewModel
     @StateObject var brawlersVM: BrawlersViewModel
     
     init(
-//        calculateVM: RxCalculateViewModel,
+        calculateVM: RxCalculateViewModel,
         brawlersVM: BrawlersViewModel
     ) {
 
-//        _calculateVM = StateObject(wrappedValue: calculateVM)
+        _calculateVM = StateObject(wrappedValue: calculateVM)
         _brawlersVM = StateObject(wrappedValue: brawlersVM)
     }
     
@@ -31,7 +31,7 @@ struct ContentView: View {
             Group {
                 CalculateView()
 //                .environmentObject(appState)
-//                .environmentObject(calculateVM)
+                .environmentObject(calculateVM)
                 .tabItem {
                     Label("Calculator", systemImage: "number")
                         
