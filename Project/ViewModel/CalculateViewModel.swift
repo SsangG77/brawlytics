@@ -9,42 +9,42 @@ import Foundation
 import SwiftUI
 import RxSwift
 
-class CalculateViewModel: ObservableObject {
-    
-    @Published var brawlers: [Brawler] = []
-    private let calculateUseCase: CalculateUseCase
-    
-    init(calculateUseCase: CalculateUseCase) {
-        self.calculateUseCase = calculateUseCase
-    }
-
-    func getBrawlers(_ searchText: String) {
-        self.calculateUseCase.getUserBrawlers(searchText: searchText) { brawlers in
-            DispatchQueue.main.async {
-                self.brawlers = brawlers
-            }
-        }
-    }
-    
-    func findMyBrawler(brawlerName: String) -> Brawler {
-        return calculateUseCase.findMyBrawler(brawlerName: brawlerName)
-    }
-    
-    @ViewBuilder
-    func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {
-        if isPad { //아이패드일때
-            HStack {
-                content()
-            }
-            .frame(height: 130)
-            
-        } else {
-            ZStack {
-                content()
-            }
-        }
-    }
-}
+//class CalculateViewModel: ObservableObject {
+//    
+//    @Published var brawlers: [Brawler] = []
+//    private let calculateUseCase: CalculateUseCase
+//    
+//    init(calculateUseCase: CalculateUseCase) {
+//        self.calculateUseCase = calculateUseCase
+//    }
+//
+//    func getBrawlers(_ searchText: String) {
+//        self.calculateUseCase.getUserBrawlers(searchText: searchText) { brawlers in
+//            DispatchQueue.main.async {
+//                self.brawlers = brawlers
+//            }
+//        }
+//    }
+//    
+//    func findMyBrawler(brawlerName: String) -> Brawler {
+//        return calculateUseCase.findMyBrawler(brawlerName: brawlerName)
+//    }
+//    
+//    @ViewBuilder
+//    func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {
+//        if isPad { //아이패드일때
+//            HStack {
+//                content()
+//            }
+//            .frame(height: 130)
+//            
+//        } else {
+//            ZStack {
+//                content()
+//            }
+//        }
+//    }
+//}
 
 
 //MARK: - rx
@@ -53,6 +53,11 @@ class RxCalculateViewModel: ObservableObject {
     
     let brawlersSubject = PublishSubject<[Brawler]>()
     let isLoadingSubject = BehaviorSubject<Bool>(value: false)
+    
+    //error
+    @Published var isError = false
+    @Published var errorMessage = ""
+    
     
     private let useCase: RxCalculateUseCase
     private let disposeBag = DisposeBag()
@@ -70,7 +75,15 @@ class RxCalculateViewModel: ObservableObject {
                     self?.brawlersSubject.onNext(brawlers)
                 },
                 onError: { [weak self] error in
-                    print("Error: \(error)")
+                    self?.isError = true
+                    switch error as! BrawlerFetchError {
+                    case .network:
+                        self?.errorMessage = NSLocalizedString("networkError", comment: "")
+                    case .decoding:
+                        self?.errorMessage = NSLocalizedString("decodingError", comment: "")
+                    case .unknown:
+                        self?.errorMessage = NSLocalizedString("unknownError", comment: "")
+                    }
                 }
             )
             .disposed(by: disposeBag)
@@ -83,8 +96,6 @@ class RxCalculateViewModel: ObservableObject {
     func getBrawlersStandard() -> [BrawlerStandard] {
         return useCase.getBrawlersStandard()
     }
-    
-    
     
     @ViewBuilder
     func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {

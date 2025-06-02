@@ -70,11 +70,6 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
        }
 }
 
-//enum AdManager: String {
-//    case testId = "ca-app-pub-3940256099942544/4411468910"
-//    case adUnitId = "ca-app-pub-3545555975398754/6624535900"
-//}
-
 class AdManager {
     
     enum IdType {
@@ -89,9 +84,7 @@ class AdManager {
               let dict = NSDictionary(contentsOfFile: path) else {
             return "ca-app-pub-3940256099942544/4411468910"
         }
-        
         let key = (type == .test) ? "testId" : "adUnitId"
-        
         return dict[key] as? String ?? ""
     }
 }

@@ -82,8 +82,9 @@ struct SearchBar: View {
                                 appState.totalCoin = 0
                                 appState.totalPP = 0
                                 appState.totalCredit = 0
-                                clicked = false
                                 
+                                clicked = false
+                                calculateViewModel.isError = false
                                 
                                 // 검색 기록 저장
                                 searchBarViewModel.triggerSearch()

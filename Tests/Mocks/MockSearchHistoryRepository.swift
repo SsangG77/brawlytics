@@ -7,8 +7,7 @@
 
 import Foundation
 @testable import Brawlytics
-
-class MockSearchHistoryRepository: SearchHistoryRepository {
+class MockSearchBarUseCase: SearchBarUseCase {
     var searchHistory: [String] = []
     
     func saveSearchText(_ searchText: String) {

@@ -14,7 +14,7 @@ final class SearchBarViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         // 여기에 설정 코드를 넣으세요. 이 메서드는 클래스의 각 테스트 메서드가 호출되기 전에 호출됩니다.
-        viewModel = SearchBarViewModel(repository: MockSearchHistoryRepository())
+        viewModel = SearchBarViewModel(useCase: MockSearchBarUseCase())
     }
 
     override func tearDownWithError() throws {

@@ -70,9 +70,9 @@ class RxRemoteDataSourceImpl: RxRemoteDataSource {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
+                if let error = error as? URLError {
                     print("Error fetching brawlers: \(error)")
-                    observer.onError(error)
+                    observer.onError(BrawlerFetchError.network)
                     return
                 }
                
@@ -87,9 +87,11 @@ class RxRemoteDataSourceImpl: RxRemoteDataSource {
                     let brawlersResponse = try JSONDecoder().decode([Brawler].self, from: data)
                     observer.onNext(brawlersResponse)
                     observer.onCompleted()
+                } catch let decodingError as DecodingError {
+                    print("Failed to decode JSON: \(decodingError)")
+                    observer.onError(BrawlerFetchError.decoding)
                 } catch {
-                    print("Failed to decode JSON: \(error)")
-                    observer.onError(error)
+                    observer.onError(BrawlerFetchError.unknown)
                 }
             }
             task.resume()
@@ -99,4 +101,11 @@ class RxRemoteDataSourceImpl: RxRemoteDataSource {
             }
         }
     }
+}
+
+//MARK: - enum
+enum BrawlerFetchError: Error {
+    case network
+    case decoding
+    case unknown
 }

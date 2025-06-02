@@ -5,4 +5,14 @@
 //  Created by 차상진 on 5/26/25.
 //
 
+//CalculateView - 하이퍼자지 네비게이션
 hypercharge_select = "Select Hypercharge";
+
+//CalculateViewModel - 에러 메세지
+networkError = "Network Error.";
+decodingError = "Cannot load data.";
+unknownError = "Unknown error.";
+research = "Research please.";
+
+//SearchBar - placeholder
+searchPlaceholder = "Enter playertag";

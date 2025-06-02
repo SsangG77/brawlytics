@@ -16,6 +16,7 @@ struct CalculateView: View {
     @State var allBrawlersStandard: [BrawlerStandard] = []
     @State var clicked = false
     @State var isLoading: Bool = false
+    @State var error: Bool = false
     
     //total money icon size
     let iconSize: CGFloat = 20
@@ -60,9 +61,26 @@ struct CalculateView: View {
 //                            .font(.system(size: 17, weight: .bold))
 //                            .padding(.vertical, 10)
 //                    }
+                    if calculateViewModel.isError {
+                        VStack {
+                            Spacer()
+                            Text(calculateViewModel.errorMessage)
+                                .fontDesign(.rounded)
+                                .bold()
+                                .font(.system(size: 20))
+                                .foregroundColor(.white)
+                                .padding(.bottom, 10)
+                            
+                            Text(NSLocalizedString("research", comment: ""))
+                                .foregroundColor(.white)
                     
-                    
-                    ScrollView {
+                            Spacer()
+                        }
+                        .frame(height: geo.size.height - 170)
+                        
+                    } else {
+                        ScrollView {
+                            
                             ForEach(Role.allCases, id: \.self) { role in
                                 let filtered = allBrawlersStandard.filter { $0.role == role }
                                 RoleBrawlerSection(
@@ -75,15 +93,18 @@ struct CalculateView: View {
                                 .environmentObject(appState)
                                 
                             }
+                        }
+                        .frame(height: geo.size.height - 170)
                     }
-                    .frame(height: geo.size.height - 170)
+                    
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
             }//geo
             .ignoresSafeArea(.keyboard)
             .background(Color(hexString: "37475F"))
-            .onChange(of: clicked) { c in print("clicked: \(c)---------------print")}
             .onAppear {
+                allBrawlersStandard = calculateViewModel.getBrawlersStandard()
+                
                 calculateViewModel.isLoadingSubject
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { value in
@@ -92,7 +113,7 @@ struct CalculateView: View {
                     })
                     .disposed(by: disposeBag)
                 
-                allBrawlersStandard = calculateViewModel.getBrawlersStandard()
+                
             }
         }
     }
