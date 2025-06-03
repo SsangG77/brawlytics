@@ -22,24 +22,77 @@ final class SearchBarViewModelTests: XCTestCase {
         viewModel = nil
     }
 
+    /// 기본 검색어 저장 테스트
+    /// - 검색어 저장 후 검색 기록에 포함되어 있는지 확인
     func testSaveSearch() throws {
-        // 이는 기능 테스트 사례의 예입니다.
-        // XCTAssert 및 관련 함수를 사용하여 테스트 결과가 올바른지 확인하세요.
-        // XCTest용으로 작성하는 모든 테스트에는 throws 및 async 주석을 추가할 수 있습니다.
-        // 테스트에서 처리되지 않은 오류가 발생할 때 예기치 않은 실패를 생성하도록 테스트에 throws를 표시하세요.
-        // 비동기 코드가 완료될 때까지 기다릴 수 있도록 테스트에 async를 표시하세요. 나중에 어설션을 사용하여 결과를 확인하세요.
         let testText = "testText"
         viewModel.saveSearchText(testText)
         
         XCTAssertEqual(viewModel.getSearchHistory(), [testText])
     }
     
+    /// 중복 검색어 처리 테스트
+    /// - 동일한 검색어를 두 번 저장해도 한 번만 저장되는지 확인
+    func testSaveDuplicateSearch() throws {
+        let testText = "testText"
+        viewModel.saveSearchText(testText)
+        viewModel.saveSearchText(testText)
+        
+        XCTAssertEqual(viewModel.getSearchHistory().count, 1)
+        XCTAssertEqual(viewModel.getSearchHistory(), [testText])
+    }
     
-
+    /// 여러 검색어 저장 테스트
+    /// - 여러 검색어를 순서대로 저장하고 순서가 유지되는지 확인
+    func testSaveMultipleSearches() throws {
+        let searches = ["test1", "test2", "test3"]
+        searches.forEach { viewModel.saveSearchText($0) }
+        
+        XCTAssertEqual(viewModel.getSearchHistory(), searches)
+    }
+    
+    /// 빈 검색어 처리 테스트
+    /// - 빈 문자열이 검색 기록에 저장되지 않는지 확인
+    func testSaveEmptySearch() throws {
+        viewModel.saveSearchText("")
+        XCTAssertTrue(viewModel.getSearchHistory().isEmpty)
+    }
+    
+    /// 특수문자 포함 검색어 테스트
+    /// - 특수문자가 포함된 검색어가 정상적으로 저장되는지 확인
+    func testSaveSearchWithSpecialCharacters() throws {
+        let testText = "test@#$%^&*()"
+        viewModel.saveSearchText(testText)
+        
+        XCTAssertEqual(viewModel.getSearchHistory(), [testText])
+    }
+    
+    /// 한글 검색어 테스트
+    /// - 한글이 포함된 검색어가 정상적으로 저장되는지 확인
+    func testSaveSearchWithKoreanCharacters() throws {
+        let testText = "테스트"
+        viewModel.saveSearchText(testText)
+        
+        XCTAssertEqual(viewModel.getSearchHistory(), [testText])
+    }
+    
+    /// 긴 검색어 테스트
+    /// - 매우 긴 검색어가 정상적으로 저장되는지 확인
+    func testSaveSearchWithLongText() throws {
+        let testText = String(repeating: "a", count: 1000)
+        viewModel.saveSearchText(testText)
+        
+        XCTAssertEqual(viewModel.getSearchHistory(), [testText])
+    }
+    
+    /// 성능 테스트
+    /// - 1000개의 검색어를 저장하는 데 걸리는 시간 측정
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
-            // Put the code you want to measure the time of here.
+            for i in 0..<1000 {
+                viewModel.saveSearchText("test\(i)")
+            }
         }
     }
 
