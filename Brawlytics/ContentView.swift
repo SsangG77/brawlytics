@@ -37,10 +37,15 @@ struct ContentView: View {
                         
                 }
                 
-                HyperchargeView(viewModel: brawlersVM)
-//                    .environmentObject(appState)
+//                HyperchargeView(viewModel: brawlersVM)
+////                    .environmentObject(appState)
+//                    .tabItem {
+//                        Label("Hyper charge", systemImage: "flame")  
+//                    }
+                
+                PlayerProfileView()
                     .tabItem {
-                        Label("Hyper charge", systemImage: "flame")  
+                        Label("Profile", systemImage: "chart.bar")
                     }
                 
             }

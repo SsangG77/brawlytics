@@ -52,15 +52,15 @@ struct CalculateView: View {
                     }
                     .frame(height: 110)
             
-//                    NavigationLink(destination:
-//                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
-//                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
-//                    ) {
-//                        Label(NSLocalizedString("hypercharge_select", comment: ""), systemImage: "flame")
-//                            .foregroundColor(.black)
-//                            .font(.system(size: 17, weight: .bold))
-//                            .padding(.vertical, 10)
-//                    }
+                    NavigationLink(destination:
+                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
+                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
+                    ) {
+                        Label(NSLocalizedString("hypercharge_select", comment: ""), systemImage: "flame")
+                            .foregroundColor(.black)
+                            .font(.system(size: 17, weight: .bold))
+                            .padding(.vertical, 10)
+                    }
                     if calculateViewModel.isError {
                         VStack {
                             Spacer()
