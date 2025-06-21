@@ -7,29 +7,76 @@
 
 import SwiftUI
 
+
 struct OverlapCardView: View {
+    
+    let alignment: Alignment
+    let type: CardType
+    
+    
+    init(
+        alignment: Alignment,
+        type: CardType
+    
+    ) {
+        self.alignment = alignment
+        self.type = type
+    }
+    
+    
     var body: some View {
-        ZStack(alignment: .top) {
-            // 전체 배경 박스
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.black, lineWidth: 3)
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(red: 0.24, green: 0.30, blue: 0.42)) // 아래쪽 색
-                )
-                .frame(width: 300, height: 150)
-            // 상단 박스 (겹쳐지는 형태)
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color(red: 0.07, green: 0.11, blue: 0.20)) // 위쪽 색
-                .frame(width: 300, height: 70)
+        ZStack(alignment: alignment) {
+            
+            // 뒷 카드
+            VStack {
+                
+            }
+            .frame(width: 300, height: 150)
+            .roundedCornerWithBorder(backgroundColor: type.backColor)
+
+            // 앞 카드
+            VStack {
+                
+            }
+            .frame(width: 300, height: 70)
+            .roundedCornerWithBorder(backgroundColor: type.frontColor)
                 
         }
         .padding()
-        .background(Color(.black))
+        
         
     }
 }
 
+enum CardType {
+    case win, lose, `default`
+    
+    var frontColor: Color {
+        switch self {
+        case .win: return Color.lightRed
+        case .lose: return Color.lightBlue
+        case .default: return Color.deepColor
+        }
+    }
+    
+    var backColor: Color {
+        switch self {
+        case .win: return Color.deepRed
+        case .lose: return Color.deepBlue
+        case .default: return Color.lightColor
+        }
+    }
+}
+
+
+
+
+
 #Preview {
-    OverlapCardView()
+    OverlapCardView(alignment: .top, type: .default)
+    OverlapCardView(alignment: .bottom, type: .win)
+    OverlapCardView(alignment: .bottom, type: .lose)
+    
+    Spacer()
+        
 }

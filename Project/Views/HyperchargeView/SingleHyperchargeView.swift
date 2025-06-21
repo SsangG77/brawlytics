@@ -55,11 +55,12 @@ struct SingleHyperchargeView: View {
                     .frame(width: 130, height: 100)
                 
             }
-            .frame(width:width, height: 64)
-            .cornerRadius(15)
+            .frame(width:width, height: totalHeight)
+            .cornerRadius(20)
             .clipped()
 
-            Rectangle()
+            
+            RoundedRectangle(cornerRadius: 20)
                 .fill(LinearGradient(
                     gradient: Gradient(stops: [
                         .init(color: Color(hexString: "FFFFFF", opacity: 0.5), location: 0),
@@ -68,10 +69,10 @@ struct SingleHyperchargeView: View {
                     startPoint: .trailing,
                     endPoint: .leading
                 ))
+                .stroke(isOn ? .black : .white, lineWidth: 5)
                 .frame(width: width, height: totalHeight)
-                .cornerRadius(15)
-                .foregroundColor(Color(hexString: "576E90"))
-                .roundedCornerWithBorder(lineWidth: 5, borderColor: isOn ? .black : .white, radius: 15, corners: [.allCorners])
+                .foregroundColor(Color.lightColor)
+                
                 
             HStack {
                 Image(systemName: isOn ? "checkmark.square.fill" : "square")
@@ -91,11 +92,11 @@ struct SingleHyperchargeView: View {
                 
                 Text(hyperchargeName)
                 Spacer()
-            }//VStack
+            }
             .padding(.leading, 30)
-            .clipped()
+            
         }
-        .clipped()
+//        .clipped()
         .onAppear {
             isOn = viewModel.judgeHypercharge(hyperchargeName)
         }

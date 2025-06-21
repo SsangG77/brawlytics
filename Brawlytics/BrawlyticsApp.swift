@@ -16,9 +16,6 @@ struct BrawlyticsApp: App {
     let diContainer = DIContainer.shared
     let rxDiContainer = RxDIContainer.shared
     
-//    init() {
-//        MobileAds.shared.start(completionHandler: nil)
-//    }
 
     // Delegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

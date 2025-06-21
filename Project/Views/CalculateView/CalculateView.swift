@@ -101,7 +101,7 @@ struct CalculateView: View {
                 .frame(width: geo.size.width, height: geo.size.height)
             }//geo
             .ignoresSafeArea(.keyboard)
-            .background(Color(hexString: "37475F"))
+            .background(Color.backgroundColor)
             .onAppear {
                 allBrawlersStandard = calculateViewModel.getBrawlersStandard()
                 

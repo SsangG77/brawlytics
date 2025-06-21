@@ -20,7 +20,7 @@ struct BrawlerEmptyView: View {
     
     var body: some View {
         ZStack {
-            backgrounView
+            backgroundView
             contentView
             
         }//ZStack
@@ -32,12 +32,10 @@ struct BrawlerEmptyView: View {
         
     }
     
-    private var backgrounView: some View {
-        Rectangle()
+    private var backgroundView: some View {
+        VStack{}
             .frame(width: width, height: totalHeight)
-            .cornerRadius(20)
-            .foregroundColor(Color(hexString: "576E90"))
-            .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+            .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, backgroundColor: .deepColor , radius: 20, corners: [.allCorners])
     }
     
     private var contentView: some View {
@@ -109,9 +107,7 @@ struct BrawlerEmptyView: View {
             .modifier(BlinkingAnimationModifier(shouldShow: true, opacity: opacity))
         }
         .frame(width: width , height: brawlerHeight)
-        .background(Color(hexString: "6D8CB9"))
-        .cornerRadius(20)
-        .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+        .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, backgroundColor: Color.lightColor, radius: 20, corners: [.allCorners])
     }
 }
 
