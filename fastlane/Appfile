@@ -4,23 +4,3 @@
 
 # For more information about the Appfile, see:
 #     https://docs.fastlane.tools/advanced/#appfile
-
-# fastlane/Appfile
-
-# Apple ID (개발자 계정 이메일)
-apple_id("sangjincha719@gmail.com")
-
-# 앱의 Bundle Identifier (Xcode 프로젝트 설정에서 확인)
-app_identifier("com.sangjin.Brawlytics")
-
-# Team ID (Apple Developer Portal에서 확인)
-team_id("M3KH86595Z")
-
-# iTunes Connect Team ID (App Store Connect에서 확인) 
-itunes_connect_team_id("127263786")
-
-# 워크스페이스 또는 프로젝트 파일
-xcodeproj("Brawlytics.xcodeproj")
-
-# For more information about the Appfile, see:
-# https://docs.fastlane.tools/advanced/#appfile

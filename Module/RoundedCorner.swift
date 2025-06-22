@@ -27,7 +27,7 @@ extension View {
         radius: CGFloat = 20,
         corners: UIRectCorner = [.allCorners]
     ) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners) )
+        clipShape(RoundedCorner(radius: radius, corners: corners))
             .overlay(RoundedCorner(radius: radius, corners: corners)
             .stroke(borderColor, lineWidth: lineWidth))
             .background(

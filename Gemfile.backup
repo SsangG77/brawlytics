@@ -1,5 +1,11 @@
 source "https://rubygems.org"
+
 gem "fastlane"
-gem "cocoapods", ">= 1.0"
+gem 'pry'
+gem 'abbrev'
+gem 'fastlane-core'
+gem 'abbrev'
+gem 'pry'
+
 gem 'abbrev'
 gem 'pry'

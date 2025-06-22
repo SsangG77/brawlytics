@@ -12,39 +12,65 @@ struct OverlapCardView: View {
     
     let alignment: Alignment
     let type: CardType
+    let isPad: Bool
     
+    
+    // UI 설정값
+    private var cardRadius: CGFloat = 30 * 0.9
+    var width: CGFloat {
+        return isPad ? 200 : UIScreen.main.bounds.width * 0.85
+    }
     
     init(
         alignment: Alignment,
-        type: CardType
-    
+        type: CardType,
+        isPad: Bool
     ) {
         self.alignment = alignment
         self.type = type
+        self.isPad = isPad
     }
     
     
     var body: some View {
-        ZStack(alignment: alignment) {
-            
-            // 뒷 카드
-            VStack {
-                
+        
+        Group {
+            if isPad {
+                HStack {
+                    backCard
+                    Spacer()
+                    frontCard
+                }
+            } else {
+                ZStack(alignment: alignment) {
+                    backCard
+                    frontCard
+                }
             }
-            .frame(width: 300, height: 150)
-            .roundedCornerWithBorder(backgroundColor: type.backColor)
-
-            // 앞 카드
-            VStack {
-                
-            }
-            .frame(width: 300, height: 70)
-            .roundedCornerWithBorder(backgroundColor: type.frontColor)
-                
         }
         .padding()
-        
-        
+    }
+    
+    private var backCard: some View {
+        VStack {
+            
+        }
+        .frame(width: width, height: isPad ? 150 : type.backHeight)
+        .roundedCornerWithBorder(
+            backgroundColor: type.backColor,
+            radius: cardRadius
+        )
+    }
+    
+    private var frontCard: some View {
+        VStack {
+            
+        }
+        .frame(width: width, height: isPad ? 150 : type.frontHeight)
+        .roundedCornerWithBorder(
+            backgroundColor: type.frontColor,
+            radius: cardRadius
+        )
     }
 }
 
@@ -66,6 +92,21 @@ enum CardType {
         case .default: return Color.lightColor
         }
     }
+    
+    var frontHeight: CGFloat {
+        switch self {
+        case .win, .lose: return 270
+        case .default: return 80
+        }
+    }
+    
+    var backHeight: CGFloat {
+        switch self {
+            case .win, .lose: return 330
+            case .default: return 150
+        }
+    }
+    
 }
 
 
@@ -73,9 +114,9 @@ enum CardType {
 
 
 #Preview {
-    OverlapCardView(alignment: .top, type: .default)
-    OverlapCardView(alignment: .bottom, type: .win)
-    OverlapCardView(alignment: .bottom, type: .lose)
+    OverlapCardView(alignment: .top, type: .default,isPad: false)
+    OverlapCardView(alignment: .bottom, type: .win,isPad: true)
+    OverlapCardView(alignment: .bottom, type: .lose,isPad: false)
     
     Spacer()
         
