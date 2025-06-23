@@ -24,12 +24,19 @@ struct BrawlyticsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(
-                calculateVM: rxDiContainer.makeCalculateViewModel(),
-                brawlersVM: diContainer.makeBrawlersViewModel()
-            )
-            .environmentObject(rxDiContainer.makeCalculateViewModel())
-            .environmentObject(appState)
+            
+            ZStack {
+                Color.backgroundColor // 배경 뷰 (예: 색상)
+                    .ignoresSafeArea() // 화면 전체로 확장
+                
+                ContentView(
+                    calculateVM: rxDiContainer.makeCalculateViewModel(),
+                    brawlersVM: diContainer.makeBrawlersViewModel()
+                )
+                .environmentObject(rxDiContainer.makeCalculateViewModel())
+                .environmentObject(appState)
+            }
+            
         }
         
     }

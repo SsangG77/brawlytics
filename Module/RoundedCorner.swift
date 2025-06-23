@@ -20,19 +20,35 @@ struct RoundedCorner: Shape {
 }
 
 extension View {
+//    func roundedCornerWithBorder(
+//        lineWidth: CGFloat = 3,
+//        borderColor: Color = .black,
+//        backgroundColor: Color = Color.lightColor,
+//        radius: CGFloat = 20,
+//        corners: UIRectCorner = [.allCorners]
+//    ) -> some View {
+//        clipShape(RoundedCorner(radius: radius, corners: corners))
+//            .overlay(RoundedCorner(radius: radius, corners: corners)
+//            .stroke(borderColor, lineWidth: lineWidth))
+//            .background(
+//                RoundedRectangle(cornerRadius: radius)
+//                    .fill(backgroundColor)
+//            )
+//    }
+    
     func roundedCornerWithBorder(
-        lineWidth: CGFloat = 3,
+        lineWidth: CGFloat = 5,
         borderColor: Color = .black,
-        backgroundColor: Color = Color.lightColor,
+        backgroundColor: Color = Color.blue.opacity(0.3),
         radius: CGFloat = 20,
         corners: UIRectCorner = [.allCorners]
     ) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-            .overlay(RoundedCorner(radius: radius, corners: corners)
-            .stroke(borderColor, lineWidth: lineWidth))
-            .background(
+        self
+            .background(backgroundColor)
+            .cornerRadius(radius)
+            .overlay(
                 RoundedRectangle(cornerRadius: radius)
-                    .fill(backgroundColor)
+                    .stroke(borderColor, lineWidth: lineWidth)
             )
     }
 }

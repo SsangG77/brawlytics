@@ -54,6 +54,7 @@ struct ContentView: View {
             .toolbarColorScheme(.dark, for: .tabBar)
             
         }
+        .background(Color.backgroundColor)
         .onAppear {
             UserDefaults.standard.set([], forKey: "searchTextArray")
         }

@@ -9,10 +9,25 @@ import SwiftUI
 
 struct PlayerProfileView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        NavigationStack {
+            ZStack {
+                Color.backgroundColor // 배경 뷰 (예: 색상)
+                    .ignoresSafeArea() // 화면 전체로 확장
+                
+                ScrollView {
+                    NavigationLink(destination: BattleLogView()) {
+                        UserView()
+                    }
+                }
+            }
+        }
+        
     }
 }
 
+
 #Preview {
     PlayerProfileView()
+    
 }

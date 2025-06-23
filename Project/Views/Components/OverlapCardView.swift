@@ -8,41 +8,36 @@
 import SwiftUI
 
 
-struct OverlapCardView: View {
-    
-    let alignment: Alignment
-    let type: CardType
-    let isPad: Bool
+struct OverlapCardView<Front: View, Back: View>: View {
     
     
-    // UI 설정값
-    private var cardRadius: CGFloat = 30 * 0.9
-    var width: CGFloat {
-        return isPad ? 200 : UIScreen.main.bounds.width * 0.85
-    }
+    // View Model
+    let vm: OverlapCardViewModel
+    let frontView: Front
+    let backView: Back
     
     init(
-        alignment: Alignment,
-        type: CardType,
-        isPad: Bool
+        vm: OverlapCardViewModel,
+        @ViewBuilder frontView: () -> Front,
+        @ViewBuilder backView: () -> Back
     ) {
-        self.alignment = alignment
-        self.type = type
-        self.isPad = isPad
+        self.vm = vm
+        self.frontView = frontView()
+        self.backView = backView()
     }
     
     
     var body: some View {
         
         Group {
-            if isPad {
+            if vm.isPad {
                 HStack {
                     backCard
                     Spacer()
                     frontCard
                 }
             } else {
-                ZStack(alignment: alignment) {
+                ZStack(alignment: vm.alignment) {
                     backCard
                     frontCard
                 }
@@ -53,35 +48,39 @@ struct OverlapCardView: View {
     
     private var backCard: some View {
         VStack {
-            
+            if !vm.isPad {
+                Spacer().frame(height: vm.cardFrontHeight)
+            }
+            backView
         }
-        .frame(width: width, height: isPad ? 150 : type.backHeight)
+        .frame(width: vm.cardWidth, height: vm.cardBackHeight)
         .roundedCornerWithBorder(
-            backgroundColor: type.backColor,
-            radius: cardRadius
+            backgroundColor: vm.backColor,
+            radius: vm.cardRadius
         )
     }
     
     private var frontCard: some View {
         VStack {
-            
+            frontView
         }
-        .frame(width: width, height: isPad ? 150 : type.frontHeight)
+        .frame(width: vm.cardWidth, height: vm.cardFrontHeight)
         .roundedCornerWithBorder(
-            backgroundColor: type.frontColor,
-            radius: cardRadius
+            backgroundColor: vm.frontColor,
+            radius: vm.cardRadius
         )
     }
 }
 
+//MARK: - CardType
 enum CardType {
-    case win, lose, `default`
+    case win, lose, user, brawler
     
     var frontColor: Color {
         switch self {
         case .win: return Color.lightRed
         case .lose: return Color.lightBlue
-        case .default: return Color.deepColor
+        case .user, .brawler: return Color.deepColor
         }
     }
     
@@ -89,34 +88,37 @@ enum CardType {
         switch self {
         case .win: return Color.deepRed
         case .lose: return Color.deepBlue
-        case .default: return Color.lightColor
+        case .user, .brawler: return Color.lightColor
         }
     }
     
     var frontHeight: CGFloat {
         switch self {
-        case .win, .lose: return 270
-        case .default: return 80
+            case .win, .lose: return 270
+            case .user : return 100
+            case .brawler : return 80
         }
     }
     
     var backHeight: CGFloat {
         switch self {
             case .win, .lose: return 330
-            case .default: return 150
+            case .user: return 185
+            case .brawler : return 160
         }
     }
-    
 }
 
 
 
-
-
 #Preview {
-    OverlapCardView(alignment: .top, type: .default,isPad: false)
-    OverlapCardView(alignment: .bottom, type: .win,isPad: true)
-    OverlapCardView(alignment: .bottom, type: .lose,isPad: false)
+    OverlapCardView(vm: OverlapCardViewModel(type: .user), frontView: {
+        Text("front").foregroundStyle(.white)
+        },
+        backView: {
+            Text("tst")
+        }
+    )
     
     Spacer()
         
