@@ -30,12 +30,21 @@ struct OverlapCardView<Front: View, Back: View>: View {
     var body: some View {
         
         Group {
-            if vm.isPad {
-                HStack {
-                    backCard
-                    Spacer()
-                    frontCard
+            if vm.type == .user || vm.type == .brawler {
+                
+                if vm.isPad {
+                    HStack {
+                        backCard
+                        Spacer()
+                        frontCard
+                    }
+                }  else {
+                    ZStack(alignment: vm.alignment) {
+                        backCard
+                        frontCard
+                    }
                 }
+                
             } else {
                 ZStack(alignment: vm.alignment) {
                     backCard
@@ -48,10 +57,14 @@ struct OverlapCardView<Front: View, Back: View>: View {
     
     private var backCard: some View {
         VStack {
-            if !vm.isPad {
+            if vm.type == .user || vm.type == .brawler {
                 Spacer().frame(height: vm.cardFrontHeight)
             }
             backView
+            
+            if vm.type == .lose || vm.type == .win {
+                Spacer().frame(height: vm.cardFrontHeight)
+            }
         }
         .frame(width: vm.cardWidth, height: vm.cardBackHeight)
         .roundedCornerWithBorder(
@@ -78,41 +91,50 @@ enum CardType {
     
     var frontColor: Color {
         switch self {
-        case .win: return Color.lightRed
-        case .lose: return Color.lightBlue
+        case .win: return Color.lightBlue
+        case .lose: return Color.lightRed
         case .user, .brawler: return Color.deepColor
         }
     }
     
     var backColor: Color {
         switch self {
-        case .win: return Color.deepRed
-        case .lose: return Color.deepBlue
+        case .win: return Color.deepBlue
+        case .lose: return Color.deepRed
         case .user, .brawler: return Color.lightColor
         }
     }
     
     var frontHeight: CGFloat {
         switch self {
-            case .win, .lose: return 270
+            case .win, .lose: return 300
             case .user : return 100
-            case .brawler : return 80
+            case .brawler : return 70
         }
     }
     
     var backHeight: CGFloat {
         switch self {
-            case .win, .lose: return 330
+            case .win, .lose: return /*360*/ frontHeight + 60
             case .user: return 185
-            case .brawler : return 160
+            case .brawler : return 170
         }
     }
+    
+    var fontColor: Color {
+        switch self {
+        case .win : return Color(hexString: "8684FF")
+        case .lose : return Color(hexString: "FF8080")
+        default: return Color.white
+        }
+    }
+    
 }
 
 
 
 #Preview {
-    OverlapCardView(vm: OverlapCardViewModel(type: .user), frontView: {
+    OverlapCardView(vm: OverlapCardViewModel(type: .lose), frontView: {
         Text("front").foregroundStyle(.white)
         },
         backView: {

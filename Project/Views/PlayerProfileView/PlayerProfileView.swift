@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//유저 정보 카드 뷰
 struct PlayerProfileView: View {
     var body: some View {
         
@@ -18,6 +19,7 @@ struct PlayerProfileView: View {
                 ScrollView {
                     NavigationLink(destination: BattleLogView()) {
                         UserView()
+
                     }
                 }
             }

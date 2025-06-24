@@ -26,7 +26,7 @@ class OverlapCardViewModel: ObservableObject {
     }
     
     var cardWidth: CGFloat {
-        isPad ? 200 : UIScreen.main.bounds.width * 0.8
+        isPad ? UIScreen.main.bounds.width * 0.4 : UIScreen.main.bounds.width * 0.8
     }
     
     var cardBackHeight: CGFloat {
@@ -46,6 +46,10 @@ class OverlapCardViewModel: ObservableObject {
     }
 
     var cardRadius: CGFloat = 27
-
+    
+    var fontColor: Color {
+        type.fontColor
+    }
+    
 }
 
