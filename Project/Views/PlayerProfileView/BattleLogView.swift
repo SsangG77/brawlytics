@@ -19,7 +19,7 @@ struct BattleLogView: View {
             
         }
         .navigationTitle("Battle Logs") // ✅ 제목만 지정
-        .navigationBarTitleDisplayMode(.inline) // 선택 사항
+//        .navigationBarTitleDisplayMode(.inline) // 선택 사항
     }
 }
 
@@ -42,25 +42,46 @@ struct SingleBattleLogView: View {
     
     var header: some View {
         HStack(spacing: 0) {
-            Image(singleBattleLogVM.checkMode(mode: "brawlBall"))
-                .resizable()
-                .scaledToFit()
-                .padding()
             
-            Text("Map name")
-                .lineLimit(1) // 한 줄로 제한
-                .minimumScaleFactor(0.5) // 최소 50% 크기까지 축소
-                .font(.title3)
-                .foregroundStyle(.white)
-                .fontWeight(.semibold)
+            VStack(spacing: 5) {
+                HStack {
+                    Image(singleBattleLogVM.checkMode(mode: "brawlBall"))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30)
+//                        .padding()
+                    
+                    Text("Map name")
+                        .lineLimit(1) // 한 줄로 제한
+                        .minimumScaleFactor(0.5) // 최소 50% 크기까지 축소
+                        .font(.title3)
+                        .foregroundStyle(.white)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                }
+                
+                
+                HStack {
+                    Text("2025 / 06 / 25")
+                        .foregroundStyle(Color(hexString: "FFFFFF", opacity: 0.7))
+                        .lineLimit(1) // 한 줄로 제한
+                        .minimumScaleFactor(0.5) // 최소 50% 크기까지 축소
+                        .font(.system(size: 13))
+                        .foregroundStyle(.white)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                }
+            }
+            .padding(.leading, 25)
             
-            Spacer()
             
             Text(vm.type == .win ? "WIN" : "LOSE")
                 .fontWeight(.bold)
-                .font(.system(size: 30))
+                .font(.system(size: 35))
                 .foregroundStyle(vm.fontColor)
-                .padding(.trailing, 20)
+                .padding(.trailing, 25)
         }
     }
     

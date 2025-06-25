@@ -20,21 +20,23 @@ class OverlapCardViewModel: ObservableObject {
     
     var alignment: Alignment {
         switch type {
-            case .win, .lose: return .bottom
-            case .user, .brawler: return .top
+        case .win, .lose: return .bottom
+        case .user, .brawler, .graph: return .top
         }
     }
     
     var cardWidth: CGFloat {
-        isPad ? UIScreen.main.bounds.width * 0.4 : UIScreen.main.bounds.width * 0.8
+        isPad ? UIScreen.main.bounds.width * 0.4 : UIScreen.main.bounds.width * 0.9
     }
     
     var cardBackHeight: CGFloat {
-        isPad ? 150 : type.backHeight
+//        isPad ? 150 : type.backHeight
+        type.backHeight
     }
     
     var cardFrontHeight: CGFloat {
-        isPad ? 150 : type.frontHeight
+//        isPad ? 150 : type.frontHeight
+        type.frontHeight
     }
     
     var backColor: Color {

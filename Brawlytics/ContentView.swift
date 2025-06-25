@@ -43,7 +43,13 @@ struct ContentView: View {
 //                        Label("Hyper charge", systemImage: "flame")  
 //                    }
                 
-                PlayerProfileView()
+                PlayerProfileView(vm: PlayerProfileViewModel(
+                    useCase: PlayerProfileUseCaseImpl(
+                        repository: PlayerProfileRepositoryImpl(
+                            dataSource: MockPlayerProfileDataSourceImpl()
+                        )
+                    )
+                ))
                     .tabItem {
                         Label("Profile", systemImage: "chart.bar")
                     }

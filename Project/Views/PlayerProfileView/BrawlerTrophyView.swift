@@ -36,46 +36,14 @@ struct BrawlerTrophyView: View {
                     .font(.system(size: 40))
                     .foregroundStyle(.white)
                     .padding(.trailing, 60)
-                
-                
             }
         }, backView: {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Image("trophy")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 43)
-                            
-                        
-                        Text("\(brawlerTrophyModel.currentTrophy)")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 27))
-                            .fontWeight(.heavy)
-                            .lineLimit(1) // 한 줄로 제한
-                            .minimumScaleFactor(0.5) // 최소 50% 크기까지 축소
-                            
-                        
-                    }
-                    
-                    Text("Highest \(brawlerTrophyModel.highestTrophy)")
-                        .foregroundStyle(.white)
-                        .font(.system(size: 14))
-                        .opacity(0.7)
-                        .padding(.leading, 6)
-                }
-                .padding(.leading, 20)
-                
-                Spacer()
-                
-                Image(brawlerTrophyViewModel.getRank(for: brawlerTrophyModel.currentTrophy))
-                    .resizable()
-                    .scaledToFit()
-                    .padding(14)
-                    
-                
-                
+                TierTrophyView(
+                    rankImageName: brawlerTrophyViewModel.getRank(for: brawlerTrophyModel.currentTrophy),
+                    current: brawlerTrophyModel.currentTrophy,
+                    highest: brawlerTrophyModel.highestTrophy
+                )
             
                 Image(systemName: "chevron.compact.forward")
                     .font(.system(size: 30))

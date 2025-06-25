@@ -11,12 +11,18 @@ struct UserView: View {
     
     let overlapCardVM: OverlapCardViewModel = OverlapCardViewModel(type: .user)
     
+    let user: UserTrophyModel
+    
+    init(user: UserTrophyModel) {
+        self.user = user
+    }
+    
     var body: some View {
         OverlapCardView(vm: overlapCardVM, frontView: {
             HStack {
                 NamesView
                 Spacer()
-                Image("master")
+                Image(user.rank)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 85) // 원하는 너비
@@ -26,8 +32,8 @@ struct UserView: View {
         }, backView: {
                 HStack {
                     HStack(spacing: 20) {
-                        TrophiesView(label: "Total Trophies", count: 54000)
-                        TrophiesView(label: "Max Trophies", count: 64000)
+                        TrophiesView(label: "Total Trophies", count: user.total)
+                        TrophiesView(label: "Max Trophies", count: user.max)
                     }
                     
                     Spacer()
@@ -43,7 +49,7 @@ struct UserView: View {
     
     var NamesView: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("NickName")
+            Text(user.nickName)
                 .foregroundStyle(.white)
                 .fontWeight(.heavy)
                 .font(.system(size: 27))
@@ -52,7 +58,7 @@ struct UserView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20) // 원하는 너비
-                Text("Club Name")
+                Text(user.club)
                     .foregroundStyle(.white)
                     .font(.system(size: 15))
                     .fontWeight(.bold)
@@ -85,7 +91,7 @@ struct UserView: View {
     
 }
 
-#Preview {
-    UserView()
-    Spacer()
-}
+//#Preview {
+//    UserView()
+//    Spacer()
+//}
