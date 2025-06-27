@@ -55,6 +55,7 @@ struct StrokeText: View {
 }
 
 class ClassesTitleViewModel: ObservableObject {
+    
     func getClassTitle(role: Role) -> String {
         switch role {
         case .tanker:

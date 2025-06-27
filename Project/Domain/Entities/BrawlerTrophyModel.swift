@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BrawlerTrophyModel: Codable, Equatable {
+struct BrawlerTrophyModel: Codable, Equatable, Identifiable {
     var id = UUID()
     var name: String
     var currentTrophy: Int

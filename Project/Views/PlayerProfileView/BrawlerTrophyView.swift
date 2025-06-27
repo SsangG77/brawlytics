@@ -40,7 +40,9 @@ struct BrawlerTrophyView: View {
         }, backView: {
             HStack {
                 TierTrophyView(
-                    rankImageName: brawlerTrophyViewModel.getRank(for: brawlerTrophyModel.currentTrophy),
+                    rankImageName: brawlerTrophyViewModel.getRank(
+                        for: brawlerTrophyModel.currentTrophy
+                    ),
                     current: brawlerTrophyModel.currentTrophy,
                     highest: brawlerTrophyModel.highestTrophy
                 )
