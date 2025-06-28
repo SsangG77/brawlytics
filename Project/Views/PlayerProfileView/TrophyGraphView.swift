@@ -8,30 +8,7 @@
 import SwiftUI
 import Charts
 
-struct TrophyGraphView: View {
-    
-    let vm = OverlapCardViewModel(type: .graph)
-    
-    var body: some View {
-        
-        ZStack {
-            Color.backgroundColor.ignoresSafeArea()
-            
-            OverlapCardView(vm: vm, frontView: {
-                TierTrophyView(rankImageName: "tiermax", current: 930, highest: 1200)
-                    .padding([.leading, .trailing], 10)
-            }, backView: {
-                ScrollView(.horizontal) {
-                    LineChartView()
-                        .frame(width: 60 * 10)
-                }
-                .contentMargins(15)
-            })
-        }
-        .navigationTitle("Trophy Graph")
-        
-    }
-}
+
 
 
 struct TrophyGraphData: Identifiable {
@@ -40,17 +17,54 @@ struct TrophyGraphData: Identifiable {
     let trophy: Int
 }
 
+
+struct TrophyGraphView: View {
+    let overlayCardVM = OverlapCardViewModel(type: .graph)
+    @ObservedObject var vm: BrawlerTrophyViewModel
+    let brawlerTrophyModel : BrawlerTrophyModel
+    
+    init(brawlerTrophyModel: BrawlerTrophyModel, vm: BrawlerTrophyViewModel) {
+        self.brawlerTrophyModel = brawlerTrophyModel
+        self.vm = vm
+    }
+    
+    var body: some View {
+        ZStack {
+            Color.backgroundColor.ignoresSafeArea()
+            
+            OverlapCardView(vm: overlayCardVM, frontView: {
+                TierTrophyView(
+                    rankImageName: vm.getRank(
+                        for: brawlerTrophyModel.currentTrophy
+                    ),
+                    current: brawlerTrophyModel.currentTrophy,
+                    highest: brawlerTrophyModel.highestTrophy
+                )
+                .padding([.leading, .trailing], 10)
+            }, backView: {
+                ScrollView(.horizontal) {
+                    LineChartView(data: vm.trophyData)
+                        .frame(width: 60 * 10)
+                }
+                .contentMargins(15)
+            })
+        }
+        .navigationTitle("Trophy Graph")
+        .onAppear {
+            vm.loadTrophyData()
+        }
+    }
+}
+
+
 struct LineChartView: View {
-    let data: [TrophyGraphData] = [
-        TrophyGraphData(date: "2/10", trophy: 850),
-        TrophyGraphData(date: "2/11", trophy: 870),
-        TrophyGraphData(date: "2/12", trophy: 900),
-        TrophyGraphData(date: "2/13", trophy: 920),
-        TrophyGraphData(date: "2/14", trophy: 950),
-        TrophyGraphData(date: "2/15", trophy: 970),
-        TrophyGraphData(date: "2/16", trophy: 990),
-        TrophyGraphData(date: "2/17", trophy: 1990),
-    ]
+    
+    let data: [TrophyGraphData]
+    
+    init(data: [TrophyGraphData]) {
+        self.data = data
+    }
+   
     
     var body: some View {
             Chart(data) {
@@ -60,6 +74,7 @@ struct LineChartView: View {
                 )
                 .symbol(Circle())
                 .interpolationMethod(.catmullRom) // 곡선 처리
+                .foregroundStyle(Color.backgroundColor)
                 
             }
             .chartXAxis {
@@ -82,8 +97,7 @@ struct LineChartView: View {
         }
 }
 
-
-#Preview {
-    TrophyGraphView()
-    Spacer()
-}
+//
+//#Preview {
+//    TrophyGraphView()
+//}

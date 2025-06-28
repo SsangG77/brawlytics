@@ -97,12 +97,12 @@ class PlayerProfileUseCaseImpl: PlayerProfileUseCase {
     }
     
     func groupByRole(brawlers: [BrawlerTrophyModel]) -> [Role: [BrawlerTrophyModel]] {
-            var result: [Role: [BrawlerTrophyModel]] = [:]
-            for (role, names) in roleToNames {
-                result[role] = brawlers.filter { names.contains($0.name) }
-            }
-            return result
+        var result: [Role: [BrawlerTrophyModel]] = [:]
+        for (role, names) in roleToNames {
+            result[role] = brawlers.filter { names.contains($0.name) }
         }
+        return result
+    }
     
 }
 
@@ -145,16 +145,39 @@ struct PlayerProfileView: View {
     
     @ObservedObject var vm: PlayerProfileViewModel
     let classTitleVM = ClassesTitleViewModel()
+    let brawlerTrophyVM = RxDIContainer.shared.makeBrawlerTrophyViewModel()
     
     init(vm: PlayerProfileViewModel) {
         self.vm = vm
     }
     
     
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color.backgroundColor.ignoresSafeArea()
+                ScrollView {
+                    VStack(alignment: .center, spacing: 24) {
+                        userSection()
+                        brawlerSection()
+                    }
+                    .padding()
+                }
+            }
+            .onAppear {
+                vm.fetchUserProfile()
+                vm.fetchBrawlersTrophy()
+            }
+        }
+    }
+    
+    
     @ViewBuilder
     private func userSection() -> some View {
         if let user = vm.user {
-            NavigationLink(destination: BattleLogView()) {
+            NavigationLink(destination: BattleLogView(
+                vm: RxDIContainer.shared.makeBattleLogViewModel()
+            )) {
                 UserView(user: user)
             }
         } else {
@@ -193,8 +216,14 @@ struct PlayerProfileView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 12) {
                     ForEach(brawlers) { brawler in
-                        NavigationLink(destination: TrophyGraphView()) {
-                            BrawlerTrophyView(brawlerTrophyModel: brawler)
+                        NavigationLink(destination: TrophyGraphView(
+                            brawlerTrophyModel: brawler,
+                            vm: brawlerTrophyVM
+                        )) {
+                            BrawlerTrophyView(
+                                brawlerTrophyModel: brawler,
+                                vm: brawlerTrophyVM
+                            )
                                 .scrollTargetLayout()
                         }
                     }
@@ -206,39 +235,11 @@ struct PlayerProfileView: View {
         }
     }
 
-
-    
-    
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.backgroundColor.ignoresSafeArea()
-                ScrollView {
-                    VStack(alignment: .center, spacing: 24) {
-                        userSection()
-                        brawlerSection()
-                    }
-                    .padding()
-                }
-            }
-            .onAppear {
-                vm.fetchUserProfile()
-                vm.fetchBrawlersTrophy()
-            }
-        }
-    }
-
 }
 
 
 #Preview {
     PlayerProfileView(
-        vm: PlayerProfileViewModel(
-            useCase: PlayerProfileUseCaseImpl(
-                repository: PlayerProfileRepositoryImpl(
-                    dataSource: MockPlayerProfileDataSourceImpl()
-                )
-            )
-        )
+        vm: RxDIContainer.shared.makePlayerProfileViewModel()
     )
 }

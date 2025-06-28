@@ -88,4 +88,60 @@ class RxDIContainer {
     func makeCalculateViewModel() -> RxCalculateViewModel {
         return RxCalculateViewModel(useCase: calculateUseCase)
     }
+    
+    
+    
+    //MARK: - PlayerprofileView
+    private lazy var playerProfileDataSource: PlayerProfileDataSource = {
+        return MockPlayerProfileDataSourceImpl()
+    }()
+    
+    private lazy var playerProfileRepository: PlayerProfileRepository = {
+        return PlayerProfileRepositoryImpl(dataSource: playerProfileDataSource)
+    }()
+    
+    private lazy var playerProfileUseCase: PlayerProfileUseCase = {
+        return PlayerProfileUseCaseImpl(repository: playerProfileRepository)
+    }()
+    
+    func makePlayerProfileViewModel() -> PlayerProfileViewModel {
+        return PlayerProfileViewModel(useCase: playerProfileUseCase)
+    }
+    
+    //MARK: - BattleLogView
+    private lazy var battleLogDataSource: BattleLogDataSource = {
+        return MockBattleLogDataSourceImpl()
+    }()
+    
+    private lazy var battleLogRepository: BattleLogRepository = {
+        return BattleLogRepositoryImpl(dataSource: battleLogDataSource)
+    }()
+    
+    private lazy var battleLogUseCase: BattleLogUseCase = {
+        return BattleLogUseCaseImpl(repository: battleLogRepository)
+    }()
+    
+    func makeBattleLogViewModel() -> BattleLogViewModel {
+        return BattleLogViewModel(useCase: battleLogUseCase)
+    }
+    
+    //MARK: - TrophyGraphView
+    private lazy var brawlerTrophyDataSource: BrawlerTrophyDataSource = {
+        return MockBrawlerTrophyDataSourceImpl()
+    }()
+    
+    private lazy var brawlerTrophyRepository: BrawlerTrophyRepository = {
+        return BrawlerTrophyRepositoryImpl(dataSource: brawlerTrophyDataSource)
+    }()
+    
+    private lazy var brawlerTrophyUseCase: BrawlerTrophyUseCase = {
+        return BrawlerTrophyUseCaseImpl(repository: brawlerTrophyRepository)
+    }()
+    
+    func makeBrawlerTrophyViewModel() -> BrawlerTrophyViewModel {
+        return BrawlerTrophyViewModel(useCase: brawlerTrophyUseCase)
+    }
+    
+    
+    
 }

@@ -111,7 +111,6 @@ struct CalculateView: View {
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { value in
                         self.isLoading = value
-                        print("isLoading: \(self.isLoading)---------print")
                     })
                     .disposed(by: disposeBag)
                 

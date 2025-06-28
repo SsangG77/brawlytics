@@ -13,13 +13,14 @@ struct BrawlerTrophyView: View {
     
     // ViewModel
     let overlapCardVM: OverlapCardViewModel = OverlapCardViewModel(type: .brawler)
-    let brawlerTrophyViewModel = BrawlerTrophyViewModel()
+    let brawlerTrophyViewModel: BrawlerTrophyViewModel
     
     let brawlerTrophyModel : BrawlerTrophyModel
     
     
-    init(brawlerTrophyModel: BrawlerTrophyModel) {
+    init(brawlerTrophyModel: BrawlerTrophyModel, vm: BrawlerTrophyViewModel) {
         self.brawlerTrophyModel = brawlerTrophyModel
+        self.brawlerTrophyViewModel = vm
     }
     
     var body: some View {
@@ -57,7 +58,7 @@ struct BrawlerTrophyView: View {
     }
 }
 
-#Preview {
-    BrawlerTrophyView(brawlerTrophyModel: BrawlerTrophyModel(name: "kenji", currentTrophy: 1000, highestTrophy: 1000))
-    Spacer()
-}
+//#Preview {
+//    BrawlerTrophyView(brawlerTrophyModel: BrawlerTrophyModel(name: "kenji", currentTrophy: 1000, highestTrophy: 1000))
+//    Spacer()
+//}

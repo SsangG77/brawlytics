@@ -39,7 +39,7 @@ enum CardType {
     
     var backHeight: CGFloat {
         switch self {
-        case .win, .lose: return frontHeight + 70
+        case .win, .lose: return frontHeight + 80
         case .user: return 185
         case .brawler : return 170
         case .graph: return UIScreen.main.bounds.height * 0.7
