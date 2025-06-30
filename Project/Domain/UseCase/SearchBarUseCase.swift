@@ -10,11 +10,12 @@ import SwiftUI
 protocol SearchBarUseCase {
     func saveSearchText(_ searchText: String)
     func getSearchHistory() -> [String]
+    func clearSearchHistory()
 }
 
 class SearchBarUseCaseImpl: SearchBarUseCase {
     
-    private let historyRepository : SearchHistoryRepository
+    let historyRepository : SearchHistoryRepository
     
     init(historyRepository: SearchHistoryRepository) {
         self.historyRepository = historyRepository
@@ -26,5 +27,9 @@ class SearchBarUseCaseImpl: SearchBarUseCase {
     
     func getSearchHistory() -> [String] {
         return historyRepository.getSearchHistory()
+    }
+    
+    func clearSearchHistory() {
+        historyRepository.clearSearchHistory()
     }
 }

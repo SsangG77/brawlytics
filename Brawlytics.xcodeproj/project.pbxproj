@@ -44,6 +44,7 @@
 		915F8BB82DE6166800172B39 /* Exceptions for "Tests" folder in "BrawlyticsTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BattleLogViewModelTests.swift,
 				BrawlerJudgeTests.swift,
 				BrawlersUseCaseTests.swift,
 				HyperchargeDataSourceTests.swift,
@@ -56,6 +57,7 @@
 		915F8BC32DE622E900172B39 /* Exceptions for "Tests" folder in "Brawlytics" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BattleLogViewModelTests.swift,
 				BrawlerJudgeTests.swift,
 				BrawlersUseCaseTests.swift,
 				HyperchargeDataSourceTests.swift,

@@ -58,14 +58,14 @@ class BrawlerTrophyUseCaseImpl: BrawlerTrophyUseCase {
     
     func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]> {
         return repository.fetchBrawlerTrophyData()
-//        .map { trophyData in
-//            // 날짜 오름차순으로 정렬 (시간 순서대로)
-//            return trophyData.sorted { first, second in
-//                let firstDate = self.parseDate(from: first.date)
-//                let secondDate = self.parseDate(from: second.date)
-//                return firstDate < secondDate // 오름차순 정렬
-//            }
-//        }
+        .map { trophyData in
+            // 날짜 오름차순으로 정렬 (시간 순서대로)
+            return trophyData.sorted { first, second in
+                let firstDate = self.parseDate(from: first.date)
+                let secondDate = self.parseDate(from: second.date)
+                return firstDate < secondDate // 오름차순 정렬
+            }
+        }
     }
     
     // 날짜 문자열을 Date 객체로 변환하는 메서드
@@ -107,7 +107,6 @@ class BrawlerTrophyViewModel: ObservableObject {
             .subscribe(
                 onNext: { [weak self] data in
                     self?.trophyData = data
-                    print(data)
                     self?.isLoading = false
                 },
                 onError: { [weak self] error in

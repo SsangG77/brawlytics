@@ -10,6 +10,7 @@ import SwiftUI
 protocol SearchHistoryRepository {
     func saveSearchText(_ searchText:String)
     func getSearchHistory() -> [String]
+    func clearSearchHistory()
 }
 
 class SearchHistoryRepositoryImpl: SearchHistoryRepository {
@@ -29,4 +30,10 @@ class SearchHistoryRepositoryImpl: SearchHistoryRepository {
     func getSearchHistory() -> [String] {
         return searchString
     }
+    
+    /// 저장된 검색어 초기화
+        func clearSearchHistory() {
+            UserDefaults.standard.removeObject(forKey: "searchString")
+        }
+    
 }
