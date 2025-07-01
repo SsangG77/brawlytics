@@ -43,6 +43,71 @@ protocol BattleLogDataSource {
 
 #warning("BattleLogDataSource 구현제 작성 - 실제 서버 응답 데이터")
 
+class MockBattleLogDataSourceImpl: BattleLogDataSource {
+    func fetchBattleLog() -> Observable<[BattleLogModel]> {
+        return Observable.just([
+            
+            BattleLogModel(
+                result: "win", mode: "brawlBall", mapName: "1", date: "2024/03/21",
+                teams: [
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: true),
+                        ]
+                    ),
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    )
+                ]
+            ),
+            BattleLogModel(
+                result: "lose", mode: "brawlBall", mapName: "2", date: "2024/03/22",
+                teams: [
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: true),
+                        ]
+                    ),
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    )
+                ]
+            ),
+            BattleLogModel(
+                result: "win", mode: "brawlBall", mapName: "3", date: "2024/03/24",
+                teams: [
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: true),
+                        ]
+                    ),
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    )
+                ]
+            )
+        ])
+    }
+}
+
 
 
 

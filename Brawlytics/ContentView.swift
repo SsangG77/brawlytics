@@ -50,9 +50,15 @@ struct ContentView: View {
                         )
                     )
                 ))
+                .tabItem {
+                    Label("Profile", systemImage: "chart.bar")
+                }
+                
+                SettingView()
                     .tabItem {
-                        Label("Profile", systemImage: "chart.bar")
+                        Label("Setting", systemImage: "gear")
                     }
+                
                 
             }
             .toolbarBackground(Color(hexString:"283548"), for: .tabBar)

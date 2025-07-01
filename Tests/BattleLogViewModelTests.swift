@@ -117,17 +117,7 @@ final class BattleLogViewModelTests: XCTestCase {
         let iconName = viewModel.checkMode(mode: "brawlBall")
         XCTAssertEqual(iconName, "brawl_ball_icon")
     }
-    
-//    func testStarPlayer() {
-//        let expectation = XCTestExpectation(description: "Logs fetched and sorted")
-//        
-//        viewModel.fetchBattleLog()
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            XCTAssertEqual(self.viewModel.battleLog[0].teams[0].member[2].starPlayer, true)
-//            XCTAssertEqual(self.viewModel.battleLog[0].teams[0].member[0].starPlayer, false)
-//            expectation.fulfill()
-//        }
-//    }
+ 
     func testStarPlayer() {
         let expectation = XCTestExpectation(description: "Check starPlayer values")
         
