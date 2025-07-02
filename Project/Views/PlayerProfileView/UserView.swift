@@ -22,11 +22,11 @@ struct UserView: View {
             HStack {
                 NamesView
                 Spacer()
-                Image(user.rank)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 85) // 원하는 너비
-                    .padding(.trailing, 30)
+//                Image(user.rank)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 85) // 원하는 너비
+//                    .padding(.trailing, 30)
 
             }
         }, backView: {
@@ -48,16 +48,17 @@ struct UserView: View {
     }
     
     var NamesView: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 0) {
             Text(user.nickName)
                 .foregroundStyle(.white)
                 .fontWeight(.heavy)
-                .font(.system(size: 27))
+                .font(.system(size: 37))
             HStack {
+                Spacer()
                 Image("club")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 20) // 원하는 너비
+                    .frame(width: 30) // 원하는 너비
                 Text(user.club)
                     .foregroundStyle(.white)
                     .font(.system(size: 15))
@@ -65,7 +66,7 @@ struct UserView: View {
                     .opacity(0.7)
             }
         }
-        .padding(.leading, 30)
+        .padding(.horizontal, 30)
     }
     
     private func TrophiesView(label: String, count: Int) -> some View {

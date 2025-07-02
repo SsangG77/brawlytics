@@ -34,9 +34,7 @@ struct TrophyGraphView: View {
             
             OverlapCardView(vm: overlayCardVM, frontView: {
                 TierTrophyView(
-                    rankImageName: vm.getRank(
-                        for: brawlerTrophyModel.currentTrophy
-                    ),
+                    rankImageName: "rank\(brawlerTrophyModel.rank)",
                     current: brawlerTrophyModel.currentTrophy,
                     highest: brawlerTrophyModel.highestTrophy
                 )

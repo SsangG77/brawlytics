@@ -8,11 +8,11 @@
 import Foundation
 
 
-struct UserTrophyModel {
+struct UserTrophyModel: Codable {
     let id = UUID()
     let nickName: String
     let club: String
-    let rank: String
+//    let rank: String
     let total: Int
     let max: Int
 }

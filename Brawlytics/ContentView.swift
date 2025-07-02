@@ -11,11 +11,10 @@ import SwiftData
 @available(iOS 17.0, *)
 struct ContentView: View {
     
-//    @StateObject private var appState = AppState()
-    
 #warning("RX 방식 변경을 위한 테스트")
     @StateObject var calculateVM: RxCalculateViewModel
     @StateObject var brawlersVM: BrawlersViewModel
+    @StateObject var playerProfileVM = RxDIContainer.shared.makePlayerProfileViewModel()
     
     init(
         calculateVM: RxCalculateViewModel,
@@ -30,7 +29,6 @@ struct ContentView: View {
         TabView {
             Group {
                 CalculateView()
-//                .environmentObject(appState)
                 .environmentObject(calculateVM)
                 .tabItem {
                     Label("Calculator", systemImage: "number")
@@ -43,16 +41,10 @@ struct ContentView: View {
 //                        Label("Hyper charge", systemImage: "flame")  
 //                    }
                 
-                PlayerProfileView(vm: PlayerProfileViewModel(
-                    useCase: PlayerProfileUseCaseImpl(
-                        repository: PlayerProfileRepositoryImpl(
-                            dataSource: MockPlayerProfileDataSourceImpl()
-                        )
-                    )
-                ))
-                .tabItem {
-                    Label("Profile", systemImage: "chart.bar")
-                }
+                PlayerProfileView(vm: playerProfileVM)
+                    .tabItem {
+                        Label("Profile", systemImage: "chart.bar")
+                    }
                 
                 SettingView()
                     .tabItem {

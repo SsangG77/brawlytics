@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RxSwift
+import Alamofire
 
 
 //MARK: - DataSource
@@ -15,31 +16,90 @@ protocol PlayerProfileDataSource {
     func fetchBrawlersTrophy() -> Observable<[BrawlerTrophyModel]>
 }
 
-
-class MockPlayerProfileDataSourceImpl: PlayerProfileDataSource {
+class PlayerProfileRemoteDataSourceImpl: PlayerProfileDataSource {
     func fetchUserProfile() -> Observable<UserTrophyModel> {
-        return Observable.just(
-            UserTrophyModel(
-               nickName: "상진",
-               club: "팀",
-               rank: "diamond",
-               total: 9200,
-               max: 10000
-            )
-        )
+        return Observable.create { observer in
+            guard let playerTag = UserDefaults.standard.string(forKey: "playerTag") else {
+                print("PlayerProfileRemoteDataSourceImpl - fetchUserProfile: Player tag not found in UserDefaults")
+                observer.onError(NSError(domain: "PlayerProfileError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Player tag not found in UserDefaults"]))
+                return Disposables.create()
+            }
+            
+            let url = Constants.fetchUserProfileURL
+            let parameters: [String: Any] = ["playerTag": playerTag]
+            print("PlayerProfileRemoteDataSourceImpl - fetchUserProfile: Requesting \(url) with parameters: \(parameters)")
+            
+            AF.request(url, parameters: parameters)
+                .validate()
+                .responseDecodable(of: UserTrophyModel.self) { response in
+                    switch response.result {
+                    case .success(let userProfile):
+                        print("PlayerProfileRemoteDataSourceImpl - fetchUserProfile: Success - \(userProfile)")
+                        observer.onNext(userProfile)
+                        observer.onCompleted()
+                    case .failure(let error):
+                        print("PlayerProfileRemoteDataSourceImpl - fetchUserProfile: Error - \(error)")
+                        observer.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
     }
     
     func fetchBrawlersTrophy() -> Observable<[BrawlerTrophyModel]> {
-        return Observable.just([
-            BrawlerTrophyModel(name: "Shelly", currentTrophy: 540, highestTrophy: 900),
-            BrawlerTrophyModel(name: "Bull", currentTrophy: 140, highestTrophy: 500),
-            BrawlerTrophyModel(name: "Kaze", currentTrophy: 220, highestTrophy: 590),
-            BrawlerTrophyModel(name: "Penny", currentTrophy: 190, highestTrophy: 503),
+        return Observable.create { observer in
+            guard let playerTag = UserDefaults.standard.string(forKey: "playerTag") else {
+                print("PlayerProfileRemoteDataSourceImpl - fetchBrawlersTrophy: Player tag not found in UserDefaults")
+                observer.onError(NSError(domain: "PlayerProfileError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Player tag not found in UserDefaults"]))
+                return Disposables.create()
+            }
             
-        ])
+            let url = Constants.fetchBrawlersTrophyURL
+            let parameters: [String: Any] = ["playerTag": playerTag]
+            print("PlayerProfileRemoteDataSourceImpl - fetchBrawlersTrophy: Requesting \(url) with parameters: \(parameters)")
+            
+            AF.request(url, parameters: parameters)
+                .validate()
+                .responseDecodable(of: [BrawlerTrophyModel].self) { response in
+                    switch response.result {
+                    case .success(let brawlersTrophy):
+                        print("PlayerProfileRemoteDataSourceImpl - fetchBrawlersTrophy: Success - \(brawlersTrophy)")
+                        observer.onNext(brawlersTrophy)
+                        observer.onCompleted()
+                    case .failure(let error):
+                        print("PlayerProfileRemoteDataSourceImpl - fetchBrawlersTrophy: Error - \(error)")
+                        observer.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
     }
-    
 }
+
+
+//class MockPlayerProfileDataSourceImpl: PlayerProfileDataSource {
+//    func fetchUserProfile() -> Observable<UserTrophyModel> {
+//        return Observable.just(
+//            UserTrophyModel(
+//               nickName: "상진",
+//               club: "팀",
+////               rank: "diamond",
+//               total: 9200,
+//               max: 10000
+//            )
+//        )
+//    }
+//    
+//    func fetchBrawlersTrophy() -> Observable<[BrawlerTrophyModel]> {
+//        return Observable.just([
+//            BrawlerTrophyModel(name: "Shelly", rank: 51, currentTrophy: 540, highestTrophy: 900),
+//            BrawlerTrophyModel(name: "Bull", rank: 50, currentTrophy: 140, highestTrophy: 500),
+//            BrawlerTrophyModel(name: "Kaze", rank: 21, currentTrophy: 220, highestTrophy: 590),
+//            BrawlerTrophyModel(name: "Penny", rank: 11, currentTrophy: 190, highestTrophy: 503),
+//            
+//        ])
+//    }
+//}
 
 
 protocol PlayerProfileRepository {
@@ -165,6 +225,8 @@ struct PlayerProfileView: View {
                 }
             }
             .onAppear {
+                let savedPlayerTag = UserDefaults.standard.string(forKey: "playerTag") ?? "(없음)"
+                print("PlayerProfileView onAppear - UserDefaults playerTag: \(savedPlayerTag)")
                 vm.fetchUserProfile()
                 vm.fetchBrawlersTrophy()
             }
@@ -181,7 +243,12 @@ struct PlayerProfileView: View {
                 UserView(user: user)
             }
         } else {
-            Text("Network Error")
+            VStack {
+                Spacer()
+                Text("설정에서 플레이어 태그를 입력해주세요")
+                    .foregroundColor(.white)
+                Spacer()
+            }
         }
     }
 

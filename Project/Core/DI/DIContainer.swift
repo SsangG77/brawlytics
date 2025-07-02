@@ -93,7 +93,7 @@ class RxDIContainer {
     
     //MARK: - PlayerprofileView
     private lazy var playerProfileDataSource: PlayerProfileDataSource = {
-        return MockPlayerProfileDataSourceImpl()
+        return PlayerProfileRemoteDataSourceImpl()
     }()
     
     private lazy var playerProfileRepository: PlayerProfileRepository = {

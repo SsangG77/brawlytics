@@ -10,6 +10,7 @@ import Foundation
 struct BrawlerTrophyModel: Codable, Equatable, Identifiable {
     var id = UUID()
     var name: String
+    var rank: Int
     var currentTrophy: Int
     var highestTrophy: Int
 }
