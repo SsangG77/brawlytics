@@ -235,6 +235,27 @@
             <string>3qcr597p9d.skadnetwork</string>
         </dict>
     </array>
+
+<!-- localhost 허용 코드 배포시 지우기 -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>127.0.0.1</key>
+            <dict>
+                <key>NSAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>로컬 개발 서버에 연결하기 위해 로컬 네트워크 접근이 필요합니다.</string>
+<!-- localhost 허용 코드 배포시 지우기 -->
+
+
+
 </dict>
 </plist>
 

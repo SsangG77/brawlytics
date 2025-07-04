@@ -8,7 +8,7 @@
 import Foundation
 
 struct BrawlerTrophyModel: Codable, Equatable, Identifiable {
-    var id = UUID()
+    var id: String
     var name: String
     var rank: Int
     var currentTrophy: Int

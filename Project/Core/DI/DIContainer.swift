@@ -110,6 +110,7 @@ class RxDIContainer {
     
     //MARK: - BattleLogView
     private lazy var battleLogDataSource: BattleLogDataSource = {
+//        return BattleLogRemoteDataSourceImpl()
         return MockBattleLogDataSourceImpl()
     }()
     

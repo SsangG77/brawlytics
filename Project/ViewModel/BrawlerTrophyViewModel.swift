@@ -117,12 +117,4 @@ class BrawlerTrophyViewModel: ObservableObject {
             .disposed(by: disposeBag)
     }
     
-//    func getRank(for score: Int) -> String {
-//        if score >= 1000 {
-//            return "tiermax"
-//        }
-//
-//        let rank = score / 20 + 1
-//        return "rank\(rank)"
-//    }
 }

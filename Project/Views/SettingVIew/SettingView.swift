@@ -78,6 +78,7 @@ struct SettingView: View {
                                 backgroundColor: text.isEmpty ? .gray : Color.blue.opacity(0.3)
                             )
                             .animation(.easeInOut(duration: 0.3), value: text.isEmpty)
+                            .padding(.bottom, 40)
                         }
                         .frame(minHeight: geometry.size.height)
                     }

@@ -11,7 +11,7 @@ import UIKit
 struct Constants {
     
     //localhost
-    static let serverURL = "http://127.0.0.1:3000/"
+    static let serverURL = "http://192.168.31.200:3000/"
     
     
     
@@ -23,6 +23,7 @@ struct Constants {
     static let getBrawlersURL = serverURL + "brawlers"
     static let fetchUserProfileURL = serverURL + "user"
     static let fetchBrawlersTrophyURL = serverURL + "brawlersTrophy"
+    static let fetchBattleLogURL = serverURL + "battlelog"
     
     
     //https://brawlytics-server.com/brawlers?playertag=22yjv82rp

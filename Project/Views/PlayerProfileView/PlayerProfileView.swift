@@ -24,17 +24,17 @@ class PlayerProfileRemoteDataSourceImpl: PlayerProfileDataSource {
                 observer.onError(NSError(domain: "PlayerProfileError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Player tag not found in UserDefaults"]))
                 return Disposables.create()
             }
+            let cleanedPlayerTag = playerTag.hasPrefix("#") ? String(playerTag.dropFirst()) : playerTag
             
             let url = Constants.fetchUserProfileURL
-            let parameters: [String: Any] = ["playerTag": playerTag]
-            print("PlayerProfileRemoteDataSourceImpl - fetchUserProfile: Requesting \(url) with parameters: \(parameters)")
+            let parameters: [String: Any] = ["playertag": cleanedPlayerTag]
             
             AF.request(url, parameters: parameters)
                 .validate()
                 .responseDecodable(of: UserTrophyModel.self) { response in
                     switch response.result {
                     case .success(let userProfile):
-                        print("PlayerProfileRemoteDataSourceImpl - fetchUserProfile: Success - \(userProfile)")
+                    
                         observer.onNext(userProfile)
                         observer.onCompleted()
                     case .failure(let error):
@@ -53,17 +53,17 @@ class PlayerProfileRemoteDataSourceImpl: PlayerProfileDataSource {
                 observer.onError(NSError(domain: "PlayerProfileError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Player tag not found in UserDefaults"]))
                 return Disposables.create()
             }
+            let cleanedPlayerTag = playerTag.hasPrefix("#") ? String(playerTag.dropFirst()) : playerTag
             
             let url = Constants.fetchBrawlersTrophyURL
-            let parameters: [String: Any] = ["playerTag": playerTag]
-            print("PlayerProfileRemoteDataSourceImpl - fetchBrawlersTrophy: Requesting \(url) with parameters: \(parameters)")
+            let parameters: [String: Any] = ["playertag": cleanedPlayerTag]
             
             AF.request(url, parameters: parameters)
                 .validate()
                 .responseDecodable(of: [BrawlerTrophyModel].self) { response in
                     switch response.result {
                     case .success(let brawlersTrophy):
-                        print("PlayerProfileRemoteDataSourceImpl - fetchBrawlersTrophy: Success - \(brawlersTrophy)")
+                        
                         observer.onNext(brawlersTrophy)
                         observer.onCompleted()
                     case .failure(let error):
@@ -133,13 +133,13 @@ protocol PlayerProfileUseCase {
 class PlayerProfileUseCaseImpl: PlayerProfileUseCase {
     
     private let roleToNames: [Role: [String]] = [
-            .tanker: ["Bull", "El Primo", "Rosa", "Darryl", "Jackey", "Frank", "Bibi", "Ash", "Hank", "Buster", "Ollie", "Meg", "Draco"],
-            .assassin: ["Stu", "Edgar", "Sam", "Shade", "Mortis", "Buzz", "Fang", "Mico", "Melodie", "Lily", "Crow", "Leon", "Cordelius", "Kenji", "Kaze", "Alli"],
-            .supporter: ["Poco", "Gus", "Pam", "Berry", "Max", "Byron", "Ruffs", "Gray", "Doug", "Kit", "Jae-Yong"],
-            .controller: ["Jessie", "Penny", "Bo", "Emz", "Griff", "Gale", "Meeple", "Gene", "Mr. p", "Squeak", "Lou", "Otis", "Willow", "Chuck", "Charlie", "Sandy", "Amber", "Finx"],
-            .damageDealer: ["Shelly", "Nita", "Colt", "8-bit", "Rico", "Carl", "Colette", "Lola", "Pearl", "Tara", "Eve", "R-t", "Clancy", "Moe", "Spike", "Surge", "Chester", "Lumi"],
-            .marksmen: ["Brock", "Nani", "Mandy", "Maisie", "Belle", "Bonnie", "Bea", "Angelo", "Janet", "Piper"],
-            .thrower: ["Barley", "Dynamike", "Tick", "Grom", "Larry & Lawrie", "Sprout", "Juju"]
+            .tanker: ["BULL", "EL PRIMO", "ROSA", "DARRYL", "JACKEY", "FRANK", "BIBI", "ASH", "HANK", "BUSTER", "OLLIE", "MEG", "DRACO"],
+            .assassin: ["STU", "EDGAR", "SAM", "SHADE", "MORTIS", "BUZZ", "FANG", "MICO", "MELODIE", "LILY", "CROW", "LEON", "CORDELIUS", "KENJI", "KAZE", "ALLI"],
+            .supporter: ["POCO", "GUS", "PAM", "BERRY", "MAX", "BYRON", "RUFFS", "GRAY", "DOUG", "KIT", "JAE-YONG"],
+            .controller: ["JESSIE", "PENNY", "BO", "EMZ", "GRIFF", "GALE", "MEEPLE", "GENE", "MR. P", "SQUEAK", "LOU", "OTIS", "WILLOW", "CHUCK", "CHARLIE", "SANDY", "AMBER", "FINX"],
+            .damageDealer: ["SHELLY", "NITA", "COLT", "8-BIT", "RICO", "CARL", "COLETTE", "LOLA", "PEARL", "TARA", "EVE", "R-T", "CLANCY", "MOE", "SPIKE", "SURGE", "CHESTER", "LUMI"],
+            .marksmen: ["BROCK", "NANI", "MANDY", "MAISIE", "BELLE", "BONNIE", "BEA", "ANGELO", "JANET", "PIPER"],
+            .thrower: ["BARLEY", "DYNAMIK", "TICK", "GROM", "LARRY & LAWRIE", "SPROUT", "JUJU"]
        ]
     
     private let repository: PlayerProfileRepository
@@ -245,10 +245,16 @@ struct PlayerProfileView: View {
         } else {
             VStack {
                 Spacer()
+            if let savedPlayerTag = UserDefaults.standard.string(forKey: "playerTag") {
+                Text("네트워크 에러입니다")
+                    .foregroundColor(.white)
+            } else {
                 Text("설정에서 플레이어 태그를 입력해주세요")
                     .foregroundColor(.white)
+            }
                 Spacer()
             }
+            
         }
     }
 

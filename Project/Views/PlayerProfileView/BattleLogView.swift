@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RxSwift
+import Alamofire
 
 
 struct BattleLogModel: Identifiable, Codable {
@@ -15,7 +16,6 @@ struct BattleLogModel: Identifiable, Codable {
     let mode: String
     let mapName: String
     let date: String
-    
     let teams: [Team]
 }
 
@@ -40,12 +40,72 @@ protocol BattleLogDataSource {
     func fetchBattleLog() -> Observable<[BattleLogModel]>
 }
 
-
-#warning("BattleLogDataSource 구현제 작성 - 실제 서버 응답 데이터")
+class BattleLogRemoteDataSourceImpl: BattleLogDataSource {
+    func fetchBattleLog() -> Observable<[BattleLogModel]> {
+        return Observable.create { observer in
+            guard let playerTag = UserDefaults.standard.string(forKey: "playerTag") else {
+                observer.onError(NSError(domain: "BattleLogError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Player tag not found in UserDefaults"]))
+                return Disposables.create()
+            }
+            let cleanedPlayerTag = playerTag.hasPrefix("#") ? String(playerTag.dropFirst()) : playerTag
+            
+            let url = Constants.fetchBattleLogURL
+            let parameters: [String: Any] = ["playertag": cleanedPlayerTag]
+            
+            AF.request(url, parameters: parameters)
+                .validate()
+                .responseDecodable(of: [BattleLogModel].self) { response in
+                    switch response.result {
+                    case .success(let battleLogs):
+                        Constants.myPrint(title: "/battlelog", content: battleLogs)
+                        observer.onNext(battleLogs)
+                        observer.onCompleted()
+                    case .failure(let error):
+                        observer.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+}
 
 class MockBattleLogDataSourceImpl: BattleLogDataSource {
     func fetchBattleLog() -> Observable<[BattleLogModel]> {
         return Observable.just([
+            
+            BattleLogModel(
+                result: "showdown", mode: "trioShowdown", mapName: "1", date: "2024/03/21",
+                teams: [
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    ),
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    ),
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    ),
+                    Team(
+                        member: [
+                            Member(name: "A", brawler: "Gale", power: 11, starPlayer: false),
+                            Member(name: "B", brawler: "Kenji", power: 1, starPlayer: false),
+                            Member(name: "C", brawler: "Kaze", power: 6, starPlayer: false),
+                        ]
+                    ),
+                ]
+            ),
             
             BattleLogModel(
                 result: "win", mode: "brawlBall", mapName: "1", date: "2024/03/21",
@@ -242,6 +302,7 @@ struct SingleBattleLogView: View {
     let log: BattleLogModel
     
     init(log: BattleLogModel, vm: BattleLogViewModel) {
+        #warning("overlapCardVM 타입 쇼다운 경우도 처리")
         self.overlapCardVM = OverlapCardViewModel(type: log.result == "win" ? .win : .lose)
         self.vm = vm
         self.log = log
@@ -284,6 +345,7 @@ struct SingleBattleLogView: View {
             
             Spacer()
             
+#warning("타입 쇼다운 경우도 처리")
             Text(overlapCardVM.type == .win ? "WIN" : "LOSE")
                 .fontWeight(.bold)
                 .font(.system(size: 37))
@@ -306,7 +368,9 @@ struct SingleBattleLogView: View {
                 }
             } else {
                 VStack(spacing: 0) {
+                    
                     team(members: log.teams[0].member)
+#warning("쇼다운일때는 VS 삭제")
                     Text("VS")
                         .fontWeight(.black)
                         .font(.system(size: 30))
@@ -320,11 +384,12 @@ struct SingleBattleLogView: View {
     
     func team(members: [Member]) -> some View {
         HStack {
-            member(members[0])
-            Spacer()
-            member(members[1])
-            Spacer()
-            member(members[2])
+            ForEach(members.indices, id: \.self) { index in
+                member(members[index])
+                if index != members.count - 1 {
+                    Spacer()
+                }
+            }
         }
         .padding([.leading, .trailing], 25)
     }
