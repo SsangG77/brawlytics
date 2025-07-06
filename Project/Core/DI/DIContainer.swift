@@ -110,8 +110,8 @@ class RxDIContainer {
     
     //MARK: - BattleLogView
     private lazy var battleLogDataSource: BattleLogDataSource = {
-//        return BattleLogRemoteDataSourceImpl()
-        return MockBattleLogDataSourceImpl()
+        return BattleLogRemoteDataSourceImpl()
+//        return MockBattleLogDataSourceImpl()
     }()
     
     private lazy var battleLogRepository: BattleLogRepository = {
@@ -128,7 +128,8 @@ class RxDIContainer {
     
     //MARK: - TrophyGraphView
     private lazy var brawlerTrophyDataSource: BrawlerTrophyDataSource = {
-        return MockBrawlerTrophyDataSourceImpl()
+//        return MockBrawlerTrophyDataSourceImpl()
+        return BrawlerTrophyRemoteDataSourceImpl()
     }()
     
     private lazy var brawlerTrophyRepository: BrawlerTrophyRepository = {

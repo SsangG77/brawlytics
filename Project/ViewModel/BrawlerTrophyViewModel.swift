@@ -7,14 +7,16 @@
 
 import Foundation
 import RxSwift
+import Alamofire
+import Alamofire
 
 
 protocol BrawlerTrophyDataSource {
-    func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]>
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]>
 }
 
 class MockBrawlerTrophyDataSourceImpl: BrawlerTrophyDataSource {
-    func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]> {
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]> {
         return Observable.just([
             TrophyGraphData(date: "2/10", trophy: 850),
             TrophyGraphData(date: "2/11", trophy: 870),
@@ -28,8 +30,34 @@ class MockBrawlerTrophyDataSourceImpl: BrawlerTrophyDataSource {
     }
 }
 
+class BrawlerTrophyRemoteDataSourceImpl: BrawlerTrophyDataSource {
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]> {
+        return Observable.create { observer in
+            guard let playerTag = UserDefaults.standard.string(forKey: "playerTag") else {
+                observer.onError(NSError(domain: "BrawlerTrophyError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Player tag not found in UserDefaults"]))
+                return Disposables.create()
+            }
+
+            let cleanedPlayerTag = playerTag.hasPrefix("#") ? String(playerTag.dropFirst()) : playerTag
+            let url = Constants.fetchTrophyGraphURL
+            let parameters: [String: Any] = ["playertag": cleanedPlayerTag, "brawlerName": brawlerName]
+
+            AF.request(url, parameters: parameters).responseDecodable(of: [TrophyGraphData].self) { response in
+                switch response.result {
+                case .success(let data):
+                    observer.onNext(data)
+                    observer.onCompleted()
+                case .failure(let error):
+                    observer.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+}
+
 protocol BrawlerTrophyRepository {
-    func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]>
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]>
 }
 
 class BrawlerTrophyRepositoryImpl: BrawlerTrophyRepository {
@@ -39,13 +67,13 @@ class BrawlerTrophyRepositoryImpl: BrawlerTrophyRepository {
         self.dataSource = dataSource
     }
     
-    func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]> {
-        return dataSource.fetchBrawlerTrophyData()
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]> {
+        return dataSource.fetchBrawlerTrophyData(brawlerName: brawlerName)
     }
 }
 
 protocol BrawlerTrophyUseCase {
-    func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]>
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]>
 }
 
 class BrawlerTrophyUseCaseImpl: BrawlerTrophyUseCase {
@@ -56,8 +84,8 @@ class BrawlerTrophyUseCaseImpl: BrawlerTrophyUseCase {
         self.repository = repository
     }
     
-    func fetchBrawlerTrophyData() -> Observable<[TrophyGraphData]> {
-        return repository.fetchBrawlerTrophyData()
+    func fetchBrawlerTrophyData(brawlerName: String) -> Observable<[TrophyGraphData]> {
+        return repository.fetchBrawlerTrophyData(brawlerName: brawlerName)
         .map { trophyData in
             // 날짜 오름차순으로 정렬 (시간 순서대로)
             return trophyData.sorted { first, second in
@@ -98,11 +126,11 @@ class BrawlerTrophyViewModel: ObservableObject {
         self.useCase = useCase
     }
     
-    func loadTrophyData() {
+    func loadTrophyData(brawlerName: String) {
         isLoading = true
         errorMessage = nil
         
-        useCase.fetchBrawlerTrophyData()
+        useCase.fetchBrawlerTrophyData(brawlerName: brawlerName)
             .observe(on: MainScheduler.instance)
             .subscribe(
                 onNext: { [weak self] data in

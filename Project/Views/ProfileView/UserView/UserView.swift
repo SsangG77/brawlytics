@@ -22,11 +22,6 @@ struct UserView: View {
             HStack {
                 NamesView
                 Spacer()
-//                Image(user.rank)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: 85) // 원하는 너비
-//                    .padding(.trailing, 30)
 
             }
         }, backView: {

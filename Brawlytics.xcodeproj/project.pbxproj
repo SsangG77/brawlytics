@@ -49,7 +49,9 @@
 				BrawlerJudgeTests.swift,
 				BrawlersUseCaseTests.swift,
 				HyperchargeDataSourceTests.swift,
+				Mocks/MockBattleLogDataSource.swift,
 				Mocks/MockBrawlersRepository.swift,
+				Mocks/MockPlayerProfileDataSource.swift,
 				Mocks/MockSearchHistoryRepository.swift,
 				SearchBarViewModelTests.swift,
 			);

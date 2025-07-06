@@ -12,9 +12,10 @@ import GoogleMobileAds
 @main
 @available(iOS 17.0, *)
 struct BrawlyticsApp: App {
-   
+    
     let diContainer = DIContainer.shared
     let rxDiContainer = RxDIContainer.shared
+    
     
 
     // Delegate

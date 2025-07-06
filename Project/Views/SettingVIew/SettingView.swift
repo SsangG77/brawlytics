@@ -68,6 +68,8 @@ struct SettingView: View {
                                 UserDefaults.standard.set(finalPlayerTag, forKey: "playerTag")
                                 loadedPlayerTag = finalPlayerTag // 저장 후 즉시 업데이트
                                 print("입력된 텍스트: \(text) -> 저장된 태그: \(finalPlayerTag)")
+                                
+                                text = ""
                             }
                             .frame(width: 200)
                             .disabled(text.isEmpty)

@@ -20,8 +20,9 @@ class OverlapCardViewModel: ObservableObject {
     
     var alignment: Alignment {
         switch type {
-        case .win, .lose: return .bottom
+        case .win, .lose, .soloShowdown, .duoShowdown, .trioShowdown : return .bottom
         case .user, .brawler, .graph: return .top
+        
         }
     }
     

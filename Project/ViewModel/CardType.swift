@@ -11,12 +11,19 @@ import SwiftUI
 
 enum CardType {
     case win, lose, user, brawler, graph
+    case soloShowdown, duoShowdown, trioShowdown
+    
+    var isShowdown: Bool {
+        [.soloShowdown, .duoShowdown, .trioShowdown].contains(self)
+    }
     
     var frontColor: Color {
         switch self {
         case .win: return Color.lightBlue
         case .lose: return Color.lightRed
         case .user, .brawler, .graph: return Color.deepColor
+        case .soloShowdown, .duoShowdown, .trioShowdown:
+            return Color.lightGreen
         }
     }
     
@@ -25,12 +32,15 @@ enum CardType {
         case .win: return Color.deepBlue
         case .lose: return Color.deepRed
         case .user, .brawler, .graph: return Color.lightColor
+        case .soloShowdown, .duoShowdown, .trioShowdown:
+            return Color.deepGreen
         }
     }
     
     var frontHeight: CGFloat {
         switch self {
-        case .win, .lose: return 300
+        case .win, .lose, .soloShowdown, .duoShowdown, .trioShowdown:
+            return 300
         case .user : return 100
         case .brawler : return 70
         case .graph: return 80
@@ -39,7 +49,8 @@ enum CardType {
     
     var backHeight: CGFloat {
         switch self {
-        case .win, .lose: return frontHeight + 80
+        case .win, .lose, .soloShowdown, .duoShowdown, .trioShowdown:
+            return frontHeight + 80
         case .user: return 185
         case .brawler : return 170
         case .graph: return UIScreen.main.bounds.height * 0.7
@@ -53,5 +64,4 @@ enum CardType {
         default: return Color.white
         }
     }
-    
 }

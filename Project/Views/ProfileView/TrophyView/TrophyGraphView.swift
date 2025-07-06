@@ -11,11 +11,16 @@ import Charts
 
 
 
-struct TrophyGraphData: Identifiable {
-    let id = UUID()
+struct TrophyGraphData: Identifiable, Decodable {
+    var id = UUID()
     let date: String
     let trophy: Int
+
+    private enum CodingKeys: String, CodingKey {
+        case date, trophy
+    }
 }
+
 
 
 struct TrophyGraphView: View {
@@ -49,7 +54,7 @@ struct TrophyGraphView: View {
         }
         .navigationTitle("Trophy Graph")
         .onAppear {
-            vm.loadTrophyData()
+            vm.loadTrophyData(brawlerName: brawlerTrophyModel.name)
         }
     }
 }

@@ -57,12 +57,13 @@ struct OverlapCardView<Front: View, Back: View>: View {
     
     private var backCard: some View {
         VStack {
-            if vm.type == .user || vm.type == .brawler || vm.type == .graph {
+            if [.user, .brawler, .graph].contains(vm.type) {
                 Spacer().frame(height: vm.cardFrontHeight)
             }
+
             backView
             
-            if vm.type == .lose || vm.type == .win {
+            if [.win, .lose, .soloShowdown, .duoShowdown, .trioShowdown].contains(vm.type) {
                 Spacer().frame(height: vm.cardFrontHeight)
             }
         }

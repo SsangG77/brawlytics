@@ -23,6 +23,10 @@ extension Color {
     static let deepBlue = Color(hexString: "16328F")
     static let lightBlue = Color(hexString: "586590")
     
+    // showDown
+    static let deepGreen = Color(hexString: "1B6424")
+    static let lightGreen = Color(hexString: "3CBA59")
+    
     
     init(hexString: String, opacity: Double = 1.0) {
         let hex: Int = Int(hexString, radix: 16)!
