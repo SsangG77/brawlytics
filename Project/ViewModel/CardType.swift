@@ -2,7 +2,7 @@
 //  CardType.swift
 //  Brawlytics
 //
-//  Created by 차상진 on 6/25/25.
+//  Cre실제로도 구현되어있는데 ated by 차상진 on 6/25/25.
 //
 
 import Foundation
@@ -10,7 +10,8 @@ import SwiftUI
 
 
 enum CardType {
-    case win, lose, user, brawler, graph
+    case user, brawler, graph
+    case win, lose
     case soloShowdown, duoShowdown, trioShowdown
     
     var isShowdown: Bool {

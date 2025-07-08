@@ -33,7 +33,7 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
         case "brawlBall": return "brawl_ball_icon"
         case "heist": return "heist_icon"
         case "hotZone": return "hot_zone_icon"
-        case "knockOut": return "knock_out_icon"
+        case "knockout": return "knock_out_icon"
         case "soloShowdown": return "showdown_icon"
         case "duoShowdown": return "duo_showdown_icon"
         case "trioShowdown": return "trio_showdown_icon"
@@ -131,14 +131,33 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
             return languageJudge ? "모 아니면 도" : mapName
         case "Double Trouble":
             return languageJudge ? "더블 트러블" : mapName
-        
-            
-            
+        case "Island Invasion":
+            return languageJudge ? "무인도 침략" : mapName
+        case "Stormy Plains":
+            return languageJudge ? "폭풍의 대지" : mapName
+        case "Safety Center":
+            return languageJudge ? "안전 센터" : mapName
+        case "Rockwall Brawl":
+            return languageJudge ? "바위 장벽 전투" : mapName
             
         // 브롤볼
+        case "Pinball Breams":
+            return languageJudge ? "핀볼 드림" : mapName
+        case "Center Stage":
+            return languageJudge ? "센터 스테이지" : mapName
+        case "Beach Ball":
+            return languageJudge ? "비치볼" : mapName
+        case "Galaxy Arene":
+            return languageJudge ? "은하수 경기장" : mapName
+        case "Encirclement":
+            return languageJudge ? "빙글빙글" : mapName
+        case "Retina":
+            return languageJudge ? "레티나" : mapName
+        case "Sneaky Fields":
+            return languageJudge ? "스니키 필드" : mapName
             
             
-        
+            
         // 녹아웃
             
         // 하이스트

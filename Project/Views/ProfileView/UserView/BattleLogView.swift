@@ -175,7 +175,7 @@ struct SingleBattleLogView: View {
                                 }
                             }
                             .padding()
-                        } else {
+                        } else if type == .soloShowdown {
                             LazyHGrid(
                                 rows: [GridItem(.flexible(), spacing: -10),GridItem(.flexible())],
                                 spacing: 30
@@ -189,6 +189,8 @@ struct SingleBattleLogView: View {
                         
                     }
                 } else {
+                    
+                    
                     
                     team(type: self.type,members: log.teams[0].member)
                     Text("VS")
