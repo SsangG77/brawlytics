@@ -32,6 +32,9 @@ struct UserView: View {
                     }
                     
                     Spacer()
+                    
+                    Text(NSLocalizedString("battleLogText", comment: ""))
+                        .foregroundColor(.white)
                 
                     Image(systemName: "chevron.compact.forward")
                         .font(.system(size: 30))

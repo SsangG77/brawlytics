@@ -186,18 +186,35 @@ struct SingleBattleLogView: View {
                             }
                             .padding()
                         }
-                        
                     }
                 } else {
                     
+                    if log.teams[0].member.count >= 5 { //팀원이 5명 이상인 경우
+                        //가로 스크롤뷰 적용
+                        ScrollView(.horizontal) {
+                            VStack {
+                                team(type: self.type,members: log.teams[0].member)
+                                Text("VS")
+                                    .fontWeight(.black)
+                                    .font(.system(size: 30))
+                                    .padding([.top, .bottom], 6)
+                                team(type: self.type,members: log.teams[1].member)
+                            }
+                            .padding()
+                        }
+                        .padding()
+                        
+                    } else {
+                        team(type: self.type,members: log.teams[0].member)
+                        Text("VS")
+                            .fontWeight(.black)
+                            .font(.system(size: 30))
+                            .padding([.top, .bottom], 6)
+                        team(type: self.type,members: log.teams[1].member)
+                        
+                    }
                     
                     
-                    team(type: self.type,members: log.teams[0].member)
-                    Text("VS")
-                        .fontWeight(.black)
-                        .font(.system(size: 30))
-                        .padding([.top, .bottom], 6)
-                    team(type: self.type,members: log.teams[1].member)
                 }
                 
             }

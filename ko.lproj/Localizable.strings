@@ -16,3 +16,6 @@ research = "다시 검색해 주세요.";
 
 //SearchBar - placeholder
 searchPlaceholder = "유저 태그 입력";
+
+//UserView - BattleLog 화살표 설명 문자열
+battleLogText = "전적";

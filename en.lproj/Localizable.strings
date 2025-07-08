@@ -16,3 +16,7 @@ research = "Research please.";
 
 //SearchBar - placeholder
 searchPlaceholder = "Enter playertag";
+
+//UserView - BattleLog 화살표 설명 문자열
+battleLogText = "Battles";
+

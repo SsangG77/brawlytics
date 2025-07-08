@@ -52,10 +52,19 @@ struct TierTrophyView: View {
                 .resizable()
                 .scaledToFit()
                 .padding(14)
+            
+            
+            
+            
         }
     }
 }
 
-//#Preview {
-//    TierTrophyView()
-//}
+#Preview {
+    
+    ZStack {
+        Color.gray
+        TierTrophyView(rankImageName: "rank1", current: 23, highest: 111)
+    }
+
+}

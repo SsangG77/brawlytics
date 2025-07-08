@@ -38,6 +38,7 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
         case "duoShowdown": return "duo_showdown_icon"
         case "trioShowdown": return "trio_showdown_icon"
         case "duels": return "duels_icon"
+        case "wipeout": return "wipeout_icon"
             
         default: return ""
         }
@@ -119,6 +120,8 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
             return languageJudge ? "뱀의 가게" : mapName
         case "Royal Flush":
             return languageJudge ? "로얄 플러시" : mapName
+        case "Lilygear Lake":
+            return languageJudge ? "릴리기어 호수" : mapName
             
             // 쇼다운
         case "Flying Fantasie":
@@ -139,6 +142,8 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
             return languageJudge ? "안전 센터" : mapName
         case "Rockwall Brawl":
             return languageJudge ? "바위 장벽 전투" : mapName
+        case "Mystical Thirty Three":
+            return languageJudge ? "미스터리 33" : mapName
             
         // 브롤볼
         case "Pinball Breams":
@@ -155,14 +160,28 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
             return languageJudge ? "레티나" : mapName
         case "Sneaky Fields":
             return languageJudge ? "스니키 필드" : mapName
+        case "Sunny Soccer":
+            return languageJudge ? "화창한 날" : mapName
             
             
             
         // 녹아웃
+        case "Healthy Middle Ground":
+            return languageJudge ? "적당한 중간지점" : mapName
             
         // 하이스트
+            
+        // 핫 존
+        case "In the Liminal":
+            return languageJudge ? "경계 속으로" : mapName
         
+        // 듀얼
+        case "No Surrender":
+            return languageJudge ? "항복 없는 결투의 장" : mapName
         
+        // 기타
+        case "Snowcone Square":
+            return languageJudge ? "스노우콘 광장" : mapName
             
         default:
             return mapName

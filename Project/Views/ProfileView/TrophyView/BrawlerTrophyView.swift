@@ -45,6 +45,9 @@ struct BrawlerTrophyView: View {
                     current: brawlerTrophyModel.currentTrophy,
                     highest: brawlerTrophyModel.highestTrophy
                 )
+                
+                Image(systemName: "chart.xyaxis.line")
+                    .foregroundColor(.white)
             
                 Image(systemName: "chevron.compact.forward")
                     .font(.system(size: 30))
