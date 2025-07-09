@@ -13,6 +13,7 @@
 		915F8BBF2DE61DCB00172B39 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915F8BBE2DE61DCA00172B39 /* XCTest.framework */; };
 		91A8D4712DE8D05100F7371E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 91A8D4702DE8D05100F7371E /* GoogleMobileAds */; };
 		91AACE662E16308800861DB5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 91AACE652E16308800861DB5 /* Alamofire */; };
+		91AACEA12E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91AACE9F2E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		915F8BA92DE4B24000172B39 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		915F8BAC2DE4B33500172B39 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		915F8BBE2DE61DCA00172B39 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		91AACEA02E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CachedBrawlerTrophyData.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -147,6 +149,7 @@
 		912811222CD799FB004D9554 = {
 			isa = PBXGroup;
 			children = (
+				91AACE9F2E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld */,
 				915F8BB72DE6166100172B39 /* Tests */,
 				915F8BAA2DE4B24000172B39 /* Localizable.strings */,
 				915F8B3C2DDE42F300172B39 /* Project */,
@@ -330,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91AACEA12E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -749,6 +753,19 @@
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		91AACE9F2E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				91AACEA02E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodel */,
+			);
+			currentVersion = 91AACEA02E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodel */;
+			path = CachedBrawlerTrophyData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 912811232CD799FB004D9554 /* Project object */;
 }

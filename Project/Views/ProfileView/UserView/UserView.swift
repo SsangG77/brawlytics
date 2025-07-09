@@ -33,8 +33,11 @@ struct UserView: View {
                     
                     Spacer()
                     
-                    Text(NSLocalizedString("battleLogText", comment: ""))
+//                    Text(NSLocalizedString("battleLogText", comment: ""))
+//                        .foregroundColor(.white)
+                    Image(systemName: "gamecontroller.fill")
                         .foregroundColor(.white)
+                        .fontWeight(.black)
                 
                     Image(systemName: "chevron.compact.forward")
                         .font(.system(size: 30))

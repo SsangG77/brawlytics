@@ -74,6 +74,9 @@ class BrawlersDataSource: ObservableObject {
         BrawlerStandard(name: "OLLIE", first_gadget: "REGULATE", second_gadget: "ALLEYEZONME", first_starPower: "KICK,PUSH", second_starPower: "RENEGADE", hypercharge: "", rarity: .mythic, role: .tanker, epicGear: .none, mythicGear: .none),
         BrawlerStandard(name: "MEG", first_gadget: "JOLTING VOLTS", second_gadget: "TOOLBOX", first_starPower: "FORCE FIELD", second_starPower: "HEAVY METAL", hypercharge: "TUNGSTEN TOUGT NOT", rarity: .legendary, role: .tanker, epicGear: .none, mythicGear: .none),
         BrawlerStandard(name: "DRACO", first_gadget: "UPPER CUT", second_gadget: "LAST STAND", first_starPower: "EXPOSE", second_starPower: "SHREDDING", hypercharge: "", rarity: .legendary, role: .tanker, epicGear: .none, mythicGear: .none),
+        BrawlerStandard(name: "TRUNK", first_gadget: "FOR THE QUEEN!", second_gadget: "WORKER ANTS", first_starPower: "NEW INSECT OVERLORDS", second_starPower: "COLONY SCOUTS", hypercharge: "", rarity: .epic, role: .tanker, epicGear: .none, mythicGear: .none),
+        
+        
         
         BrawlerStandard(name: "STU", first_gadget: "SPEED ZONE", second_gadget: "BREAKTHROUGH", first_starPower: "ZERO DRAG", second_starPower: "GASO-HEAL", hypercharge: "INFINITRO", rarity: .epic, role: .assassin, epicGear: .none, mythicGear: .none),
         BrawlerStandard(name: "EDGAR", first_gadget: "LET'S FLY", second_gadget: "HARDCORE", first_starPower: "HARD LANDING", second_starPower: "FISTICUFFS", hypercharge: "OUTBURST", rarity: .epic, role: .assassin, epicGear: .superCharge, mythicGear: .none),

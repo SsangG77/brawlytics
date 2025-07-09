@@ -48,6 +48,7 @@ struct BrawlerTrophyView: View {
                 
                 Image(systemName: "chart.xyaxis.line")
                     .foregroundColor(.white)
+                    .fontWeight(.black)
             
                 Image(systemName: "chevron.compact.forward")
                     .font(.system(size: 30))

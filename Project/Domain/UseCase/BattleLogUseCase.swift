@@ -168,6 +168,19 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
         // 녹아웃
         case "Healthy Middle Ground":
             return languageJudge ? "적당한 중간지점" : mapName
+        case "Goldarm Gluch":
+            return languageJudge ? "골드암 협곡" : mapName
+        case "Belle`s Rock":
+            return languageJudge ? "벨스 락" : mapName
+        case "Deep End":
+            return languageJudge ? "딥 엔드" : mapName
+        case "Flaring Phoenix":
+            return languageJudge ? "타오르는 불사조" : mapName
+        case "Out in the Open":
+            return languageJudge ? "오픈 월드" : mapName
+        case "New Horizons":
+            return languageJudge ? "새로운 지평선" : mapName
+        
             
         // 하이스트
             
