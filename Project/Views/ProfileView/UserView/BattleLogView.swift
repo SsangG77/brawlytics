@@ -134,14 +134,7 @@ struct SingleBattleLogView: View {
         
         Group {
             if overlapCardVM.isPad {
-                HStack(spacing: 0) {
-                    team(type: self.type,members: log.teams[0].member)
-                    Text("VS")
-                        .fontWeight(.black)
-                        .font(.system(size: 30))
-                        .padding([.top, .bottom], 6)
-                    team(type: self.type,members: log.teams[1].member)
-                }
+                iPad
             } else {
                 iphone
             }
@@ -213,10 +206,73 @@ struct SingleBattleLogView: View {
                         team(type: self.type,members: log.teams[1].member)
                         
                     }
+                }
+            }
+        }
+    }
+    
+    var iPad: some View {
+        HStack {
+            if type.isShowdown {
+                ScrollView(.horizontal) {
                     
+                    if type == .trioShowdown {
+                        Grid(verticalSpacing: 40) {
+                            GridRow {
+                                team(type: self.type,members: log.teams[0].member)
+                                team(type: self.type,members: log.teams[1].member)
+                            }
+                            GridRow {
+                                team(type: self.type,members: log.teams[2].member)
+                                team(type: self.type,members: log.teams[3].member)
+                            }
+                        }
+                        .padding()
+                    } else if type == .duoShowdown {
+                        HStack(spacing: 40) {
+                            ForEach(log.teams) { t in
+                                team(type: self.type, members: t.member)
+                            }
+                        }
+                        .padding()
+                    } else if type == .soloShowdown {
+                        LazyHGrid(
+                            rows: [GridItem(.flexible(), spacing: -10),GridItem(.flexible())],
+                            spacing: 30
+                        ) {
+                            ForEach(log.teams[0].member) { m in
+                                member(m)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            } else {
+                
+                if log.teams[0].member.count >= 5 { //팀원이 5명 이상인 경우
+                    //가로 스크롤뷰 적용
+                    ScrollView(.horizontal) {
+                        VStack {
+                            team(type: self.type,members: log.teams[0].member)
+                            Text("VS")
+                                .fontWeight(.black)
+                                .font(.system(size: 30))
+                                .padding([.top, .bottom], 6)
+                            team(type: self.type,members: log.teams[1].member)
+                        }
+                        .padding()
+                    }
+                    .padding()
+                    
+                } else {
+                    team(type: self.type,members: log.teams[0].member)
+                    Text("VS")
+                        .fontWeight(.black)
+                        .font(.system(size: 30))
+                        .padding([.top, .bottom], 6)
+                    team(type: self.type,members: log.teams[1].member)
                     
                 }
-                
             }
         }
     }

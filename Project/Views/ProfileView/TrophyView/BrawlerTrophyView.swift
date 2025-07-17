@@ -34,9 +34,9 @@ struct BrawlerTrophyView: View {
                 
                 Text(brawlerTrophyModel.name)
                     .fontWeight(.semibold)
-                    .font(.system(size: 40))
+                    .font(.system(size: 35))
                     .foregroundStyle(.white)
-                    .padding(.trailing, 60)
+                    .padding(.trailing, 40)
             }
         }, backView: {
             HStack {

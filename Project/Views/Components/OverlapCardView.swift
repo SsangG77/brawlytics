@@ -57,7 +57,11 @@ struct OverlapCardView<Front: View, Back: View>: View {
     
     private var backCard: some View {
         VStack {
-            if [.user, .brawler, .graph].contains(vm.type) {
+            if [.brawler, .graph].contains(vm.type) {
+                Spacer().frame(height: vm.cardFrontHeight)
+            }
+            
+            if vm.type == .user && !vm.isPad {
                 Spacer().frame(height: vm.cardFrontHeight)
             }
 

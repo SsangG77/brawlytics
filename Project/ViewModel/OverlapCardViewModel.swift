@@ -27,12 +27,30 @@ class OverlapCardViewModel: ObservableObject {
     }
     
     var cardWidth: CGFloat {
-        isPad ? UIScreen.main.bounds.width * 0.4 : UIScreen.main.bounds.width * 0.9
+        
+        if isPad {
+            if [.win, .lose, .soloShowdown, .duoShowdown, .trioShowdown].contains(type) {
+                UIScreen.main.bounds.width * 0.7
+            } else {
+                UIScreen.main.bounds.width * 0.4
+            }
+        } else {
+            UIScreen.main.bounds.width * 0.9
+        }
     }
     
     var cardBackHeight: CGFloat {
-//        isPad ? 150 : type.backHeight
-        type.backHeight
+//        type.backHeight
+        
+        if isPad {
+            if type == .user {
+                type.frontHeight
+            } else {
+                type.backHeight
+            }
+        } else {
+            type.backHeight
+        }
     }
     
     var cardFrontHeight: CGFloat {

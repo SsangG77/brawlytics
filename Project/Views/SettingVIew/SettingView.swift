@@ -28,6 +28,7 @@ struct SettingView: View {
                         VStack {
                             TextField("플레이어 태그 입력", text: $text)
                                 .padding()
+                                .foregroundColor(.black) // 글자색 고정
                                 .roundedCornerWithBorder(
                                     lineWidth: isFocused ? 6 : 3,
                                     backgroundColor: .white

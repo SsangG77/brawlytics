@@ -51,6 +51,7 @@ struct SearchBar: View {
                                 }
                             })
                             .padding(.horizontal, 10)
+                            .foregroundColor(.black) // 글자색 고정
                             .frame(height: 65)
                             .background(Color.white)
                             .overlay(
