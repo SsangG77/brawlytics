@@ -25,15 +25,15 @@ final class BrawlersUseCaseTests: XCTestCase {
     
     func testCalculatePP() throws {
         let brawler = Brawler(
-            id: 1,
-            name: "BULL",
-            power: 10,
-            rank: 20,
-            trophies: 500,
-            highestTrophies: 600,
-            gears: [Gear(id: 1, name: "SPEED", level: 1)],
-            starPowers: [StarPower(id: 1, name: "BERSERKER")],
-            gadgets: [Gadget(id: 1, name: "T-BONE INJECTOR")]
+//            id: 1,
+//            name: "BULL",
+//            power: 10,
+//            rank: 20,
+//            trophies: 500,
+//            highestTrophies: 600,
+//            gears: [Gear(id: 1, name: "SPEED", level: 1)],
+//            starPowers: [StarPower(id: 1, name: "BERSERKER")],
+//            gadgets: [Gadget(id: 1, name: "T-BONE INJECTOR")]
         )
         
         let standard = BrawlerStandard(
@@ -55,15 +55,15 @@ final class BrawlersUseCaseTests: XCTestCase {
     
     func testCalculateCredit() throws {
         let brawler = Brawler(
-            id: 1,
-            name: "BULL",
-            power: 10,
-            rank: 20,
-            trophies: 500,
-            highestTrophies: 600,
-            gears: [Gear(id: 1, name: "SPEED", level: 1)],
-            starPowers: [StarPower(id: 1, name: "BERSERKER")],
-            gadgets: [Gadget(id: 1, name: "T-BONE INJECTOR")]
+//            id: 1,
+//            name: "BULL",
+//            power: 10,
+//            rank: 20,
+//            trophies: 500,
+//            highestTrophies: 600,
+//            gears: [Gear(id: 1, name: "SPEED", level: 1)],
+//            starPowers: [StarPower(id: 1, name: "BERSERKER")],
+//            gadgets: [Gadget(id: 1, name: "T-BONE INJECTOR")]
         )
         
         let standard = BrawlerStandard(
@@ -85,15 +85,15 @@ final class BrawlersUseCaseTests: XCTestCase {
     
     func testCalculateCoin() throws {
         let brawler = Brawler(
-            id: 1,
-            name: "BULL",
-            power: 10,
-            rank: 20,
-            trophies: 500,
-            highestTrophies: 600,
-            gears: [Gear(id: 1, name: "SPEED", level: 1)],
-            starPowers: [StarPower(id: 1, name: "BERSERKER")],
-            gadgets: [Gadget(id: 1, name: "T-BONE INJECTOR")]
+//            id: 1,
+//            name: "BULL",
+//            power: 10,
+//            rank: 20,
+//            trophies: 500,
+//            highestTrophies: 600,
+//            gears: [Gear(id: 1, name: "SPEED", level: 1)],
+//            starPowers: [StarPower(id: 1, name: "BERSERKER")],
+//            gadgets: [Gadget(id: 1, name: "T-BONE INJECTOR")]
         )
         
         let standard = BrawlerStandard(

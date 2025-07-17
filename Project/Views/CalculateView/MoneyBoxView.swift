@@ -29,11 +29,16 @@ struct MoneyBoxView: View {
             @State var ipadWidth = geo.size.width * 0.9
             
             ZStack {
-                Rectangle()
+//                Rectangle()
+//                    .frame(width: Constants.isPad() ? ipadWidth : width, height: Constants.isPad() ? ipadHeight : iphoneHeight)
+//                    .cornerRadius(20)
+//                    .foregroundColor(Color(hexString: "576E90"))
+//                    .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+                
+                VStack{}
                     .frame(width: Constants.isPad() ? ipadWidth : width, height: Constants.isPad() ? ipadHeight : iphoneHeight)
-                    .cornerRadius(20)
-                    .foregroundColor(Color(hexString: "576E90"))
-                    .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+                    .roundedCornerWithBorder(lineWidth: 5)
+                
                 
                 VStack {
                     

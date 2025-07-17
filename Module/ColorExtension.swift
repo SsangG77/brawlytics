@@ -9,6 +9,25 @@ import Foundation
 import SwiftUI
 
 extension Color {
+    
+    // default
+    static let deepColor = Color(hexString: "182C49")
+    static let lightColor = Color(hexString: "6D8CB9")
+    static let backgroundColor = Color(hexString: "37475F")
+    
+    //win
+    static let deepRed = Color(hexString: "812323")
+    static let lightRed = Color(hexString: "C76363")
+    
+    //lose
+    static let deepBlue = Color(hexString: "16328F")
+    static let lightBlue = Color(hexString: "586590")
+    
+    // showDown
+    static let deepGreen = Color(hexString: "1B6424")
+    static let lightGreen = Color(hexString: "3CBA59")
+    
+    
     init(hexString: String, opacity: Double = 1.0) {
         let hex: Int = Int(hexString, radix: 16)!
         

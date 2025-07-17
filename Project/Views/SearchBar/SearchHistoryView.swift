@@ -26,6 +26,8 @@ struct SearchHistoryView: View {
                         HStack {
                             Spacer()
                             Text(search)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
                             Spacer()
                         }
                         .onTapGesture {

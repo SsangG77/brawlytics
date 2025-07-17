@@ -52,15 +52,17 @@ struct CalculateView: View {
                     }
                     .frame(height: 110)
             
-//                    NavigationLink(destination:
-//                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
-//                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
-//                    ) {
-//                        Label(NSLocalizedString("hypercharge_select", comment: ""), systemImage: "flame")
-//                            .foregroundColor(.black)
-//                            .font(.system(size: 17, weight: .bold))
+                    NavigationLink(destination:
+                                    HyperchargeView(viewModel: diContainer.makeBrawlersViewModel())
+                        .navigationTitle(NSLocalizedString("hypercharge_select", comment: ""))
+                    ) {
+                        Label(NSLocalizedString("hypercharge_select", comment: ""), systemImage: "flame")
+                            .foregroundColor(.black)
+                            .font(.system(size: 17, weight: .bold))
 //                            .padding(.vertical, 10)
-//                    }
+                    }
+                    .padding(.vertical, -10)
+                    
                     if calculateViewModel.isError {
                         VStack {
                             Spacer()
@@ -101,7 +103,7 @@ struct CalculateView: View {
                 .frame(width: geo.size.width, height: geo.size.height)
             }//geo
             .ignoresSafeArea(.keyboard)
-            .background(Color(hexString: "37475F"))
+            .background(Color.backgroundColor)
             .onAppear {
                 allBrawlersStandard = calculateViewModel.getBrawlersStandard()
                 
@@ -109,7 +111,6 @@ struct CalculateView: View {
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { value in
                         self.isLoading = value
-                        print("isLoading: \(self.isLoading)---------print")
                     })
                     .disposed(by: disposeBag)
                 
@@ -166,3 +167,4 @@ struct RoleBrawlerSection: View {
         .contentMargins(.horizontal, UIScreen.main.bounds.width * 0.1 / 2)
     }
 }
+

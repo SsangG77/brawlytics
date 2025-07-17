@@ -11,11 +11,10 @@ import SwiftData
 @available(iOS 17.0, *)
 struct ContentView: View {
     
-//    @StateObject private var appState = AppState()
-    
 #warning("RX 방식 변경을 위한 테스트")
     @StateObject var calculateVM: RxCalculateViewModel
     @StateObject var brawlersVM: BrawlersViewModel
+    @StateObject var playerProfileVM = RxDIContainer.shared.makePlayerProfileViewModel()
     
     init(
         calculateVM: RxCalculateViewModel,
@@ -30,18 +29,28 @@ struct ContentView: View {
         TabView {
             Group {
                 CalculateView()
-//                .environmentObject(appState)
                 .environmentObject(calculateVM)
                 .tabItem {
                     Label("Calculator", systemImage: "number")
                         
                 }
                 
-                HyperchargeView(viewModel: brawlersVM)
-//                    .environmentObject(appState)
+//                HyperchargeView(viewModel: brawlersVM)
+////                    .environmentObject(appState)
+//                    .tabItem {
+//                        Label("Hyper charge", systemImage: "flame")  
+//                    }
+                
+                PlayerProfileView(vm: playerProfileVM)
                     .tabItem {
-                        Label("Hyper charge", systemImage: "flame")  
+                        Label("Profile", systemImage: "chart.bar")
                     }
+                
+                SettingView()
+                    .tabItem {
+                        Label("Setting", systemImage: "gear")
+                    }
+                
                 
             }
             .toolbarBackground(Color(hexString:"283548"), for: .tabBar)
@@ -49,6 +58,7 @@ struct ContentView: View {
             .toolbarColorScheme(.dark, for: .tabBar)
             
         }
+        .background(Color.backgroundColor)
         .onAppear {
             UserDefaults.standard.set([], forKey: "searchTextArray")
         }

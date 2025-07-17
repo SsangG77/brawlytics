@@ -48,6 +48,7 @@ struct MoneyCountView: View {
                 
                 Text(String(ppCount))
                     .font(.title2)
+                    .foregroundColor(Color(hexString: "E0E0E0"))
             }
             Spacer()
             
@@ -58,6 +59,7 @@ struct MoneyCountView: View {
                 
                 Text(String(coinCount))
                     .font(.title2)
+                    .foregroundColor(Color(hexString: "E0E0E0"))
             }
             Spacer()
             
@@ -68,6 +70,7 @@ struct MoneyCountView: View {
                 
                 Text(String(creditCount))
                     .font(.title2)
+                    .foregroundColor(Color(hexString: "E0E0E0"))
             }
             Spacer()
             

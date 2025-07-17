@@ -75,11 +75,9 @@ struct BrawlerView: View {
 
     
     private var backgroundView: some View {
-        Rectangle()
+        VStack{}
             .frame(width: width, height: totalHeight)
-            .cornerRadius(20)
-            .foregroundColor(Color(hexString: "576E90"))
-            .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+            .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, backgroundColor: .deepColor , radius: 20, corners: [.allCorners])
     }
 
     private var contentView: some View {
@@ -106,9 +104,7 @@ struct BrawlerView: View {
             .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
         }
         .frame(width: width, height: brawlerHeight)
-        .background(Color(hexString: "6D8CB9"))
-        .cornerRadius(20)
-        .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, radius: 20, corners: [.allCorners])
+        .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, backgroundColor: Color.lightColor, radius: 20, corners: [.allCorners])
         .overlay {
             if brawler?.name == "" {
                 RoundedRectangle(cornerRadius: 20)

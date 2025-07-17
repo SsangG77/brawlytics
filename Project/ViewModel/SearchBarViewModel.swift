@@ -67,4 +67,8 @@ class SearchBarViewModel: ObservableObject {
     func triggerSearch() {
         searchButtonTapped.onNext(())
     }
+    
+    func clearSearchHistory() {
+        useCase.clearSearchHistory()
+    }
 }

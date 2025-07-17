@@ -18,4 +18,8 @@ class MockSearchBarUseCase: SearchBarUseCase {
     func getSearchHistory() -> [String] {
         return searchHistory
     }
+    
+    func clearSearchHistory() {
+        searchHistory = []
+    }
 }
