@@ -41,4 +41,15 @@ class BattleLogViewModel: ObservableObject {
     func getMapName(mapName: String) -> String {
         return useCase.getMapName(mapName: mapName)
     }
+    
+    func getBattleReults(type: CardType) -> String {
+        switch type {
+        case .win: return "WIN"
+        case .lose: return "LOSE"
+        case .draw: return "DRAW"
+        default: return ""
+        }
+    }
 }
+
+

@@ -23,6 +23,10 @@ extension Color {
     static let deepBlue = Color(hexString: "16328F")
     static let lightBlue = Color(hexString: "586590")
     
+    //draw
+    static let deepPurple = Color(hexString: "3C007D")
+    static let lightPurple = Color(hexString: "7C2CD0")
+    
     // showDown
     static let deepGreen = Color(hexString: "1B6424")
     static let lightGreen = Color(hexString: "3CBA59")

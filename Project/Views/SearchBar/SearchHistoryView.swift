@@ -11,6 +11,8 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct SearchHistoryView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject var searchBarViewModel : SearchBarViewModel
     
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
@@ -28,6 +30,7 @@ struct SearchHistoryView: View {
                             Text(search)
                                 .lineLimit(1)
                                 .truncationMode(.tail)
+                                .foregroundColor(colorScheme == .dark ? .black : .black)
                             Spacer()
                         }
                         .onTapGesture {

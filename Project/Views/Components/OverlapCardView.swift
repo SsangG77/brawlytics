@@ -67,7 +67,7 @@ struct OverlapCardView<Front: View, Back: View>: View {
 
             backView
             
-            if [.win, .lose, .soloShowdown, .duoShowdown, .trioShowdown].contains(vm.type) {
+            if [.win, .lose, .draw, .soloShowdown, .duoShowdown, .trioShowdown].contains(vm.type) {
                 Spacer().frame(height: vm.cardFrontHeight)
             }
         }

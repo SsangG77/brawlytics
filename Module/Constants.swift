@@ -33,14 +33,11 @@ struct Constants {
     
     //https://brawlytics-server.com/brawlers?playertag=22yjv82rp
     
-    
     static func myPrint<T>(title:String, content:T) {
         print("======================= \(title) =======================print")
         print(content)
         print("")
-        
     }
-    
     
     static func isPad() -> Bool {
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -48,7 +45,4 @@ struct Constants {
         }
         return false
     }
-    
-    
-    
 }

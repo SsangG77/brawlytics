@@ -23,6 +23,8 @@ struct SearchBar: View {
     @State var iphoneWidth: CGFloat = UIScreen.main.bounds.width * 0.9
     @State var ipadWidth: CGFloat = 0  // GeometryReader에서 사용할 값을 저장할 변수 추가
     
+    // 다크 모드
+    @Environment(\.colorScheme) var colorScheme
     
     // Ad
     @State private var adManager = InterstitialAdManager()
@@ -51,9 +53,10 @@ struct SearchBar: View {
                                 }
                             })
                             .padding(.horizontal, 10)
-                            .foregroundColor(.black) // 글자색 고정
+//                            .foregroundColor(.black) // 글자색 고정
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
                             .frame(height: 65)
-                            .background(Color.white)
+                            .background(colorScheme == .dark ? .black : .white)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 20)
                                     .stroke(Color.black, lineWidth: 10)
