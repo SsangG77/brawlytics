@@ -39,6 +39,7 @@ class BattleLogUseCaseImpl: BattleLogUseCase {
         case "trioShowdown": return "trio_showdown_icon"
         case "duels": return "duels_icon"
         case "wipeout": return "wipeout_icon"
+        case "basketBrawl": return "basket_brawl_icon"
             
         default: return ""
         }

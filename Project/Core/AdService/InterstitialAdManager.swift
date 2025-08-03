@@ -19,7 +19,7 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate {
     func loadAd() async {
         do {
             interstitialAd = try await InterstitialAd.load(
-                with: AdManager.shared.getId(.test), request: Request())
+                with: AdManager.shared.getId(.unit), request: Request())
             interstitialAd?.fullScreenContentDelegate = self
         } catch {
             print("광고 로드 실패 : \(error.localizedDescription)")

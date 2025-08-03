@@ -11,7 +11,7 @@ import SwiftUI
 
 enum CardType {
     case user, brawler, graph
-    case win, lose
+    case win, lose, draw
     case soloShowdown, duoShowdown, trioShowdown
     
     var isShowdown: Bool {
@@ -22,6 +22,7 @@ enum CardType {
         switch self {
         case .win: return Color.lightBlue
         case .lose: return Color.lightRed
+        case .draw: return Color.lightPurple
         case .user, .brawler, .graph: return Color.deepColor
         case .soloShowdown, .duoShowdown, .trioShowdown:
             return Color.lightGreen
@@ -32,6 +33,7 @@ enum CardType {
         switch self {
         case .win: return Color.deepBlue
         case .lose: return Color.deepRed
+        case .draw: return Color.deepPurple
         case .user, .brawler, .graph: return Color.lightColor
         case .soloShowdown, .duoShowdown, .trioShowdown:
             return Color.deepGreen
@@ -40,7 +42,7 @@ enum CardType {
     
     var frontHeight: CGFloat {
         switch self {
-        case .win, .lose, .soloShowdown, .duoShowdown, .trioShowdown:
+        case .win, .lose, .draw, .soloShowdown, .duoShowdown, .trioShowdown:
             return 300
         case .user : return 100
         case .brawler : return 70
@@ -50,7 +52,7 @@ enum CardType {
     
     var backHeight: CGFloat {
         switch self {
-        case .win, .lose, .soloShowdown, .duoShowdown, .trioShowdown:
+        case .win, .lose, .draw, .soloShowdown, .duoShowdown, .trioShowdown:
             return frontHeight + 80
         case .user: return 185
         case .brawler : return 170
@@ -62,6 +64,7 @@ enum CardType {
         switch self {
         case .win : return Color(hexString: "8684FF")
         case .lose : return Color(hexString: "FF8080")
+        case .draw : return Color(hexString: "7C2CD0")
         default: return Color.white
         }
     }

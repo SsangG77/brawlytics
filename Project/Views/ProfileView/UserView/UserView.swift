@@ -48,8 +48,8 @@ struct UserView: View {
     
     var NamesView: some View {
         VStack(alignment: .leading, spacing: 0) {
-//            Text(user.nickName)
-            Text("Sangjin")
+            Text(user.nickName)
+//            Text("Sangjin")
                 .foregroundStyle(.white)
                 .fontWeight(.heavy)
                 .font(.system(size: 37))
