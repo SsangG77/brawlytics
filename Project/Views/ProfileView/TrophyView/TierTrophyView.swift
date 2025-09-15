@@ -53,9 +53,6 @@ struct TierTrophyView: View {
                 .scaledToFit()
                 .padding(14)
             
-            
-            
-            
         }
     }
 }

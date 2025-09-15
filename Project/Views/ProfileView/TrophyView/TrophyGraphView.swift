@@ -47,7 +47,7 @@ struct TrophyGraphView: View {
             }, backView: {
                 ScrollView(.horizontal) {
                     LineChartView(data: vm.trophyData)
-                        .frame(width: 60 * 10)
+                        .frame(width: 60 * CGFloat(vm.trophyData.count))
                 }
                 .contentMargins(15)
             })
