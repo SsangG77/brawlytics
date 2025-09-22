@@ -34,8 +34,6 @@ struct CalculateView: View {
                 
                 let width = Constants.isPad() ? geo.size.width * 0.3 - 10 : geo.size.width * 0.9
                 
-
-//                VStack(spacing : 0) {
                 VStack(spacing : 20) {
                     calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
                         
@@ -82,7 +80,6 @@ struct CalculateView: View {
                         
                     } else {
                         ScrollView {
-                            
                             ForEach(Role.allCases, id: \.self) { role in
                                 let filtered = allBrawlersStandard.filter { $0.role == role }
                                 RoleBrawlerSection(
@@ -96,7 +93,7 @@ struct CalculateView: View {
                                 
                             }
                         }
-                        .frame(height: geo.size.height - 170)
+//                        .frame(height: geo.size.height - 170)
                     }
                     
                 }
@@ -123,7 +120,6 @@ struct CalculateView: View {
 
 struct RoleBrawlerSection: View {
     let role: Role
-//    let allBrawlers: [BrawlerStandard]
     let filtered: [BrawlerStandard]
     let width: CGFloat
     let clicked: Bool

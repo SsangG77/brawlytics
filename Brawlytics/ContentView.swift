@@ -16,11 +16,11 @@ struct ContentView: View {
     @StateObject var brawlersVM: BrawlersViewModel
     @StateObject var playerProfileVM = RxDIContainer.shared.makePlayerProfileViewModel()
     
+    
     init(
         calculateVM: RxCalculateViewModel,
         brawlersVM: BrawlersViewModel
     ) {
-
         _calculateVM = StateObject(wrappedValue: calculateVM)
         _brawlersVM = StateObject(wrappedValue: brawlersVM)
     }
@@ -29,27 +29,29 @@ struct ContentView: View {
         TabView {
             Group {
                 CalculateView()
-                .environmentObject(calculateVM)
-                .tabItem {
-                    Label("Calculator", systemImage: "number")
+                    .environmentObject(calculateVM)
+                    .tabItem {
+//                        Label("Calculator", systemImage: "number")
+                        Image(systemName: "number")
                         
-                }
-                
-//                HyperchargeView(viewModel: brawlersVM)
-////                    .environmentObject(appState)
-//                    .tabItem {
-//                        Label("Hyper charge", systemImage: "flame")  
-//                    }
+                    }
+                    
                 
                 PlayerProfileView(vm: playerProfileVM)
                     .tabItem {
-                        Label("Profile", systemImage: "chart.bar")
+//                        Label("Profile", systemImage: "chart.bar")
+                        Image(systemName: "chart.bar")
+                            
                     }
+                    
                 
                 SettingView()
                     .tabItem {
-                        Label("Setting", systemImage: "gear")
+//                        Label("Setting", systemImage: "gear")
+                        Image(systemName: "gear")
+                            
                     }
+                
                 
                 
             }
@@ -58,6 +60,7 @@ struct ContentView: View {
             .toolbarColorScheme(.dark, for: .tabBar)
             
         }
+        .tint(.black)
         .background(Color.backgroundColor)
         .onAppear {
             UserDefaults.standard.set([], forKey: "searchTextArray")

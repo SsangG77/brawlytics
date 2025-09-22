@@ -12,7 +12,7 @@ struct BattleLogModel: Identifiable, Codable {
     var id = UUID()
     let result: String
     let mode: String
-    let mapName: String
+    let mapName: String?
     let date: String
     let teams: [Team]
 }

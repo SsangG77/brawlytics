@@ -57,7 +57,7 @@ struct SingleBattleLogView: View {
                 .frame(width: 40)
             
             VStack(alignment: .leading, spacing: 5) {
-                Text(vm.getMapName(mapName:log.mapName))
+                Text(vm.getMapName(mapName:log.mapName ?? "알수없는 맵"))
                     .lineLimit(1) // 한 줄로 제한
                     .minimumScaleFactor(0.5) // 최소 50% 크기까지 축소
                     .font(.title3)
