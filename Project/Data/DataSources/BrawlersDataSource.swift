@@ -744,6 +744,19 @@ class BrawlersDataSource: ObservableObject {
             epicGear: .none,
             mythicGear: .none
         ),
+        BrawlerStandard(
+            name: "ZIGGY",
+            first_gadget: "ELECTRIC SHUFFLE",
+            second_gadget: "NOW YOU SEE ME...",
+            first_starPower: "THUNDERSTRUCK",
+            second_starPower: "THE GREAT ZIGGINI",
+            hypercharge: "",
+            rarity: .mythic,
+            role: .controller,
+            epicGear: .none,
+            mythicGear: .none
+        ),
+        
 
 //MARK: - 대미지 딜러
         BrawlerStandard(
