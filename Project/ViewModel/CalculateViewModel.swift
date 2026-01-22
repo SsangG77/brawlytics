@@ -9,63 +9,25 @@ import Foundation
 import SwiftUI
 import RxSwift
 
-//class CalculateViewModel: ObservableObject {
-//    
-//    @Published var brawlers: [Brawler] = []
-//    private let calculateUseCase: CalculateUseCase
-//    
-//    init(calculateUseCase: CalculateUseCase) {
-//        self.calculateUseCase = calculateUseCase
-//    }
-//
-//    func getBrawlers(_ searchText: String) {
-//        self.calculateUseCase.getUserBrawlers(searchText: searchText) { brawlers in
-//            DispatchQueue.main.async {
-//                self.brawlers = brawlers
-//            }
-//        }
-//    }
-//    
-//    func findMyBrawler(brawlerName: String) -> Brawler {
-//        return calculateUseCase.findMyBrawler(brawlerName: brawlerName)
-//    }
-//    
-//    @ViewBuilder
-//    func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {
-//        if isPad { //아이패드일때
-//            HStack {
-//                content()
-//            }
-//            .frame(height: 130)
-//            
-//        } else {
-//            ZStack {
-//                content()
-//            }
-//        }
-//    }
-//}
-
-
 //MARK: - rx
 class RxCalculateViewModel: ObservableObject {
-//    @Published var brawlers: [Brawler] = []
-    
-    let brawlersSubject = PublishSubject<[Brawler]>()
+//    @Published var brawlers: [BrawlerDetail] = []
+
+    let brawlersSubject = BehaviorSubject<[BrawlerDetail]>(value: [])
     let isLoadingSubject = BehaviorSubject<Bool>(value: false)
-    
+
     //error
     @Published var isError = false
     @Published var errorMessage = ""
-    
-    
+
+
     private let useCase: RxCalculateUseCase
     private let disposeBag = DisposeBag()
-    
+
     init(useCase: RxCalculateUseCase) {
         self.useCase = useCase
     }
-    
+
     func getBrawlers(_ searchText: String) {
         self.useCase.getUserBrawlers(searchText: searchText)
             .observe(on: MainScheduler.instance)
@@ -88,15 +50,131 @@ class RxCalculateViewModel: ObservableObject {
             )
             .disposed(by: disposeBag)
     }
-    
-    func findMyBrawler(brawlerName: String) -> Brawler {
+
+    func findMyBrawler(brawlerName: String) -> BrawlerDetail {
         return useCase.findMyBrawler(brawlerName: brawlerName)
     }
-    
+
     func getBrawlersStandard() -> [BrawlerStandard] {
         return useCase.getBrawlersStandard()
     }
-    
+
+    // 브롤러 아이템(하이퍼차지, 버피) owned 상태 업데이트
+    func updateBrawlerItem(brawlerId: Int, itemType: String, owned: Bool) {
+        guard let currentBrawlers = try? brawlersSubject.value() else { return }
+
+        let updatedBrawlers = currentBrawlers.map { brawler -> BrawlerDetail in
+            guard brawler.id == brawlerId else { return brawler }
+
+            switch itemType {
+            case "hypercharge":
+                return BrawlerDetail(
+                    id: brawler.id,
+                    name: brawler.name,
+                    owned: brawler.owned,
+                    rarity: brawler.rarity,
+                    role: brawler.role,
+                    power: brawler.power,
+                    rank: brawler.rank,
+                    trophies: brawler.trophies,
+                    highestTrophies: brawler.highestTrophies,
+                    firstGadget: brawler.firstGadget,
+                    secondGadget: brawler.secondGadget,
+                    firstStarPower: brawler.firstStarPower,
+                    secondStarPower: brawler.secondStarPower,
+                    hypercharge: BrawlerItem(
+                        name: brawler.hypercharge.name,
+                        image: brawler.hypercharge.image,
+                        owned: owned
+                    ),
+                    gadgetBuff: brawler.gadgetBuff,
+                    starPowerBuff: brawler.starPowerBuff,
+                    hyperchargeBuff: brawler.hyperchargeBuff,
+                    gears: brawler.gears
+                )
+            case "gadgetBuff":
+                return BrawlerDetail(
+                    id: brawler.id,
+                    name: brawler.name,
+                    owned: brawler.owned,
+                    rarity: brawler.rarity,
+                    role: brawler.role,
+                    power: brawler.power,
+                    rank: brawler.rank,
+                    trophies: brawler.trophies,
+                    highestTrophies: brawler.highestTrophies,
+                    firstGadget: brawler.firstGadget,
+                    secondGadget: brawler.secondGadget,
+                    firstStarPower: brawler.firstStarPower,
+                    secondStarPower: brawler.secondStarPower,
+                    hypercharge: brawler.hypercharge,
+                    gadgetBuff: BrawlerItem(
+                        name: brawler.gadgetBuff.name,
+                        image: brawler.gadgetBuff.image,
+                        owned: owned
+                    ),
+                    starPowerBuff: brawler.starPowerBuff,
+                    hyperchargeBuff: brawler.hyperchargeBuff,
+                    gears: brawler.gears
+                )
+            case "starPowerBuff":
+                return BrawlerDetail(
+                    id: brawler.id,
+                    name: brawler.name,
+                    owned: brawler.owned,
+                    rarity: brawler.rarity,
+                    role: brawler.role,
+                    power: brawler.power,
+                    rank: brawler.rank,
+                    trophies: brawler.trophies,
+                    highestTrophies: brawler.highestTrophies,
+                    firstGadget: brawler.firstGadget,
+                    secondGadget: brawler.secondGadget,
+                    firstStarPower: brawler.firstStarPower,
+                    secondStarPower: brawler.secondStarPower,
+                    hypercharge: brawler.hypercharge,
+                    gadgetBuff: brawler.gadgetBuff,
+                    starPowerBuff: BrawlerItem(
+                        name: brawler.starPowerBuff.name,
+                        image: brawler.starPowerBuff.image,
+                        owned: owned
+                    ),
+                    hyperchargeBuff: brawler.hyperchargeBuff,
+                    gears: brawler.gears
+                )
+            case "hyperchargeBuff":
+                return BrawlerDetail(
+                    id: brawler.id,
+                    name: brawler.name,
+                    owned: brawler.owned,
+                    rarity: brawler.rarity,
+                    role: brawler.role,
+                    power: brawler.power,
+                    rank: brawler.rank,
+                    trophies: brawler.trophies,
+                    highestTrophies: brawler.highestTrophies,
+                    firstGadget: brawler.firstGadget,
+                    secondGadget: brawler.secondGadget,
+                    firstStarPower: brawler.firstStarPower,
+                    secondStarPower: brawler.secondStarPower,
+                    hypercharge: brawler.hypercharge,
+                    gadgetBuff: brawler.gadgetBuff,
+                    starPowerBuff: brawler.starPowerBuff,
+                    hyperchargeBuff: BrawlerItem(
+                        name: brawler.hyperchargeBuff.name,
+                        image: brawler.hyperchargeBuff.image,
+                        owned: owned
+                    ),
+                    gears: brawler.gears
+                )
+            default:
+                return brawler
+            }
+        }
+
+        brawlersSubject.onNext(updatedBrawlers)
+    }
+
     @ViewBuilder
     func DynamicStack<Content: View>(isPad: Bool, @ViewBuilder content: () -> Content) -> some View {
         if isPad { //아이패드일때
@@ -104,15 +182,15 @@ class RxCalculateViewModel: ObservableObject {
                 content()
             }
             .frame(height: 130)
-            
+
         } else {
             ZStack {
                 content()
             }
             .frame(height: 110)
-            
+
         }
     }
-    
+
 }
 

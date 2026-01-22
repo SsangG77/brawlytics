@@ -7,6 +7,16 @@
 
 import Foundation
 
+/*
+ "id": 16000000,
+        "name": "SHELLY",
+        "power": 11,
+        "rank": 38,
+        "trophies": 753,
+        "highestTrophies": 753,
+        "maxWinStreak": 5,
+ */
+
 struct Brawler: Codable, Equatable {
     let id: Int
     let name: String

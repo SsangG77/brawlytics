@@ -12,29 +12,28 @@ import RxSwift
 //브롤러 한개당 정보 모음
 @available(iOS 17.0, *)
 struct BrawlerView: View {
-    
-    // size setting
-    var totalHeight: CGFloat = 260
-    var brawlerHeight: CGFloat = 210
 
-    @State var brawler: Brawler?
+    // size setting
+    var totalHeight: CGFloat = 320
+    var brawlerHeight: CGFloat = 270
+
+    @State var brawlerDetail: BrawlerDetail
     @State var opacity: Double = 1.0
 
     var width: CGFloat
-    var brawlerStandard: BrawlerStandard
 
     @EnvironmentObject var appState: AppState
-    
+
 #warning("RX 방식 변경을 위한 테스트")
 //    @EnvironmentObject var calculateViewModel: CalculateViewModel
     @EnvironmentObject var calculateViewModel: RxCalculateViewModel
     let disposeBag = DisposeBag()
-    
+
     @StateObject var brawlersViewModel: BrawlersViewModel
-    
-    init(width: CGFloat, brawlerStandard: BrawlerStandard, viewModel: BrawlersViewModel) {
+
+    init(width: CGFloat, brawlerDetail: BrawlerDetail, viewModel: BrawlersViewModel) {
         self.width = width
-        self.brawlerStandard = brawlerStandard
+        _brawlerDetail = State(initialValue: brawlerDetail)
         _brawlersViewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -55,22 +54,20 @@ struct BrawlerView: View {
             opacity = opacity == 0.4 ? 0.8 : 0.4
         }
     }
-    
+
 #warning("RX 방식 변경을 위한 테스트")
     private func subscribeToBrawlers() {
          calculateViewModel.brawlersSubject
              .observe(on: MainScheduler.instance)
-             .subscribe(onNext: { _ in
-                 updateBrawler()
+             .subscribe(onNext: { brawlers in
+                 if let updated = brawlers.first(where: { $0.id == brawlerDetail.id }) {
+                     withAnimation {
+                         brawlerDetail = updated
+                     }
+                 }
              })
              .disposed(by: disposeBag)
      }
-
-    private func updateBrawler() {
-        withAnimation {
-            brawler = calculateViewModel.findMyBrawler(brawlerName: brawlerStandard.name)
-        }
-    }
 
 
     
@@ -97,16 +94,15 @@ struct BrawlerView: View {
 
             PowerView(
                 parentWidth: width,
-                brawlerStandard: brawlerStandard,
-                brawler: $brawler,
+                brawlerDetail: $brawlerDetail,
                 viewModel: brawlersViewModel
             )
-            .modifier(BlinkingAnimationModifier(shouldShow: brawler == nil, opacity: opacity))
+            .modifier(BlinkingAnimationModifier(shouldShow: !brawlerDetail.owned, opacity: opacity))
         }
         .frame(width: width, height: brawlerHeight)
         .roundedCornerWithBorder(lineWidth: 5, borderColor: .black, backgroundColor: Color.lightColor, radius: 20, corners: [.allCorners])
         .overlay {
-            if brawler?.name == "" {
+            if brawlerDetail.owned == false {
                 RoundedRectangle(cornerRadius: 20)
                     .foregroundColor(Color(hexString: "000000", opacity: 0.7))
             }
@@ -116,11 +112,10 @@ struct BrawlerView: View {
     private var profileSection: some View {
         BrawlerProfileView(
             parentWidth: width,
-            brawler_st: brawlerStandard,
-            brawler: $brawler
+            brawlerDetail: $brawlerDetail
         )
         .modifier(BlinkingAnimationModifier(
-            shouldShow: brawler == nil,
+            shouldShow: !brawlerDetail.owned,
             opacity: opacity
         ))
     }
@@ -128,18 +123,17 @@ struct BrawlerView: View {
      private var gearSection: some View {
         GearView(
             parentWidth: width,
-            brawlerStandard: brawlerStandard,
-            brawler: $brawler
+            brawlerDetail: $brawlerDetail
         )
         .environmentObject(brawlersViewModel)
         .modifier(BlinkingAnimationModifier(
-            shouldShow: brawler == nil,
+            shouldShow: !brawlerDetail.owned,
             opacity: opacity
         ))
     }
 
     private var moneyBlock: some View {
-        MoneyCountView(parentWidth: width, brawlerStandard: brawlerStandard, brawler: $brawler, viewModel: brawlersViewModel)
+        MoneyCountView(parentWidth: width, brawlerDetail: $brawlerDetail, viewModel: brawlersViewModel)
             .environmentObject(appState)
             .frame(height: totalHeight - brawlerHeight)
     }

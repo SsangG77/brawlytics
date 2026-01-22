@@ -93,6 +93,9 @@ struct SearchBar: View {
                                 // 검색 기록 저장
                                 searchBarViewModel.triggerSearch()
                                 showHistory = false
+
+                                // 플레이어 태그 저장 (하이퍼차지/버피 토글용)
+                                UserDefaults.standard.set(text, forKey: "currentPlayerTag")
                                 
                                 adManager.onAdStart = {
                                     withAnimation {
@@ -104,8 +107,7 @@ struct SearchBar: View {
                                 adManager.onAdDismiss = {
                                     DispatchQueue.main.async {
                                         withAnimation {
-//                                            clicked = true
-//                                            calculateViewModel.isLoadingSubject.onNext(true)
+                                            clicked = true
                                             calculateViewModel.isLoadingSubject.onNext(false)
                                             calculateViewModel.getBrawlers(text)
                                         }

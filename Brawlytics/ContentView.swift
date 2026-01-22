@@ -31,7 +31,6 @@ struct ContentView: View {
                 CalculateView()
                     .environmentObject(calculateVM)
                     .tabItem {
-//                        Label("Calculator", systemImage: "number")
                         Image(systemName: "number")
                         
                     }
@@ -39,7 +38,6 @@ struct ContentView: View {
                 
                 PlayerProfileView(vm: playerProfileVM)
                     .tabItem {
-//                        Label("Profile", systemImage: "chart.bar")
                         Image(systemName: "chart.bar")
                             
                     }
@@ -47,7 +45,6 @@ struct ContentView: View {
                 
                 SettingView()
                     .tabItem {
-//                        Label("Setting", systemImage: "gear")
                         Image(systemName: "gear")
                             
                     }

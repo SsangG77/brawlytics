@@ -36,6 +36,9 @@ protocol BrawlersUseCase {
     func calculatePP(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
     func calculateCredit(brawler:Brawler?, brawlerStandard: BrawlerStandard) -> Int
     func calculateCoin(brawler: Brawler?, brawlerStandard: BrawlerStandard) -> Int
+
+    // 새로운 BrawlerDetail 기반 계산 메서드
+    func calculateRequiredCoinsFromDetails(_ brawlers: [BrawlerDetail]) -> (totalCoins: Int, perBrawler: [(name: String, coins: Int)])
 }
 
 class BrawlersUseCaseImpl: BrawlersUseCase {
@@ -156,5 +159,17 @@ class BrawlersUseCaseImpl: BrawlersUseCase {
         }
         return coin
     }
-    
+
+    // 새로운 BrawlerDetail 기반 코인 계산
+    func calculateRequiredCoinsFromDetails(_ brawlers: [BrawlerDetail]) -> (totalCoins: Int, perBrawler: [(name: String, coins: Int)]) {
+        let perBrawler = brawlers.map { brawler -> (name: String, coins: Int) in
+            let coins = brawler.calculateRequiredCoins()
+            return (brawler.name, coins)
+        }
+
+        let totalCoins = perBrawler.reduce(0) { $0 + $1.coins }
+
+        return (totalCoins, perBrawler)
+    }
+
 }

@@ -9,31 +9,37 @@ import SwiftUI
 
 
 struct MoneyCountView: View {
-    
-    @State var ppCount = 0
-    @State var coinCount = 0
-    @State var creditCount = 0
-    
+
     @EnvironmentObject var appState: AppState
     @State var imageSize : CGFloat = 33
-    
+
     //Binding
     var parentWidth: CGFloat
-    var brawlerStandard: BrawlerStandard
-    @Binding var brawler: Brawler?
-    
+    @Binding var brawlerDetail: BrawlerDetail
+
     //viewModel
     @ObservedObject var viewModel:BrawlersViewModel
-        
+
+    // 계산된 값들
+    private var ppCount: Int {
+        brawlerDetail.calculateRequiredPP()
+    }
+
+    private var coinCount: Int {
+        brawlerDetail.calculateRequiredCoins()
+    }
+
+    private var creditCount: Int {
+        brawlerDetail.calculateRequiredCredit()
+    }
+
     init(
         parentWidth: CGFloat,
-        brawlerStandard: BrawlerStandard,
-        brawler: Binding<Brawler?>,
+        brawlerDetail: Binding<BrawlerDetail>,
         viewModel: BrawlersViewModel
     ) {
         self.parentWidth = parentWidth
-        self.brawlerStandard = brawlerStandard
-        self._brawler = brawler
+        self._brawlerDetail = brawlerDetail
         self.viewModel = viewModel
         }
     
@@ -77,18 +83,6 @@ struct MoneyCountView: View {
         }
         .frame(width: parentWidth)
         .padding(.bottom, 4)
-        .onChange(of: brawler) { newValue in
-            if newValue != nil {
-                ppCount = viewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
-                creditCount = viewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
-                coinCount = viewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
-//
-                appState.totalPP += viewModel.calculatePP(brawler: brawler, brawlerStandard: brawlerStandard)
-                appState.totalCredit += viewModel.calculateCredit(brawler: brawler, brawlerStandard: brawlerStandard)
-                appState.totalCoin += viewModel.calculateCoin(brawler: brawler, brawlerStandard: brawlerStandard)
-                
-            }
-        }
     }
 }
 

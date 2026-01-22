@@ -25,14 +25,16 @@ struct BlinkingAnimationModifier: AnimatableModifier {
             ZStack {
                 RoundedRectangle(cornerRadius: 15)
                     .foregroundColor(Color(hexString: "576E90"))
+                    .opacity(0.3)
                     .zIndex(0)
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color(hexString: "37475F"))
-                    .opacity(self.opacity)
+                    .opacity(self.opacity * 0.3)
                     .zIndex(1)
-                    
+
             }
             .opacity(shouldShow ? 1 : 0)
+            .allowsHitTesting(false)
         )
     }
     

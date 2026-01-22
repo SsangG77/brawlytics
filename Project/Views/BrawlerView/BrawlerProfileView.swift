@@ -6,32 +6,33 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 //MARK: - BrawlerProfileView
 struct BrawlerProfileView: View {
-    
+
     var parentWidth: CGFloat
-//    @Binding var brawler_st: BrawlerStandard
-    var brawler_st: BrawlerStandard
-    @Binding var brawler: Brawler?
-    
+    @Binding var brawlerDetail: BrawlerDetail
+
     var body: some View {
-        
+
         ZStack(alignment: .bottomLeading) {
             // 배경 이미지
-            Image(brawler_st.name)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: (parentWidth - 35) * 0.3, height: (parentWidth - 35) * 0.3) // 이미지 크기 설정
-                .clipped()
-            
+            RemoteBrawlerImage(
+                url: brawlerDetail.brawlerImageURL,
+                width: (parentWidth - 35) * 0.3,
+                height: (parentWidth - 35) * 0.3
+            )
+            .aspectRatio(contentMode: .fill)
+            .clipped()
+
             // 레벨 표시를 위한 ZStack
             ZStack {
                 Image("level")
                     .resizable()
                     .frame(width: 40, height: 40)
-                
-                Text(String(brawler?.name ?? "" == "" ? 0 : brawler?.power ?? 0))
+
+                Text(String(brawlerDetail.owned == false ? 0 : brawlerDetail.power ?? 0))
                     .foregroundColor(.white)
                     .fontWeight(.black)
             }

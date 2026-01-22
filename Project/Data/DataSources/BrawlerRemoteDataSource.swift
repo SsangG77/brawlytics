@@ -9,14 +9,15 @@ import Foundation
 import RxSwift
 
 protocol BrawlerRemoteDataSource {
-    func getUserBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void)
+    func getUserBrawlers(searchText: String, completion: @escaping ([BrawlerDetail]) -> Void)
 }
 
 class BrawlerRemoteDataSourceImpl: BrawlerRemoteDataSource {
-    func getUserBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void) {
+    func getUserBrawlers(searchText: String, completion: @escaping ([BrawlerDetail]) -> Void) {
         let cleanedSearchText = searchText.hasPrefix("#") ? String(searchText.dropFirst()) : searchText
-         guard let url = URL(string: "\(Constants.getBrawlersURL)?playertag=\(cleanedSearchText)") else {
-             print("Invalid URL")
+        guard let encodedTag = cleanedSearchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "\(Constants.getBrawlersURL)?playertag=\(encodedTag)") else {
+             print("Invalid URL: \(Constants.getBrawlersURL)?playertag=\(cleanedSearchText)")
              completion([])
              return
          }
@@ -31,18 +32,18 @@ class BrawlerRemoteDataSourceImpl: BrawlerRemoteDataSource {
                      completion([])
                      return
                  }
-                
+
                  guard let data = data else {
                      print("No data received")
                      completion([])
                      return
                  }
-                
+
                  do {
-                     let brawlersResponse = try JSONDecoder().decode([Brawler].self, from: data)
+                     let brawlersResponse = try JSONDecoder().decode([BrawlerDetail].self, from: data)
                     completion(brawlersResponse)
-                     
-                    
+
+
                  } catch {
                      print("Failed to decode JSON: \(error)")
                      completion([])
@@ -54,15 +55,16 @@ class BrawlerRemoteDataSourceImpl: BrawlerRemoteDataSource {
 
 //MARK: - Rx
 protocol RxRemoteDataSource {
-    func getUserBrawlers(searchText: String) -> Observable<[Brawler]>
+    func getUserBrawlers(searchText: String) -> Observable<[BrawlerDetail]>
 }
 
 class RxRemoteDataSourceImpl: RxRemoteDataSource {
-    func getUserBrawlers(searchText: String) -> Observable<[Brawler]> {
+    func getUserBrawlers(searchText: String) -> Observable<[BrawlerDetail]> {
         return Observable.create { observer in
             let cleanedSearchText = searchText.hasPrefix("#") ? String(searchText.dropFirst()) : searchText
-            guard let url = URL(string: "\(Constants.getBrawlersURL)?playertag=\(cleanedSearchText)") else {
-                print("Invalid URL")
+            guard let encodedTag = cleanedSearchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                  let url = URL(string: "\(Constants.getBrawlersURL)?playertag=\(encodedTag)") else {
+                print("Invalid URL: \(Constants.getBrawlersURL)?playertag=\(cleanedSearchText)")
                 observer.onNext([])
                 observer.onCompleted()
                 return Disposables.create()
@@ -77,16 +79,16 @@ class RxRemoteDataSourceImpl: RxRemoteDataSource {
                     observer.onError(BrawlerFetchError.network)
                     return
                 }
-               
+
                 guard let data = data else {
                     print("No data received")
                     observer.onNext([])
                     observer.onCompleted()
                     return
                 }
-               
+
                 do {
-                    let brawlersResponse = try JSONDecoder().decode([Brawler].self, from: data)
+                    let brawlersResponse = try JSONDecoder().decode([BrawlerDetail].self, from: data)
                     observer.onNext(brawlersResponse)
                     observer.onCompleted()
                 } catch let decodingError as DecodingError {
@@ -97,7 +99,7 @@ class RxRemoteDataSourceImpl: RxRemoteDataSource {
                 }
             }
             task.resume()
-            
+
             return Disposables.create {
                 task.cancel()
             }

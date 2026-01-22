@@ -10,32 +10,32 @@ import RxSwift
 
 
 protocol RemoteRepository {
-    func getUserBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void)
+    func getUserBrawlers(searchText: String, completion: @escaping ([BrawlerDetail]) -> Void)
 }
 
 class RemoteRepositoryImpl: RemoteRepository {
     private let remoteDataSource: BrawlerRemoteDataSource
-    
+
     init(remoteDataSource: BrawlerRemoteDataSource) {
         self.remoteDataSource = remoteDataSource
     }
-    
-    func getUserBrawlers(searchText: String, completion: @escaping ([Brawler]) -> Void) {
+
+    func getUserBrawlers(searchText: String, completion: @escaping ([BrawlerDetail]) -> Void) {
         remoteDataSource.getUserBrawlers(searchText: searchText, completion: completion)
     }
-    
+
 }
 
 //MARK: - Rx
 protocol RxRemoteRepository {
-    func getUserBrawlers(searchText: String) -> Observable<[Brawler]>
+    func getUserBrawlers(searchText: String) -> Observable<[BrawlerDetail]>
     func getBrawlerStandard() -> [BrawlerStandard]
 }
 
 class RxRemoteRepositoryImpl: RxRemoteRepository {
     private let rxRemoteDataSource: RxRemoteDataSource
     private let brawlersDataSource: BrawlersDataSource
-    
+
     init(
         rxRemoteDataSource: RxRemoteDataSource,
         brawlersDataSource: BrawlersDataSource
@@ -43,11 +43,11 @@ class RxRemoteRepositoryImpl: RxRemoteRepository {
         self.rxRemoteDataSource = rxRemoteDataSource
         self.brawlersDataSource = brawlersDataSource
     }
-    
-    func getUserBrawlers(searchText: String) -> Observable<[Brawler]> {
+
+    func getUserBrawlers(searchText: String) -> Observable<[BrawlerDetail]> {
         return rxRemoteDataSource.getUserBrawlers(searchText: searchText)
     }
-    
+
     func getBrawlerStandard() -> [BrawlerStandard] {
         return brawlersDataSource.allBrawlers
     }
