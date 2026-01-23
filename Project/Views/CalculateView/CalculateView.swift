@@ -70,7 +70,8 @@ struct CalculateView: View {
                             // 역할군 순서 정의
                             let roleOrder = ["tanker", "assassin", "supporter", "controller", "damageDealer", "marksmen", "thrower"]
 
-                            ForEach(roleOrder, id: \.self) { roleString in
+                            LazyVStack {
+                                ForEach(roleOrder, id: \.self) { roleString in
                                 let filtered = allBrawlers.filter { $0.role == roleString }
 
                                 if !filtered.isEmpty {
@@ -83,6 +84,7 @@ struct CalculateView: View {
                                     )
                                     .environmentObject(appState)
                                 }
+                            }
                             }
                         }
                     }
@@ -167,7 +169,7 @@ struct RoleBrawlerSection: View {
         }
 
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
+            LazyHStack {
                 if clicked {
                     if isLoading {
                         BrawlerEmptyView(width: width)
