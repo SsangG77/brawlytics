@@ -144,6 +144,8 @@ struct PowerView: View {
                         )
                     }
                 }
+
+                Spacer()
             }
         }
         .frame(width: parentWidth - 25)
