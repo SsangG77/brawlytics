@@ -145,7 +145,12 @@ struct PowerView: View {
                     }
                 }
 
-                Spacer()
+                // 버피가 하나도 없을 때만 왼쪽 정렬
+                if brawlerDetail.gadgetBuff.name.isEmpty &&
+                   brawlerDetail.starPowerBuff.name.isEmpty &&
+                   brawlerDetail.hyperchargeBuff.name.isEmpty {
+                    Spacer()
+                }
             }
         }
         .frame(width: parentWidth - 25)
