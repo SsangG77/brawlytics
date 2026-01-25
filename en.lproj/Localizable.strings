@@ -20,3 +20,6 @@ searchPlaceholder = "Enter playertag";
 //UserView - BattleLog 화살표 설명 문자열
 battleLogText = "Battles";
 
+//CalculateView - 하이퍼차지, 버피 탭 안내
+tap_hint = "Tap to toggle Hypercharge & Buffie";
+

@@ -20,6 +20,12 @@ struct BrawlerView: View {
     @State var brawlerDetail: BrawlerDetail
     @State var opacity: Double = 1.0
 
+    // 하이퍼차지/버피 소유 상태 (실시간 UI 업데이트용)
+    @State private var hyperchargeOwned: Bool = false
+    @State private var gadgetBuffOwned: Bool = false
+    @State private var starPowerBuffOwned: Bool = false
+    @State private var hyperchargeBuffOwned: Bool = false
+
     var width: CGFloat
 
     @EnvironmentObject var appState: AppState
@@ -45,6 +51,11 @@ struct BrawlerView: View {
          .onAppear {
              setupAnimation()
              subscribeToBrawlers()
+             // 초기값 설정
+             hyperchargeOwned = brawlerDetail.hypercharge.owned
+             gadgetBuffOwned = brawlerDetail.gadgetBuff.owned
+             starPowerBuffOwned = brawlerDetail.starPowerBuff.owned
+             hyperchargeBuffOwned = brawlerDetail.hyperchargeBuff.owned
          }
     }
 
@@ -95,7 +106,11 @@ struct BrawlerView: View {
             PowerView(
                 parentWidth: width,
                 brawlerDetail: $brawlerDetail,
-                viewModel: brawlersViewModel
+                viewModel: brawlersViewModel,
+                hyperchargeOwned: $hyperchargeOwned,
+                gadgetBuffOwned: $gadgetBuffOwned,
+                starPowerBuffOwned: $starPowerBuffOwned,
+                hyperchargeBuffOwned: $hyperchargeBuffOwned
             )
             .modifier(BlinkingAnimationModifier(shouldShow: !brawlerDetail.owned, opacity: opacity))
         }
@@ -133,7 +148,15 @@ struct BrawlerView: View {
     }
 
     private var moneyBlock: some View {
-        MoneyCountView(parentWidth: width, brawlerDetail: $brawlerDetail, viewModel: brawlersViewModel)
+        MoneyCountView(
+            parentWidth: width,
+            brawlerDetail: $brawlerDetail,
+            viewModel: brawlersViewModel,
+            hyperchargeOwned: $hyperchargeOwned,
+            gadgetBuffOwned: $gadgetBuffOwned,
+            starPowerBuffOwned: $starPowerBuffOwned,
+            hyperchargeBuffOwned: $hyperchargeBuffOwned
+        )
             .environmentObject(appState)
             .frame(height: totalHeight - brawlerHeight)
     }

@@ -19,3 +19,6 @@ searchPlaceholder = "유저 태그 입력";
 
 //UserView - BattleLog 화살표 설명 문자열
 battleLogText = "전적";
+
+//CalculateView - 하이퍼차지, 버피 탭 안내
+tap_hint = "하이퍼차지, 버피는 탭하여 변경";

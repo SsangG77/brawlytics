@@ -10,8 +10,8 @@ import UIKit
 
 struct Constants {
     
-    //localhost
-    static let serverURL = "http://192.168.31.161:3000"
+    //Vultr Server
+    static let serverURL = "http://158.247.223.154:3000"
 
 //    static let serverURL = "https://brawlytics-server.com"
     

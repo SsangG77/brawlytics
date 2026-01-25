@@ -13,30 +13,39 @@ struct PowerView: View {
 
     @State var imageSize: CGFloat = 50
 
-    // 즉시 UI 업데이트를 위한 로컬 상태
-    @State private var hyperchargeOwned: Bool = false
-    @State private var gadgetBuffOwned: Bool = false
-    @State private var starPowerBuffOwned: Bool = false
-    @State private var hyperchargeBuffOwned: Bool = false
-
     //Binding
     var parentWidth: CGFloat
     @Binding var brawlerDetail: BrawlerDetail
+
+    // 부모에서 전달받는 소유 상태 (실시간 UI 업데이트용)
+    @Binding var hyperchargeOwned: Bool
+    @Binding var gadgetBuffOwned: Bool
+    @Binding var starPowerBuffOwned: Bool
+    @Binding var hyperchargeBuffOwned: Bool
 
     //viewModel
     let viewModel:BrawlersViewModel
 
     //EnvironmentObject
     @EnvironmentObject var calculateViewModel: RxCalculateViewModel
+    @EnvironmentObject var appState: AppState
 
     init(
         parentWidth: CGFloat,
         brawlerDetail: Binding<BrawlerDetail>,
-        viewModel: BrawlersViewModel
+        viewModel: BrawlersViewModel,
+        hyperchargeOwned: Binding<Bool>,
+        gadgetBuffOwned: Binding<Bool>,
+        starPowerBuffOwned: Binding<Bool>,
+        hyperchargeBuffOwned: Binding<Bool>
     ) {
         self.parentWidth = parentWidth
         self._brawlerDetail = brawlerDetail
         self.viewModel = viewModel
+        self._hyperchargeOwned = hyperchargeOwned
+        self._gadgetBuffOwned = gadgetBuffOwned
+        self._starPowerBuffOwned = starPowerBuffOwned
+        self._hyperchargeBuffOwned = hyperchargeBuffOwned
     }
 
     var body: some View {
@@ -88,6 +97,8 @@ struct PowerView: View {
                 if !brawlerDetail.hypercharge.name.isEmpty {
                     Button(action: {
                         hyperchargeOwned.toggle()
+                        // 재화 업데이트 (하이퍼차지: 5000 코인)
+                        appState.totalCoin += hyperchargeOwned ? -5000 : 5000
                         // 서버에 저장
                         viewModel.toggleHypercharge(brawlerDetail.hypercharge.name, owned: hyperchargeOwned)
                     }) {
@@ -103,6 +114,9 @@ struct PowerView: View {
                 if !brawlerDetail.gadgetBuff.name.isEmpty {
                     Button(action: {
                         gadgetBuffOwned.toggle()
+                        // 재화 업데이트 (버피: 1000 코인, 2000 PP)
+                        appState.totalCoin += gadgetBuffOwned ? -1000 : 1000
+                        appState.totalPP += gadgetBuffOwned ? -2000 : 2000
                         // 서버에 저장
                         viewModel.toggleBuffie(brawlerDetail.gadgetBuff.name, type: "gadget", owned: gadgetBuffOwned)
                     }) {
@@ -118,6 +132,9 @@ struct PowerView: View {
                 if !brawlerDetail.starPowerBuff.name.isEmpty {
                     Button(action: {
                         starPowerBuffOwned.toggle()
+                        // 재화 업데이트 (버피: 1000 코인, 2000 PP)
+                        appState.totalCoin += starPowerBuffOwned ? -1000 : 1000
+                        appState.totalPP += starPowerBuffOwned ? -2000 : 2000
                         // 서버에 저장
                         viewModel.toggleBuffie(brawlerDetail.starPowerBuff.name, type: "starPower", owned: starPowerBuffOwned)
                     }) {
@@ -133,6 +150,9 @@ struct PowerView: View {
                 if !brawlerDetail.hyperchargeBuff.name.isEmpty {
                     Button(action: {
                         hyperchargeBuffOwned.toggle()
+                        // 재화 업데이트 (버피: 1000 코인, 2000 PP)
+                        appState.totalCoin += hyperchargeBuffOwned ? -1000 : 1000
+                        appState.totalPP += hyperchargeBuffOwned ? -2000 : 2000
                         // 서버에 저장
                         viewModel.toggleBuffie(brawlerDetail.hyperchargeBuff.name, type: "hypercharge", owned: hyperchargeBuffOwned)
                     }) {
@@ -150,13 +170,6 @@ struct PowerView: View {
         .padding(.vertical, 8)
         .background(Color(hexString: "4C658D", opacity: 0.53))
         .cornerRadius(15)
-        .onAppear {
-            // 초기값 설정
-            hyperchargeOwned = brawlerDetail.hypercharge.owned
-            gadgetBuffOwned = brawlerDetail.gadgetBuff.owned
-            starPowerBuffOwned = brawlerDetail.starPowerBuff.owned
-            hyperchargeBuffOwned = brawlerDetail.hyperchargeBuff.owned
-        }
 
     }
 }
