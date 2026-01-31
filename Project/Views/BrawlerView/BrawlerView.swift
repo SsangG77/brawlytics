@@ -41,6 +41,10 @@ struct BrawlerView: View {
         self.width = width
         _brawlerDetail = State(initialValue: brawlerDetail)
         _brawlersViewModel = StateObject(wrappedValue: viewModel)
+        _hyperchargeOwned = State(initialValue: brawlerDetail.hypercharge.owned)
+        _gadgetBuffOwned = State(initialValue: brawlerDetail.gadgetBuff.owned)
+        _starPowerBuffOwned = State(initialValue: brawlerDetail.starPowerBuff.owned)
+        _hyperchargeBuffOwned = State(initialValue: brawlerDetail.hyperchargeBuff.owned)
     }
     
     var body: some View {

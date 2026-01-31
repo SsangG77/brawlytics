@@ -32,7 +32,7 @@ struct CalculateView: View {
                 
                 let width = Constants.isPad() ? geo.size.width * 0.3 - 10 : geo.size.width * 0.9
                 
-                VStack(spacing : 20) {
+                VStack(spacing : 10) {
                     calculateViewModel.DynamicStack(isPad: Constants.isPad()) {
                         
                         SearchBar(

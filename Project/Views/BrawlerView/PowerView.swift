@@ -94,11 +94,14 @@ struct PowerView: View {
             // 아랫줄: 하이퍼차지, 버피 3개
             HStack(spacing: 15) {
 
+                // 하이퍼차지 (없으면 빈 공간)
                 if !brawlerDetail.hypercharge.name.isEmpty {
                     Button(action: {
                         hyperchargeOwned.toggle()
                         // 재화 업데이트 (하이퍼차지: 5000 코인)
                         appState.totalCoin += hyperchargeOwned ? -5000 : 5000
+                        // 로컬 데이터 업데이트
+                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "hypercharge", owned: hyperchargeOwned)
                         // 서버에 저장
                         viewModel.toggleHypercharge(brawlerDetail.hypercharge.name, owned: hyperchargeOwned)
                     }) {
@@ -109,14 +112,19 @@ struct PowerView: View {
                             isOwned: hyperchargeOwned
                         )
                     }
+                } else {
+                    Color.clear.frame(width: imageSize, height: imageSize)
                 }
 
+                // 가젯 버피 (없으면 빈 공간)
                 if !brawlerDetail.gadgetBuff.name.isEmpty {
                     Button(action: {
                         gadgetBuffOwned.toggle()
                         // 재화 업데이트 (버피: 1000 코인, 2000 PP)
                         appState.totalCoin += gadgetBuffOwned ? -1000 : 1000
                         appState.totalPP += gadgetBuffOwned ? -2000 : 2000
+                        // 로컬 데이터 업데이트
+                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "gadgetBuff", owned: gadgetBuffOwned)
                         // 서버에 저장
                         viewModel.toggleBuffie(brawlerDetail.gadgetBuff.name, type: "gadget", owned: gadgetBuffOwned)
                     }) {
@@ -127,14 +135,19 @@ struct PowerView: View {
                             isOwned: gadgetBuffOwned
                         )
                     }
+                } else {
+                    Color.clear.frame(width: imageSize, height: imageSize)
                 }
 
+                // 스타파워 버피 (없으면 빈 공간)
                 if !brawlerDetail.starPowerBuff.name.isEmpty {
                     Button(action: {
                         starPowerBuffOwned.toggle()
                         // 재화 업데이트 (버피: 1000 코인, 2000 PP)
                         appState.totalCoin += starPowerBuffOwned ? -1000 : 1000
                         appState.totalPP += starPowerBuffOwned ? -2000 : 2000
+                        // 로컬 데이터 업데이트
+                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "starPowerBuff", owned: starPowerBuffOwned)
                         // 서버에 저장
                         viewModel.toggleBuffie(brawlerDetail.starPowerBuff.name, type: "starPower", owned: starPowerBuffOwned)
                     }) {
@@ -145,14 +158,19 @@ struct PowerView: View {
                             isOwned: starPowerBuffOwned
                         )
                     }
+                } else {
+                    Color.clear.frame(width: imageSize, height: imageSize)
                 }
 
+                // 하이퍼차지 버피 (없으면 빈 공간)
                 if !brawlerDetail.hyperchargeBuff.name.isEmpty {
                     Button(action: {
                         hyperchargeBuffOwned.toggle()
                         // 재화 업데이트 (버피: 1000 코인, 2000 PP)
                         appState.totalCoin += hyperchargeBuffOwned ? -1000 : 1000
                         appState.totalPP += hyperchargeBuffOwned ? -2000 : 2000
+                        // 로컬 데이터 업데이트
+                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "hyperchargeBuff", owned: hyperchargeBuffOwned)
                         // 서버에 저장
                         viewModel.toggleBuffie(brawlerDetail.hyperchargeBuff.name, type: "hypercharge", owned: hyperchargeBuffOwned)
                     }) {
@@ -163,13 +181,8 @@ struct PowerView: View {
                             isOwned: hyperchargeBuffOwned
                         )
                     }
-                }
-
-                // 버피가 하나도 없을 때만 왼쪽 정렬
-                if brawlerDetail.gadgetBuff.name.isEmpty &&
-                   brawlerDetail.starPowerBuff.name.isEmpty &&
-                   brawlerDetail.hyperchargeBuff.name.isEmpty {
-                    Spacer()
+                } else {
+                    Color.clear.frame(width: imageSize, height: imageSize)
                 }
             }
         }
