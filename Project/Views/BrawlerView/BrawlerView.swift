@@ -20,12 +20,6 @@ struct BrawlerView: View {
     @State var brawlerDetail: BrawlerDetail
     @State var opacity: Double = 1.0
 
-    // 하이퍼차지/버피 소유 상태 (실시간 UI 업데이트용)
-    @State private var hyperchargeOwned: Bool = false
-    @State private var gadgetBuffOwned: Bool = false
-    @State private var starPowerBuffOwned: Bool = false
-    @State private var hyperchargeBuffOwned: Bool = false
-
     var width: CGFloat
 
     @EnvironmentObject var appState: AppState
@@ -41,10 +35,6 @@ struct BrawlerView: View {
         self.width = width
         _brawlerDetail = State(initialValue: brawlerDetail)
         _brawlersViewModel = StateObject(wrappedValue: viewModel)
-        _hyperchargeOwned = State(initialValue: brawlerDetail.hypercharge.owned)
-        _gadgetBuffOwned = State(initialValue: brawlerDetail.gadgetBuff.owned)
-        _starPowerBuffOwned = State(initialValue: brawlerDetail.starPowerBuff.owned)
-        _hyperchargeBuffOwned = State(initialValue: brawlerDetail.hyperchargeBuff.owned)
     }
     
     var body: some View {
@@ -55,11 +45,6 @@ struct BrawlerView: View {
          .onAppear {
              setupAnimation()
              subscribeToBrawlers()
-             // 초기값 설정
-             hyperchargeOwned = brawlerDetail.hypercharge.owned
-             gadgetBuffOwned = brawlerDetail.gadgetBuff.owned
-             starPowerBuffOwned = brawlerDetail.starPowerBuff.owned
-             hyperchargeBuffOwned = brawlerDetail.hyperchargeBuff.owned
          }
     }
 
@@ -76,9 +61,7 @@ struct BrawlerView: View {
              .observe(on: MainScheduler.instance)
              .subscribe(onNext: { brawlers in
                  if let updated = brawlers.first(where: { $0.id == brawlerDetail.id }) {
-                     withAnimation {
-                         brawlerDetail = updated
-                     }
+                     brawlerDetail = updated
                  }
              })
              .disposed(by: disposeBag)
@@ -109,12 +92,7 @@ struct BrawlerView: View {
 
             PowerView(
                 parentWidth: width,
-                brawlerDetail: $brawlerDetail,
-                viewModel: brawlersViewModel,
-                hyperchargeOwned: $hyperchargeOwned,
-                gadgetBuffOwned: $gadgetBuffOwned,
-                starPowerBuffOwned: $starPowerBuffOwned,
-                hyperchargeBuffOwned: $hyperchargeBuffOwned
+                brawlerDetail: $brawlerDetail
             )
             .modifier(BlinkingAnimationModifier(shouldShow: !brawlerDetail.owned, opacity: opacity))
         }
@@ -155,11 +133,7 @@ struct BrawlerView: View {
         MoneyCountView(
             parentWidth: width,
             brawlerDetail: $brawlerDetail,
-            viewModel: brawlersViewModel,
-            hyperchargeOwned: $hyperchargeOwned,
-            gadgetBuffOwned: $gadgetBuffOwned,
-            starPowerBuffOwned: $starPowerBuffOwned,
-            hyperchargeBuffOwned: $hyperchargeBuffOwned
+            viewModel: brawlersViewModel
         )
             .environmentObject(appState)
             .frame(height: totalHeight - brawlerHeight)

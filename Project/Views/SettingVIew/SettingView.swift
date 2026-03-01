@@ -25,25 +25,31 @@ struct SettingView: View {
                 
                 GeometryReader { geometry in
                     ScrollView {
-                        VStack {
-                            TextField("플레이어 태그 입력", text: $text)
-                                .padding()
-                                .foregroundColor(.black) // 글자색 고정
-                                .roundedCornerWithBorder(
-                                    lineWidth: isFocused ? 6 : 3,
-                                    backgroundColor: .white
-                                )
-                                .animation(.easeInOut(duration: 0.3), value: isFocused)
-                                .padding()
-                                .focused($isFocused)
-                            
-                            Text(loadedPlayerTag.isEmpty ? "플레이어 태그를 저장하세요" : "저장된 태그: \(loadedPlayerTag)")
-                                .font(.system(size: 20))
-                                .foregroundColor(.black)
-                                .padding(.bottom)
-                            
+                        VStack(spacing: 24) {
+                            // MARK: - 플레이어 태그 섹션
+                            VStack {
+                                TextField("플레이어 태그 입력", text: $text)
+                                    .padding()
+                                    .foregroundColor(.black)
+                                    .roundedCornerWithBorder(
+                                        lineWidth: isFocused ? 6 : 3,
+                                        backgroundColor: .white
+                                    )
+                                    .animation(.easeInOut(duration: 0.3), value: isFocused)
+                                    .padding(.horizontal)
+                                    .focused($isFocused)
+
+                                Text(loadedPlayerTag.isEmpty ? "플레이어 태그를 저장하세요" : "저장된 태그: \(loadedPlayerTag)")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.black)
+                                    .padding(.bottom)
+                            }
+
+                            // MARK: - 구독 섹션
+                            SubscriptionView()
+
                             Spacer()
-                            
+
                             Button("저장") {
                                 var processedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
                                 if processedText.hasPrefix("#") {

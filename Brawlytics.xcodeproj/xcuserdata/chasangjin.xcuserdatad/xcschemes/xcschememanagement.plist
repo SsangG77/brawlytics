@@ -7,7 +7,30 @@
 		<key>Brawlytics.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>3</integer>
+		</dict>
+		<key>Rx (Playground).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>9128112A2CD799FB004D9554</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9128113C2CD799FC004D9554</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>912811462CD799FC004D9554</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

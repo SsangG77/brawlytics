@@ -23,3 +23,13 @@ battleLogText = "Battles";
 //CalculateView - 하이퍼차지, 버피 탭 안내
 tap_hint = "Tap to toggle Hypercharge & Buffie";
 
+//SettingView & Modal - Ad Removal
+ad_removal_benefit = "Ad-free experience";
+ad_removal_price = "₩1,100";
+ad_removal_buy = "Remove Ads";
+ad_removal_restore = "Restore Purchase";
+ad_removal_purchased = "Ads Removed";
+ad_removal_title = "Go Ad-Free";
+ad_removal_description = "One-time purchase to permanently remove all ads.";
+ad_removal_close = "Close";
+

@@ -22,3 +22,13 @@ battleLogText = "전적";
 
 //CalculateView - 하이퍼차지, 버피 탭 안내
 tap_hint = "하이퍼차지, 버피는 탭하여 변경";
+
+//SettingView & Modal - 광고 제거
+ad_removal_benefit = "광고 없이 쾌적하게 사용";
+ad_removal_price = "₩1,100";
+ad_removal_buy = "광고 제거 구매";
+ad_removal_restore = "구매 복원";
+ad_removal_purchased = "광고 제거 완료";
+ad_removal_title = "광고 없이 사용하기";
+ad_removal_description = "한 번 구매로 모든 광고를 영구적으로 제거합니다.";
+ad_removal_close = "닫기";

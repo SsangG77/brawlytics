@@ -48,10 +48,6 @@ struct CalculateView: View {
                     }
                     .frame(height: 110)
 
-                    Text(NSLocalizedString("tap_hint", comment: ""))
-                        .font(.system(size: 13))
-                        .foregroundColor(.gray)
-                        .padding(.vertical, 4)
 
                     if calculateViewModel.isError {
                         VStack {

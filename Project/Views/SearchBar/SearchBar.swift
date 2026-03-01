@@ -29,6 +29,12 @@ struct SearchBar: View {
     // Ad
     @State private var adManager = InterstitialAdManager()
 
+    // Ad removal
+    @StateObject private var adRemovalManager = AdRemovalManager.shared
+    @State private var showAdRemovalModal: Bool = false
+    @State private var adActuallyShown: Bool = false
+    @AppStorage("adImpressionCount") private var adImpressionCount: Int = 0
+
     var body: some View {
         
         GeometryReader { geo in
@@ -97,13 +103,23 @@ struct SearchBar: View {
                                 // 플레이어 태그 저장 (하이퍼차지/버피 토글용)
                                 UserDefaults.standard.set(text, forKey: "currentPlayerTag")
                                 
+                                // 광고 제거 구매자는 광고 스킵
+                                if adRemovalManager.isAdRemoved {
+                                    withAnimation {
+                                        clicked = true
+                                        calculateViewModel.getBrawlers(text)
+                                    }
+                                    return
+                                }
+
                                 adManager.onAdStart = {
+                                    adActuallyShown = true
                                     withAnimation {
                                         clicked = true
                                         calculateViewModel.isLoadingSubject.onNext(true)
                                     }
                                 }
-                               
+
                                 adManager.onAdDismiss = {
                                     DispatchQueue.main.async {
                                         withAnimation {
@@ -111,10 +127,19 @@ struct SearchBar: View {
                                             calculateViewModel.isLoadingSubject.onNext(false)
                                             calculateViewModel.getBrawlers(text)
                                         }
+                                        // 광고가 실제로 노출된 경우에만 카운트
+                                        if adActuallyShown {
+                                            adImpressionCount += 1
+                                            adActuallyShown = false
+                                            // 3회 광고 노출마다 광고 제거 모달 표시
+                                            if adImpressionCount % 3 == 0 {
+                                                showAdRemovalModal = true
+                                            }
+                                        }
                                     }
                                 }
 
-                                      
+
                               if let rootVC = UIApplication.shared.connectedScenes
                                   .compactMap({ ($0 as? UIWindowScene)?.keyWindow})
                                   .first?.rootViewController {
@@ -140,6 +165,11 @@ struct SearchBar: View {
                 .frame(width : Constants.isPad() ? ipadWidth : iphoneWidth, height: 120)
             }
             .padding([.leading, .trailing])
+        }
+        .sheet(isPresented: $showAdRemovalModal) {
+            AdRemovalModalView()
+                .environmentObject(adRemovalManager)
+                .presentationDetents([.medium])
         }
         .onAppear {
             Task {

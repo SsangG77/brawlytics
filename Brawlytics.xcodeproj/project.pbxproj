@@ -14,6 +14,7 @@
 		91A8D4712DE8D05100F7371E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 91A8D4702DE8D05100F7371E /* GoogleMobileAds */; };
 		91AACE662E16308800861DB5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 91AACE652E16308800861DB5 /* Alamofire */; };
 		91AACEA12E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91AACE9F2E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld */; };
+		91C2F4B42F54492800F6DD53 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 91C2F4B32F54492800F6DD53 /* Products.storekit */; };
 		91CB115D2F0A794300A01F87 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 91CB115C2F0A794300A01F87 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 		915F8BAC2DE4B33500172B39 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		915F8BBE2DE61DCA00172B39 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		91AACEA02E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CachedBrawlerTrophyData.xcdatamodel; sourceTree = "<group>"; };
+		91C2F4B32F54492800F6DD53 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -149,6 +151,7 @@
 		912811222CD799FB004D9554 = {
 			isa = PBXGroup;
 			children = (
+				91C2F4B32F54492800F6DD53 /* Products.storekit */,
 				91AACE9F2E1EB21E00861DB5 /* CachedBrawlerTrophyData.xcdatamodeld */,
 				915F8BB72DE6166100172B39 /* Tests */,
 				915F8BAA2DE4B24000172B39 /* Localizable.strings */,
@@ -311,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				915F8BAB2DE4B24000172B39 /* Localizable.strings in Resources */,
+				91C2F4B42F54492800F6DD53 /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,7 +514,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Brawlytics/Preview Content\"";
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				ENABLE_PREVIEWS = YES;
@@ -527,7 +531,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.Brawlytics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -546,7 +550,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Brawlytics/Preview Content\"";
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				ENABLE_PREVIEWS = YES;
@@ -563,7 +567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sangjin.Brawlytics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

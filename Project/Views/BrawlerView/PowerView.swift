@@ -17,35 +17,12 @@ struct PowerView: View {
     var parentWidth: CGFloat
     @Binding var brawlerDetail: BrawlerDetail
 
-    // 부모에서 전달받는 소유 상태 (실시간 UI 업데이트용)
-    @Binding var hyperchargeOwned: Bool
-    @Binding var gadgetBuffOwned: Bool
-    @Binding var starPowerBuffOwned: Bool
-    @Binding var hyperchargeBuffOwned: Bool
-
-    //viewModel
-    let viewModel:BrawlersViewModel
-
-    //EnvironmentObject
-    @EnvironmentObject var calculateViewModel: RxCalculateViewModel
-    @EnvironmentObject var appState: AppState
-
     init(
         parentWidth: CGFloat,
-        brawlerDetail: Binding<BrawlerDetail>,
-        viewModel: BrawlersViewModel,
-        hyperchargeOwned: Binding<Bool>,
-        gadgetBuffOwned: Binding<Bool>,
-        starPowerBuffOwned: Binding<Bool>,
-        hyperchargeBuffOwned: Binding<Bool>
+        brawlerDetail: Binding<BrawlerDetail>
     ) {
         self.parentWidth = parentWidth
         self._brawlerDetail = brawlerDetail
-        self.viewModel = viewModel
-        self._hyperchargeOwned = hyperchargeOwned
-        self._gadgetBuffOwned = gadgetBuffOwned
-        self._starPowerBuffOwned = starPowerBuffOwned
-        self._hyperchargeBuffOwned = hyperchargeBuffOwned
     }
 
     var body: some View {
@@ -96,91 +73,48 @@ struct PowerView: View {
 
                 // 하이퍼차지 (없으면 빈 공간)
                 if !brawlerDetail.hypercharge.name.isEmpty {
-                    Button(action: {
-                        hyperchargeOwned.toggle()
-                        // 재화 업데이트 (하이퍼차지: 5000 코인)
-                        appState.totalCoin += hyperchargeOwned ? -5000 : 5000
-                        // 로컬 데이터 업데이트
-                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "hypercharge", owned: hyperchargeOwned)
-                        // 서버에 저장
-                        viewModel.toggleHypercharge(brawlerDetail.hypercharge.name, owned: hyperchargeOwned)
-                    }) {
-                        RemoteItemImage(
-                            url: brawlerDetail.itemURL(for: brawlerDetail.hypercharge.image),
-                            width: imageSize,
-                            height: imageSize,
-                            isOwned: hyperchargeOwned
-                        )
-                    }
+                    RemoteItemImage(
+                        url: brawlerDetail.itemURL(for: brawlerDetail.hypercharge.image),
+                        width: imageSize,
+                        height: imageSize,
+                        isOwned: brawlerDetail.hypercharge.owned
+                    )
                 } else {
                     Color.clear.frame(width: imageSize, height: imageSize)
                 }
 
                 // 가젯 버피 (없으면 빈 공간)
                 if !brawlerDetail.gadgetBuff.name.isEmpty {
-                    Button(action: {
-                        gadgetBuffOwned.toggle()
-                        // 재화 업데이트 (버피: 1000 코인, 2000 PP)
-                        appState.totalCoin += gadgetBuffOwned ? -1000 : 1000
-                        appState.totalPP += gadgetBuffOwned ? -2000 : 2000
-                        // 로컬 데이터 업데이트
-                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "gadgetBuff", owned: gadgetBuffOwned)
-                        // 서버에 저장
-                        viewModel.toggleBuffie(brawlerDetail.gadgetBuff.name, type: "gadget", owned: gadgetBuffOwned)
-                    }) {
-                        RemoteItemImage(
-                            url: brawlerDetail.itemURL(for: brawlerDetail.gadgetBuff.image),
-                            width: imageSize,
-                            height: imageSize,
-                            isOwned: gadgetBuffOwned
-                        )
-                    }
+                    RemoteItemImage(
+                        url: brawlerDetail.itemURL(for: brawlerDetail.gadgetBuff.image),
+                        width: imageSize,
+                        height: imageSize,
+                        isOwned: brawlerDetail.gadgetBuff.owned
+                    )
                 } else {
                     Color.clear.frame(width: imageSize, height: imageSize)
                 }
 
                 // 스타파워 버피 (없으면 빈 공간)
                 if !brawlerDetail.starPowerBuff.name.isEmpty {
-                    Button(action: {
-                        starPowerBuffOwned.toggle()
-                        // 재화 업데이트 (버피: 1000 코인, 2000 PP)
-                        appState.totalCoin += starPowerBuffOwned ? -1000 : 1000
-                        appState.totalPP += starPowerBuffOwned ? -2000 : 2000
-                        // 로컬 데이터 업데이트
-                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "starPowerBuff", owned: starPowerBuffOwned)
-                        // 서버에 저장
-                        viewModel.toggleBuffie(brawlerDetail.starPowerBuff.name, type: "starPower", owned: starPowerBuffOwned)
-                    }) {
-                        RemoteItemImage(
-                            url: brawlerDetail.itemURL(for: brawlerDetail.starPowerBuff.image),
-                            width: imageSize,
-                            height: imageSize,
-                            isOwned: starPowerBuffOwned
-                        )
-                    }
+                    RemoteItemImage(
+                        url: brawlerDetail.itemURL(for: brawlerDetail.starPowerBuff.image),
+                        width: imageSize,
+                        height: imageSize,
+                        isOwned: brawlerDetail.starPowerBuff.owned
+                    )
                 } else {
                     Color.clear.frame(width: imageSize, height: imageSize)
                 }
 
                 // 하이퍼차지 버피 (없으면 빈 공간)
                 if !brawlerDetail.hyperchargeBuff.name.isEmpty {
-                    Button(action: {
-                        hyperchargeBuffOwned.toggle()
-                        // 재화 업데이트 (버피: 1000 코인, 2000 PP)
-                        appState.totalCoin += hyperchargeBuffOwned ? -1000 : 1000
-                        appState.totalPP += hyperchargeBuffOwned ? -2000 : 2000
-                        // 로컬 데이터 업데이트
-                        calculateViewModel.updateBrawlerItem(brawlerId: brawlerDetail.id, itemType: "hyperchargeBuff", owned: hyperchargeBuffOwned)
-                        // 서버에 저장
-                        viewModel.toggleBuffie(brawlerDetail.hyperchargeBuff.name, type: "hypercharge", owned: hyperchargeBuffOwned)
-                    }) {
-                        RemoteItemImage(
-                            url: brawlerDetail.itemURL(for: brawlerDetail.hyperchargeBuff.image),
-                            width: imageSize,
-                            height: imageSize,
-                            isOwned: hyperchargeBuffOwned
-                        )
-                    }
+                    RemoteItemImage(
+                        url: brawlerDetail.itemURL(for: brawlerDetail.hyperchargeBuff.image),
+                        width: imageSize,
+                        height: imageSize,
+                        isOwned: brawlerDetail.hyperchargeBuff.owned
+                    )
                 } else {
                     Color.clear.frame(width: imageSize, height: imageSize)
                 }
